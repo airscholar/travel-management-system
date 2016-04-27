@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+					  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title><ui:insert name="title">#{screen.screenName}</ui:insert></title>
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+		href="../css/bootstrap-datetimepicker.css" />
+	<link rel="stylesheet" href="../css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" href="../css/design.css" />
+	<h:outputScript library="primefaces" name="jquery/jquery.js" />
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/moment-with-locales.js"></script>
+	<script type="text/javascript" src="../js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript" src="../js/collapsiblefieldset.js"></script>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=11" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Cache-Control"
+			content="no-cache, no-store, must-    revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	</f:facet>
+	<style>
+.menuScroll {
+	position: absolute;
+	border: 5px solid gray;
+	padding: 5px;
+	background: background:rgb(117, 0, 0);
+	width: 300px;
+	height: 600px;
+	overflow: auto;
+	overflow-y: scroll;
+}
+
+#accordion::-webkit-scrollbar {
+	width: 10px;
+	background-color: #cccccc;
+}
+
+#accordion::-webkit-scrollbar-thumb {
+	background: rgb(155, 0, 0);
+	border-radius: 10px;
+}
+
+#accordion::-webkit-scrollbar-thumb:hover {
+	background: rgb(155, 0, 0);
+	border: 1px solid #333333;
+}
+
+#accordion::-webkit-scrollbar-thumb:active {
+	background: rgb(155, 0, 0);
+	border: 1px solid #333333;
+}
+
+#accordion::-webkit-scrollbar-track {
+	border: 1px gray solid;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 0 6px gray inset;
+}
+</style>
+</h:head>
+<h:body>
+	<!-- Start Of Header -->
+	<nav class="navbar navbar-default navbar-fixed-top"
+		style="background:rgb(117,0,0);" role="navigation"> <ui:include
+		src="header.xhtml" /> </nav>
+	<!-- End Of Header -->
+
+	<div class="body slide">
+		<!-- Start Of Menu-->
+		<aside class="sidebar show perfectScrollbar"
+			style="background:rgb(117,0,0);">
+		<div id="solso-sidebar">
+			<div class="panel-group menuScroll" id="accordion" role="tablist"
+				aria-multiselectable="true">
+				<ui:include src="menu.xhtml" />
+			</div>
+		</div>
+		</aside>
+		<!-- End Of Menu-->
+
+		<!-- Start Of Content-->
+		<ui:insert name="content">
+			<h1>Travel Management System</h1>
+		</ui:insert>
+		<!-- End Of Content-->
+	</div>
+	<ui:insert name="script"></ui:insert>
+</h:body>
+</html>

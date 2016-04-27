@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+	<composite:attribute name="title" />
+	<composite:attribute name="mode" />
+
+	<composite:attribute name="fileUploadListener"
+		method-signature="void action(org.primefaces.event.FileUploadEvent)" />
+</composite:interface>
+
+<composite:implementation>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">#{cc.attrs.title}</legend>
+		<div class='row'>
+			<div class="col-xs-12" style="border: 1px solid #ccc;">
+				<span class="help-block">
+					<p>File Types : Excel Only</p>
+				</span>
+			</div>
+		</div>
+		<div class='row uploadfilerow'>
+			<div class="col-xs-12">
+				<p:fileUpload fileUploadListener="#{cc.attrs.fileUploadListener}"
+					mode="advanced" sizeLimit="3145728" fileLimit="6"
+					allowTypes="/(\.|\/)(xlsx)$/"					
+					disabled="#{cc.attrs.mode == 'VIEW'}" update=":formID" />
+			</div>
+		</div>
+		
+	</fieldset>
+</composite:implementation>
+
+</html>

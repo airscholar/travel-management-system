@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+	<composite:attribute name="title" />
+	<composite:attribute name="uploadFileList" />
+	<composite:attribute name="downloadFileList" />
+	<composite:attribute name="mode" />
+
+	<composite:attribute name="fileUploadListener"
+		method-signature="void action(org.primefaces.event.FileUploadEvent)" />
+	<composite:attribute name="deleteFile"
+		method-signature="void action(javax.faces.event.ActionEvent)" />
+</composite:interface>
+
+<composite:implementation>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">#{cc.attrs.title}</legend>
+		<div class='row'>
+			<div class="col-xs-12" style="border: 1px solid #ccc;">
+				<span class="help-block">
+					<p>File Types : PDF Only</p>
+					<p>File Size : Three Megabytes</p>
+				</span>
+			</div>
+		</div>
+		<div class='row uploadfilerow'>
+			<div class="col-xs-12">
+				<p:fileUpload fileUploadListener="#{cc.attrs.fileUploadListener}"
+					mode="advanced" sizeLimit="3145728" fileLimit="6"
+					allowTypes="/(\.|\/)(pdf)$/"
+					auto="true" update="attachedfiletable"
+					disabled="#{cc.attrs.mode == 'VIEW'}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 table-responsive">
+				<p:dataTable id="attachedfiletable" var="file"
+					value="#{cc.attrs.downloadFileList}" rowKey="#{file.attachmentId}"
+					tableStyleClass="table table-striped">
+					<p:column headerText="File Name " width="90%">
+						<center>
+							<h:outputText value="#{file.name}" />
+						</center>
+					</p:column>
+					<c:if
+						test="#{cc.attrs.mode == 'UPDATE' || cc.attrs.mode == 'VIEW'}">
+						<p:column headerText="Download">
+							<center>
+								<p:commandLink ajax="false">
+									<span class="fa fa-download fa-fw"></span>
+									<p:fileDownload value="#{file.file}" />
+								</p:commandLink>
+							</center>
+						</p:column>
+					</c:if>
+					<p:column headerText="Remove">
+						<center>
+							<p:commandLink ajax="true" disabled="#{cc.attrs.mode == 'VIEW'}"
+								actionListener="#{cc.attrs.deleteFile}"
+								update="attachedfiletable" process="@this">
+								<f:attribute name="attachedfile" value="#{file}" />
+								<span class="fa fa-remove fa-fw"></span>
+							</p:commandLink>
+						</center>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</fieldset>
+</composite:implementation>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<!-- TEST -->
+
+	<style>
+.ui-panel .ui-widget .ui-widget-content .ui-corner-all {
+	
+}
+
+.imageLogo{
+	width: 50px;
+	height: 50px;
+	margin-top: 50px;
+}
+.image{
+	margin-left: 50px;
+	margin-top: 10px;
+}
+</style>
+</h:head>
+
+<h:body>
+	<ui:composition>
+		<img src="../images/VFLogo.png" width="50px" height="50px" style="margin-left: 60px; margin-top: 10px;"/>
+		<div class="panel panel-default">				
+			<div class="panel-heading" role="tab" id="heading1" style="background:rgb(117,0,0);">
+				<h4 class="panel-title" style="background:rgb(117,0,0);">
+					<a href="#" class="single-item"> <i class="fa fa-bus fa-fw"></i>
+						Travel Management System
+					</a>
+				</h4>
+			</div>
+		</div>
+
+		<ui:repeat var="category" value="#{securityBean.categories}">
+			<div class="panel panel-default">
+				<div class="panel-heading" role="tab" style="background:rgb(117,0,0);"
+					id="heading#{category.categoryId}">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion"
+							href="http://www.solutiisoft.com/bootstrap-sidebar/#collapse#{category.categoryId}"
+							aria-expanded="false" aria-controls="collapse2" class="">  #{category.categoryName} <i
+							class="pull-right fa fa-caret-down" />
+						</a>
+					</h4>
+				</div>
+
+				<div id="collapse#{category.categoryId}"
+					class="panel-collapse collapse" role="tabpanel" 
+					aria-labelledby="heading#{category.categoryId}"
+					aria-expanded="false" style="height: 0px; background:white;">
+					<div>
+						<h:form>
+							<ui:repeat var="screen" value="#{category.employeeScreens}">
+								<h:commandLink action="#{controller.showPage}" style="background:rgb(155,0,0);"
+									value="#{screen.screen.screenName}" class="list-group-item">
+									<f:setPropertyActionListener target="#{controller.screenURL}"
+										value="#{screen.screen.screenURL}" />
+									<f:setPropertyActionListener target="#{controller.screenMode}"
+										value="0" />
+									<f:setPropertyActionListener target="#{controller.screeName}"
+										value="#{screen.screen.screenName}" />
+										<f:setPropertyActionListener target="#{controller.screenId}"
+										value="#{screen.screen.screenId}" />
+								</h:commandLink>
+							</ui:repeat>
+						</h:form>
+					</div>
+				</div>
+			</div>
+		</ui:repeat>
+
+		<!-- LogOut Panel -->
+		<div class="panel panel-default">
+
+			<div class="panel-heading" role="tab" style="background:rgb(117,0,0);" id="logoutheading">
+				<h4 class="panel-title">
+					<h:form>
+						<h:commandLink action="#{securityBean.logout}">
+							<i class="fa fa-sign-out fa-fw" />
+						Logout
+						</h:commandLink>
+					</h:form>
+				</h4>
+			</div>
+		</div>
+		<!-- End of  LogOut Panel -->
+	</ui:composition>
+</h:body>
+
+</html>

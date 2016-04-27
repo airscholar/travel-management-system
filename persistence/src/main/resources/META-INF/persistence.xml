@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence persistence_2_0.xsd"
+	xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="TMS" transaction-type="JTA">
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<jta-data-source>jdbc/tmsDS</jta-data-source>
+
+		<class>com.truemega.framework.entities.Notification</class>
+		<class>com.truemega.framework.entities.TravelConfig</class>
+
+		<class>com.truemega.entities.Category</class>
+		<class>com.truemega.entities.SystemScreens</class>
+		<class>com.truemega.entities.TraveluserScreens</class>
+		<class>com.truemega.entities.TravelUser</class>
+
+
+		<class>com.truemega.entities.Airline</class>
+		<class>com.truemega.entities.InvoiceAttachment</class>
+		<class>com.truemega.entities.Invoices</class>
+		<class>com.truemega.entities.ProductType</class>
+		<class>com.truemega.entities.Rates</class>
+		<class>com.truemega.entities.RoomType</class>
+		<class>com.truemega.entities.ServiceType</class>
+		<class>com.truemega.entities.Supplier</class>
+		<class>com.truemega.entities.SupplierProduct</class>
+		<class>com.truemega.entities.UploadedInvoiceFile</class>
+
+		<properties>
+
+			<property name="eclipselink.cache.shared.default" value="false" />
+
+		</properties>
+
+	</persistence-unit>
+</persistence>
