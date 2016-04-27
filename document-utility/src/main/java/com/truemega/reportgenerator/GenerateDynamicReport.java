@@ -1,34 +1,36 @@
 package com.truemega.reportgenerator;
 
-import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
-
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
+import javax.xml.crypto.Data;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.builder.export.Exporters;
 import net.sf.dynamicreports.jasper.builder.export.JasperXlsExporterBuilder;
 import net.sf.dynamicreports.report.builder.DynamicReports;
 import net.sf.dynamicreports.report.builder.column.Columns;
+import net.sf.dynamicreports.report.builder.component.ComponentBuilders;
 import net.sf.dynamicreports.report.builder.component.Components;
 import net.sf.dynamicreports.report.builder.datatype.DataTypes;
 import net.sf.dynamicreports.report.builder.style.StyleBuilder;
 import net.sf.dynamicreports.report.constant.HorizontalAlignment;
 import net.sf.dynamicreports.report.exception.DRException;
-
+import static net.sf.dynamicreports.report.builder.DynamicReports.stl;
+import static net.sf.dynamicreports.report.builder.DynamicReports.type;
 import com.truemega.logger.LoggerService;
 
 public class GenerateDynamicReport {
@@ -37,11 +39,13 @@ public class GenerateDynamicReport {
 	private JasperReportBuilder report = DynamicReports.report();
 	private JasperXlsExporterBuilder xlsExporter;
 	private String reportQuery, reportTitle, reportName, reportPath;
-	private String reportsDir = "." + File.separator + "TravelManagement"
+
+	public final String reportsDir = "." + File.separator + "TravelManagement"
 			+ File.separator + "Reports" + File.separator;
 	public List<String> columnsNames = new ArrayList<String>();
 	public List<String> fieldsNames = new ArrayList<String>();
 	public List<String> dataTypes = new ArrayList<String>();
+	private Connection conn = null;
 
 	public String exportDynamicReportToExcel() {
 		try {
@@ -53,9 +57,15 @@ public class GenerateDynamicReport {
 			// export the report to a Excel file
 			report.toXls(xlsExporter);
 			return reportPath;
-		} catch (Exception e) { 
+		} catch (DRException e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 
@@ -75,6 +85,12 @@ public class GenerateDynamicReport {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
+		} finally {
+			try {
+				conn.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 	}
 
@@ -144,7 +160,7 @@ public class GenerateDynamicReport {
 	private Connection getDataSourceConnection() {
 		Context ctxLookup = null;
 		DataSource ds = null;
-		Connection conn = null;
+
 		try {
 			ctxLookup = new InitialContext();
 			ds = (DataSource) ctxLookup.lookup("jdbc/tmsDS");
