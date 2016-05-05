@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<ui:composition template="/layout/master-page.xhtml">
+		<ui:define name="script">
+			<script type="text/javascript" src="../js/test.js"></script>
+		</ui:define>
+		<ui:define name="content">
+			<div class="container-fluid left-border">
+				<div class="row">
+					<div class="col-md-12 col-lg-12 page-header">
+						<h1>Drug Test Per Driver</h1>
+					</div>
+					<!-- Search Paaaaaaaaaaaaaaaaaaaaaaaaaart -->
+
+
+					<!-- Add  Button -->
+					
+
+
+					<!-- divider -->
+					<div class="col-md-12" style="height: 10px" />
+					<!-- List companys Data Table-->
+					<div class="col-md-11">
+						<h:form id="listForm">
+							<p:dataTable var="usermodel"
+								value="#{driverdrugtestlist.driverDrugTestDTOs}" rows="5"
+								rowKey="#{usermodel.id}" tableStyleClass="table table-striped"
+								id="userTable" paginator="true" rowsPerPageTemplate="5,10,15"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+								<p:column headerText="Driver Staff ID">
+									<h:outputText value="#{usermodel.driverStaffId}" />
+								</p:column>
+
+								<p:column headerText="Driver Name">
+									<h:outputText value="#{usermodel.driverName}" />
+								</p:column>
+
+								<p:column headerText="Drug Test Name">
+									<h:outputText value="#{usermodel.drugTestId.name}" />
+								</p:column>
+
+								<p:column headerText="Drug Test Status  ">
+									<h:outputText value="#{usermodel.drugTestStatusId.name}" />
+								</p:column>
+
+								
+								<p:column headerText="View">
+									<center>
+										<h:commandLink action="#{controller.showPage}">
+											<span class="fa fa-eye fa-1x"></span>
+											<f:setPropertyActionListener target="#{controller.screenURL}"
+												value="roadmanagementsystem/driverdrugtestsingle.xhtml" />
+											<f:setPropertyActionListener
+												target="#{controller.screenMode}" value="2" />
+											<f:setPropertyActionListener target="#{controller.screeName}"
+												value="Add Driver Drug Test" />
+											<f:setPropertyActionListener target="#{controller.entityId}"
+												value="#{usermodel.id}" />
+										</h:commandLink>
+									</center>
+								</p:column>
+							</p:dataTable>
+						</h:form>
+					</div>
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
