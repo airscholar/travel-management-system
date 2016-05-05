@@ -93,10 +93,25 @@ public class InvoicesTemp implements Serializable {
 	@Column(name = "INVOICE_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invoiceDate;
-	
+
 	@JoinColumn(name = "UPLOADED_INVOICE_FILE_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private UploadedInvoiceFile uploadedInvoiceFileId;
+
+	@Column(name = "GENERAL_MANDATORY_VALID")
+	private Boolean generalMandatoryValid;
+	@Column(name = "INVOICE_DATE_RANGE_VALID")
+	private Boolean invoiceDateRangeValid;
+	@Column(name = "AIR_MANDATORY_VALID")
+	private Boolean airMandatoryValid;
+	@Column(name = "OTHER_MANDATORY_VALID")
+	private Boolean otherMandatoryValid;
+	@Column(name = "INTER_DOM_VALID")
+	private Boolean interDomValid;
+	@Column(name = "NUMBER_OF_NIGHTS_VALID")
+	private Boolean numberOfNightsValid;
+	@Column(name = "TOTAL_AMOUNT_VALID")
+	private Boolean totalAmountValid;
 
 	public InvoicesTemp() {
 	}
@@ -385,6 +400,62 @@ public class InvoicesTemp implements Serializable {
 
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public Boolean getGeneralMandatoryValid() {
+		return generalMandatoryValid;
+	}
+
+	public void setGeneralMandatoryValid(Boolean generalMandatoryValid) {
+		this.generalMandatoryValid = generalMandatoryValid;
+	}
+
+	public Boolean getInvoiceDateRangeValid() {
+		return invoiceDateRangeValid;
+	}
+
+	public void setInvoiceDateRangeValid(Boolean invoiceDateRangeValid) {
+		this.invoiceDateRangeValid = invoiceDateRangeValid;
+	}
+
+	public Boolean getAirMandatoryValid() {
+		return airMandatoryValid;
+	}
+
+	public void setAirMandatoryValid(Boolean airMandatoryValid) {
+		this.airMandatoryValid = airMandatoryValid;
+	}
+
+	public Boolean getOtherMandatoryValid() {
+		return otherMandatoryValid;
+	}
+
+	public void setOtherMandatoryValid(Boolean otherMandatoryValid) {
+		this.otherMandatoryValid = otherMandatoryValid;
+	}
+
+	public Boolean getInterDomValid() {
+		return interDomValid;
+	}
+
+	public void setInterDomValid(Boolean interDomValid) {
+		this.interDomValid = interDomValid;
+	}
+
+	public Boolean getNumberOfNightsValid() {
+		return numberOfNightsValid;
+	}
+
+	public void setNumberOfNightsValid(Boolean numberOfNightsValid) {
+		this.numberOfNightsValid = numberOfNightsValid;
+	}
+
+	public Boolean getTotalAmountValid() {
+		return totalAmountValid;
+	}
+
+	public void setTotalAmountValid(Boolean totalAmountValid) {
+		this.totalAmountValid = totalAmountValid;
 	}
 
 }
