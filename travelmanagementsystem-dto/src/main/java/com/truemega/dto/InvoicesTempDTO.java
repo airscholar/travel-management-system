@@ -78,6 +78,20 @@ public class InvoicesTempDTO implements Serializable {
 
 	private String employeeDepartment;
 
+	private Boolean generalMandatoryValid;
+
+	private Boolean invoiceDateRangeValid;
+
+	private Boolean airMandatoryValid;
+
+	private Boolean otherMandatoryValid;
+
+	private Boolean interDomValid;
+
+	private Boolean numberOfNightsValid;
+
+	private Boolean totalAmountValid;
+
 	public InvoicesTempDTO() {
 	}
 
@@ -362,6 +376,62 @@ public class InvoicesTempDTO implements Serializable {
 
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public Boolean getGeneralMandatoryValid() {
+		return generalMandatoryValid;
+	}
+
+	public void setGeneralMandatoryValid(Boolean generalMandatoryValid) {
+		this.generalMandatoryValid = generalMandatoryValid;
+	}
+
+	public Boolean getInvoiceDateRangeValid() {
+		return invoiceDateRangeValid;
+	}
+
+	public void setInvoiceDateRangeValid(Boolean invoiceDateRangeValid) {
+		this.invoiceDateRangeValid = invoiceDateRangeValid;
+	}
+
+	public Boolean getAirMandatoryValid() {
+		return airMandatoryValid;
+	}
+
+	public void setAirMandatoryValid(Boolean airMandatoryValid) {
+		this.airMandatoryValid = airMandatoryValid;
+	}
+
+	public Boolean getOtherMandatoryValid() {
+		return otherMandatoryValid;
+	}
+
+	public void setOtherMandatoryValid(Boolean otherMandatoryValid) {
+		this.otherMandatoryValid = otherMandatoryValid;
+	}
+
+	public Boolean getInterDomValid() {
+		return interDomValid;
+	}
+
+	public void setInterDomValid(Boolean interDomValid) {
+		this.interDomValid = interDomValid;
+	}
+
+	public Boolean getNumberOfNightsValid() {
+		return numberOfNightsValid;
+	}
+
+	public void setNumberOfNightsValid(Boolean numberOfNightsValid) {
+		this.numberOfNightsValid = numberOfNightsValid;
+	}
+
+	public Boolean getTotalAmountValid() {
+		return totalAmountValid;
+	}
+
+	public void setTotalAmountValid(Boolean totalAmountValid) {
+		this.totalAmountValid = totalAmountValid;
 	}
 
 }
