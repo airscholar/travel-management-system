@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -22,6 +23,7 @@ import com.truemega.lookups.TravelConfigEnum;
 import com.truemega.menu.TMSEmployeeService;
 import com.truemega.menu.TMSMenuService;
 import com.truemega.utils.ActiveDirectory;
+import com.truemega.utils.Configuration;
 import com.truemega.utils.HttpJSFUtils;
 
 /**
@@ -37,6 +39,9 @@ public class SecurityBean {
 
 	private Map<String, String> configMap;
 	private List<ConfigDTO> configList;
+
+	@ManagedProperty(value = "#{configuration}")
+	private Configuration configuration;
 
 	@EJB
 	private TMSConfigService configService;
@@ -196,13 +201,13 @@ public class SecurityBean {
 				.logPortalInfo(" end getUserScreen method of SecurityBean ");
 	}
 
-	// public Configuration getConfiguration() {
-	// return configuration;
-	// }
-	//
-	// public void setConfiguration(Configuration configuration) {
-	// this.configuration = configuration;
-	// }
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 
 	public void loadConfiguration() {
 		loggerService

@@ -16,6 +16,7 @@ public abstract class TravelSingleBean extends SingleBean {
 	private static final long serialVersionUID = 1L;
 	private TravelUserDTO loggedInUser;
 	private LoggerService loggerService = new LoggerService();
+
 	@PostConstruct
 	public void init() {
 
@@ -28,13 +29,13 @@ public abstract class TravelSingleBean extends SingleBean {
 	}
 
 	public TravelUserDTO getLoggedInUser() {
-		loggerService.logPortalInfo(" start getLoggedInUser method of TravelSingleBean ");
+
 		if (loggedInUser == null) {
 			Object loggedObject = HttpJSFUtils.getSession().getAttribute(
 					"employee");
 			loggedInUser = (TravelUserDTO) loggedObject;
 		}
-		loggerService.logPortalInfo(" end getLoggedInUser method of TravelSingleBean ");
+
 		return loggedInUser;
 	}
 
