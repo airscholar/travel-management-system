@@ -262,4 +262,12 @@ public class GenericDaoImpl implements GenericDAO {
 		// TODO Auto-generated method stub
 		return em.createNativeQuery(sqlQuery).executeUpdate();
 	}
+
+	@Override
+	public void callStoredProcedure(String procedureName) {
+		// TODO Auto-generated method stub
+
+		em.createNativeQuery("call "+procedureName+"()").executeUpdate();
+
+	}
 }

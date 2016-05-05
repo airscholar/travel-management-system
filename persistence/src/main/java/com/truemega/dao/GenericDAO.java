@@ -66,4 +66,6 @@ public interface GenericDAO {
 	public void flush();
 
 	public int executeInsertNativeQuery(String sqlQuery);
+
+	public void callStoredProcedure(String procedureName);
 }

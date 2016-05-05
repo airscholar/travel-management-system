@@ -15,7 +15,6 @@
 		<class>com.truemega.entities.TraveluserScreens</class>
 		<class>com.truemega.entities.TravelUser</class>
 
-
 		<class>com.truemega.entities.Airline</class>
 		<class>com.truemega.entities.InvoiceAttachment</class>
 		<class>com.truemega.entities.Invoices</class>
@@ -27,10 +26,23 @@
 		<class>com.truemega.entities.SupplierProduct</class>
 		<class>com.truemega.entities.UploadedInvoiceFile</class>
 
+		<class>com.truemega.entities.Test</class>
+		<class>com.truemega.entities.TestPK</class>
+
+		<class>com.truemega.entities.InvoicesTemp</class>
+		<!--class>com.truemega.entities.InvoicesTempPK</class -->
+
+
+
+
 		<properties>
 
 			<property name="eclipselink.cache.shared.default" value="false" />
+			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
+			<property name="eclipselink.jdbc.batch-writing.size" value="1000" />
 
+			<property name="eclipselink.logging.level" value="FINE" />
+			<property name="eclipselink.logging.parameters" value="true" />
 		</properties>
 
 	</persistence-unit>
