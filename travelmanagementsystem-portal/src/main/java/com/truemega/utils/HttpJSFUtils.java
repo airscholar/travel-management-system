@@ -13,7 +13,7 @@ public class HttpJSFUtils {
 
 	public static void redirect(String page) {
 		LoggerService loggerService1 = new LoggerService();
-		loggerService1.logPortalInfo(" start redirect method of HttpJSFUtils ");
+
 		try {
 			FacesContext
 					.getCurrentInstance()
@@ -26,7 +26,7 @@ public class HttpJSFUtils {
 		} catch (IOException e) {
 			loggerService1.logPortalError("can't redirect   ", e);
 		}
-		loggerService1.logPortalInfo(" end redirect method of HttpJSFUtils ");
+
 	}
 
 	public static HttpSession getSession() {

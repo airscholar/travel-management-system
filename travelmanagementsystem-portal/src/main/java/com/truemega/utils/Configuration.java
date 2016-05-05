@@ -76,16 +76,14 @@ public class Configuration implements Serializable {
 	}
 
 	public TravelUserDTO getLoggedInUser() {
-		loggerService
-				.logPortalInfo(" start getLoggedInUser method of Configuration ");
+
 		try {
 			if (loggedInUser == null) {
 				Object loggedObject = HttpJSFUtils.getSession().getAttribute(
 						"employee");
 				loggedInUser = (TravelUserDTO) loggedObject;
 			}
-			loggerService
-					.logPortalInfo(" end getLoggedInUser method of Configuration ");
+
 			return loggedInUser;
 		} catch (Exception e) {
 			// TODO: handle exception

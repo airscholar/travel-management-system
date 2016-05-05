@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:composites="http://java.sun.com/jsf/composite/composites">
+
+
+<h:head>
+	<script type="text/javascript">
+		
+	</script>
+</h:head>
+
+<h:body>
+	<ui:composition template="/layout/master-page.xhtml">
+		<ui:define name="content">
+			<div class="container-fluid left-border">
+				<div class="row">
+					<div class="col-md-12 col-lg-12 page-header">
+						<h1>Upload Invoices</h1>
+						<h:outputScript>
+							$(function(){
+								$('#datetimepicker1').datetimepicker({
+									viewMode: 'years',
+									format: 'MM/YYYY'
+								});
+								$('#datetimepicker2').datetimepicker({
+									viewMode: 'years',
+									format: 'DD/MM/YYYY'
+								});
+							})
+						</h:outputScript>
+					</div>
+					<div class="col-md-10">
+						<p:ajaxStatus onstart="PF('statusDialog').show()"
+							onsuccess="PF('statusDialog').hide()" />
+
+						<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+							closable="false" resizable="false" showHeader="false">
+							<p:graphicImage value="../images/ajaxloadingbar.gif" />
+						</p:dialog>
+						<h:form styleClass="form-horizontal" id="formID">
+							<h:messages id="messages" showSummary="true"
+								styleClass="alert alert-danger" />
+							<c:if
+								test="#{invoicesUploader.screenMode == 'VIEW' and invoicesUploader.operationStatus == 'SUCCESS'}">
+								<div class="alert alert-success">
+									<strong><h:outputText
+											value="#{sessionScope.screen.screenName}" /> is added
+										successfully ! </strong>
+								</div>
+							</c:if>
+							<c:if
+								test="#{invoicesUploader.screenMode == 'UPDATE' and invoicesUploader.operationStatus == 'SUCCESS'}">
+
+								<div class="alert alert-success">
+									<strong><h:outputText
+											value="#{sessionScope.screen.screenName}" /> is updated
+										successfully ! </strong>
+								</div>
+							</c:if>
+							<c:if test="#{invoicesUploader.operationStatus == 'SUCCESS'}">
+								<div class="alert alert-success">
+									<strong>#{invoicesUploader.operationMessage}</strong>
+								</div>
+							</c:if>
+							<c:if test="#{invoicesUploader.operationStatus == 'FAIL'}">
+								<div class="alert alert-danger">
+									<strong>#{invoicesUploader.operationMessage}</strong>
+								</div>
+							</c:if>
+
+							<div class="form-group">
+								<h:outputLabel value="Invoices Date"
+									styleClass="control-label col-xs-2" />
+								<div class='col-xs-4 input-group datepickeralign  date'
+									id='datetimepicker1'>
+									<h:inputText type='text' class="form-control"
+										name="invoicesMonth"
+										requiredMessage="Invoices Date is required" required="true"
+										disabled="#{invoicesUploader.screenMode == 'VIEW'}"
+										value="#{invoicesUploader.uploadedInvoiceFileDTO.invoicesMonth}"
+										id="invoicesMonth">
+									</h:inputText>
+									<span class="input-group-addon"> <span
+										class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+								<div class='col-xs-4' style="margin-left: 220px">
+									<h:message for="invoicesMonth" style="color:red" />
+								</div>
+							</div>
+
+
+							<composites:uploadExcelfilecomponent
+								title="Select Invoices Excel Sheet"
+								fileUploadListener="#{invoicesUploader.uploadInvoiceFile}"
+								deleteFile="#{invoicesUploader.deleteInvoiceFile}"
+								downloadFileList="#{invoicesUploader.uploadedInvoiceFileDTOs}"
+								mode="#{invoicesUploader.screenMode}">
+							</composites:uploadExcelfilecomponent>
+
+							<composites:uploadfilecomponent title="Attached Documents"
+								fileUploadListener="#{invoicesUploader.uploadAttachmentFile}"
+								deleteFile="#{invoicesUploader.deleteAttachmentFile}"
+								downloadFileList="#{invoicesUploader.uploadedInvoiceFileDTO.invoiceAttachmentDTOs}"
+								mode="#{invoicesUploader.screenMode}">
+							</composites:uploadfilecomponent>
+
+							<div class="form-group">
+								<div class="col-xs-offset-6 col-xs-6">
+
+									<c:if test="#{invoicesUploader.screenMode == 'ADD'}">
+										<h:commandButton id="submitButton" value="Save"
+											actionListener="#{invoicesUploader.save}"
+											styleClass="btn btn-default">
+											<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
+									</c:if>
+									<c:if test="#{invoicesUploader.screenMode == 'UPDATE'}">
+										<h:commandButton id="submitButton" value="Update"
+											actionListener="#{invoicesUploader.update}"
+											styleClass="btn btn-default">
+											<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
+									</c:if>
+									<c:if test="#{invoicesUploader.screenMode == 'VIEW'}">
+										<h:commandButton id="submitButton" value="Back"
+											action="#{controller.showPage}" styleClass="btn btn-default">
+											<f:setPropertyActionListener target="#{controller.screenURL}"
+												value="administration/drugtestlist.xhtml" />
+											<f:setPropertyActionListener target="#{controller.screeName}"
+												value="drug Test" />
+										</h:commandButton>
+									</c:if>
+
+								</div>
+							</div>
+						</h:form>
+					</div>
+
+				</div>
+
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

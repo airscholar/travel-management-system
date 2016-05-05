@@ -21,7 +21,7 @@ public class ActiveDirectory implements Serializable {
 			String LDAP_USERS) throws Exception {
 		loggerService
 				.logPortalInfo(" start getEmployeeInfoByID method of ActiveDirectory "
-						+ "name " + userName + "password" + password);
+						+ "name " + userName);
 		LdapUserModel employeeUserMoedl = new LdapUserModel();
 		employeeUserMoedl.setAttribute("employeeid", employeeId);
 
@@ -103,7 +103,7 @@ public class ActiveDirectory implements Serializable {
 
 		loggerService
 				.logPortalInfo(" start authenticateUser method of ActiveDirectory "
-						+ "name " + userName + "password" + password);
+						+ "name " + userName);
 		LDAPIntegration ldapIntegration = new LDAPIntegration(ldapURL,
 				ldapDomainName);
 		LdapUserModel user = null;
@@ -136,7 +136,7 @@ public class ActiveDirectory implements Serializable {
 
 		loggerService
 				.logPortalInfo(" start getUserStaffId method of ActiveDirectory "
-						+ "name " + userName + "password" + password);
+						+ "name " + userName);
 		LDAPIntegration ldapIntegration = new LDAPIntegration(ldapURL,
 				ldapDomainName);
 		LdapUserModel user = null;
@@ -169,7 +169,7 @@ public class ActiveDirectory implements Serializable {
 			String ldapDomainName, String LDAP_USERS_SB) {
 		loggerService
 				.logPortalInfo(" start getUserMail method of ActiveDirectory "
-						+ "name " + userName + "password" + password);
+						+ "name " + userName);
 		LDAPIntegration ldapIntegration = new LDAPIntegration(ldapURL,
 				ldapDomainName);
 		LdapUserModel user = null;
@@ -202,7 +202,7 @@ public class ActiveDirectory implements Serializable {
 			String ldapURL, String ldapDomainName, String LDAP_USERS_SB) {
 		loggerService
 				.logPortalInfo(" start getUserFullName method of ActiveDirectory "
-						+ "name " + userName + "password" + password);
+						+ "name " + userName );
 		LDAPIntegration ldapIntegration = new LDAPIntegration(ldapURL,
 				ldapDomainName);
 		LdapUserModel user = null;
