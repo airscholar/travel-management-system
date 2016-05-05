@@ -26,8 +26,13 @@ public class LoggerService implements Serializable {
 	static Logger lplogger = Logger.getLogger("lpLogger");
 	private static Logger logger = Logger.getLogger("lpLogger");
 
+	private static int count = 0;
+
 	public Logger getLoggerService() {
-		initLogger();
+		if (count == 0) {
+			initLogger();
+			count++;
+		}
 		return lplogger;
 	}
 
@@ -46,6 +51,7 @@ public class LoggerService implements Serializable {
 
 		lplogger.addAppender(logFileAppender);
 		lplogger.setLevel(Level.DEBUG);
+		lplogger.setAdditivity(false);
 	}
 
 	@PreDestroy
