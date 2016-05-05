@@ -26,8 +26,6 @@
 		<class>com.truemega.entities.SupplierProduct</class>
 		<class>com.truemega.entities.UploadedInvoiceFile</class>
 
-		<class>com.truemega.entities.Test</class>
-		<class>com.truemega.entities.TestPK</class>
 
 		<class>com.truemega.entities.InvoicesTemp</class>
 		<!--class>com.truemega.entities.InvoicesTempPK</class -->
