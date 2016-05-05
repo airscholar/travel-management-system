@@ -52,11 +52,17 @@ public class UploadedInvoiceFile implements Serializable {
 	private Boolean approved;
 	@Column(name = "REJECTION_REASON")
 	private String rejectionReason;
-	@Column(name = "REJECTING_USER")
-	private String rejectingUser;
+	@Column(name = "ACTION_TAKER")
+	private String actionTaker;
 	@Column(name = "ACTION_TAKEN_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date actionTakenDate;
+
+	@Column(name = "TEMPLATE_TABLE")
+	private Boolean templateTable;
+
+	@Column(name = "INVOICES_MONTH")
+	private String invoicesMonth;
 
 	public UploadedInvoiceFile() {
 	}
@@ -137,14 +143,6 @@ public class UploadedInvoiceFile implements Serializable {
 		this.rejectionReason = rejectionReason;
 	}
 
-	public String getRejectingUser() {
-		return rejectingUser;
-	}
-
-	public void setRejectingUser(String rejectingUser) {
-		this.rejectingUser = rejectingUser;
-	}
-
 	public Date getActionTakenDate() {
 		return actionTakenDate;
 	}
@@ -178,6 +176,30 @@ public class UploadedInvoiceFile implements Serializable {
 	@Override
 	public String toString() {
 		return "com.truemega.entities.UploadedInvoiceFile[ id=" + id + " ]";
+	}
+
+	public String getActionTaker() {
+		return actionTaker;
+	}
+
+	public void setActionTaker(String actionTaker) {
+		this.actionTaker = actionTaker;
+	}
+
+	public Boolean getTemplateTable() {
+		return templateTable;
+	}
+
+	public void setTemplateTable(Boolean templateTable) {
+		this.templateTable = templateTable;
+	}
+
+	public String getInvoicesMonth() {
+		return invoicesMonth;
+	}
+
+	public void setInvoicesMonth(String invoicesMonth) {
+		this.invoicesMonth = invoicesMonth;
 	}
 
 }

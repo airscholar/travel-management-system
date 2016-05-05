@@ -13,8 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 /**
  * 
@@ -25,8 +25,15 @@ import javax.persistence.Table;
 public class ServiceType implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_service_type")
-	@SequenceGenerator(name = "seq_service_type", sequenceName = "SEQ_SERVICE_TYPE", allocationSize = 1)
+	// @GeneratedValue(strategy = GenerationType.SEQUENCE, generator =
+	// "seq_service_type")
+	// @SequenceGenerator(name = "seq_service_type", sequenceName =
+	// "SEQ_SERVICE_TYPE", allocationSize = 1)
+	// ------------------------------------
+	// @TableGenerator(name = "TABLE_GEN", table = "SEQUENCE_TABLE",
+	// pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_COUNT", pkColumnValue =
+	// "SERVICE_SEQ")
+	// @GeneratedValue(strategy = GenerationType.TABLE, generator = "TABLE_GEN")
 	@Column(name = "ID")
 	private Integer id;
 	@Basic(optional = false)
