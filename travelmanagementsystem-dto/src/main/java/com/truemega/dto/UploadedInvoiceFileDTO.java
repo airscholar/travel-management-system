@@ -6,7 +6,9 @@
 package com.truemega.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -24,17 +26,23 @@ public class UploadedInvoiceFileDTO implements Serializable {
 
 	private String type;
 
-	private Date modificationDate;
+	private Date modificationDate = new Date();
 
 	private String systemUser;
 
-	private Boolean approved;
+	private Boolean approved = null;
 
 	private String rejectionReason;
 
-	private String rejectingUser;
+	private String actionTaker;
 
-	private Date actionTakenDate;
+	private Date actionTakenDate = null;
+
+	private List<InvoiceAttachmentDTO> invoiceAttachmentDTOs = new ArrayList<InvoiceAttachmentDTO>();
+
+	private Boolean templateTable = true;
+	
+	private String invoicesMonth;
 
 	public UploadedInvoiceFileDTO() {
 	}
@@ -115,14 +123,6 @@ public class UploadedInvoiceFileDTO implements Serializable {
 		this.rejectionReason = rejectionReason;
 	}
 
-	public String getRejectingUser() {
-		return rejectingUser;
-	}
-
-	public void setRejectingUser(String rejectingUser) {
-		this.rejectingUser = rejectingUser;
-	}
-
 	public Date getActionTakenDate() {
 		return actionTakenDate;
 	}
@@ -153,6 +153,39 @@ public class UploadedInvoiceFileDTO implements Serializable {
 
 	public String toString() {
 		return "com.truemega.entities.UploadedInvoiceFile[ id=" + id + " ]";
+	}
+
+	public List<InvoiceAttachmentDTO> getInvoiceAttachmentDTOs() {
+		return invoiceAttachmentDTOs;
+	}
+
+	public void setInvoiceAttachmentDTOs(
+			List<InvoiceAttachmentDTO> invoiceAttachmentDTOs) {
+		this.invoiceAttachmentDTOs = invoiceAttachmentDTOs;
+	}
+
+	public String getActionTaker() {
+		return actionTaker;
+	}
+
+	public void setActionTaker(String actionTaker) {
+		this.actionTaker = actionTaker;
+	}
+
+	public Boolean getTemplateTable() {
+		return templateTable;
+	}
+
+	public void setTemplateTable(Boolean templateTable) {
+		this.templateTable = templateTable;
+	}
+
+	public String getInvoicesMonth() {
+		return invoicesMonth;
+	}
+
+	public void setInvoicesMonth(String invoicesMonth) {
+		this.invoicesMonth = invoicesMonth;
 	}
 
 }

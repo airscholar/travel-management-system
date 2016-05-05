@@ -5,8 +5,13 @@
  */
 package com.truemega.dto;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  * 
@@ -15,20 +20,22 @@ import java.util.Date;
 
 public class InvoiceAttachmentDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
-	
+
 	private String name;
-	
+
 	private byte[] content;
-	
+
 	private String type;
-	
-	private Date modificationDate;
-	
+
+	private Date modificationDate = new Date();
+
 	private String systemUser;
-	
+
 	private UploadedInvoiceFileDTO uploadedInvoiceFileId;
+
+	private StreamedContent file;
 
 	public InvoiceAttachmentDTO() {
 	}
@@ -127,6 +134,20 @@ public class InvoiceAttachmentDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "com.truemega.entities.InvoiceAttachment[ id=" + id + " ]";
+	}
+
+	public StreamedContent getFile() {
+
+		InputStream is = new ByteArrayInputStream(content); // read
+															// from
+		// source
+		file = new DefaultStreamedContent(is, type, name);
+
+		return file;
+	}
+
+	public void setFile(StreamedContent file) {
+		this.file = file;
 	}
 
 }
