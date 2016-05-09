@@ -39,6 +39,7 @@ public class ProductSingleBean extends TravelSingleBean {
 	private LoggerService loggerService = new LoggerService();
 
 	private ProductTypeDTO productTypeDTO = new ProductTypeDTO();
+	private ProductTypeDTO oldproductTypeDTO = new ProductTypeDTO();
 
 	private List<ServiceTypeDTO> serviceTypeDTOs;
 
@@ -71,7 +72,7 @@ public class ProductSingleBean extends TravelSingleBean {
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-
+		loggerService.logPortalInfo(" start save method of ProductSingleBean ");
 		boolean isValid = validate();
 		if (isValid) {
 
@@ -83,21 +84,23 @@ public class ProductSingleBean extends TravelSingleBean {
 				productTypeDTO = productService.saveProduct(productTypeDTO,
 						getUserName());
 
-				// view sucee
+				screenMode = UIOperation.VIEW;
+				operationStatus = Status.SUCCESS;
 			} catch (Exception e) {
 				// TODO: handle exception
 				e.printStackTrace();
 				operationStatus = Status.FAIL;
-				
+				operationMessage = "Invalid Data";
+				loggerService.logPortalError("can't save productTypeDTO ", e);
 			}
-			screenMode = UIOperation.VIEW;
-			operationStatus = Status.SUCCESS;
+			
 		}else {
 			// Error Message
 			screenMode = UIOperation.ADD;
 			operationStatus = Status.FAIL;
-			operationMessage = "This Model already exist. ";
+			operationMessage = "This Product already exist. ";
 		}
+		loggerService.logPortalInfo(" end save method of ProductSingleBean ");
 		
 	}
 
@@ -110,6 +113,8 @@ public class ProductSingleBean extends TravelSingleBean {
 		if (isValid) {
 			// Save Entity
 			try {
+				productTypeDTO.setSystemUser(getUserName());
+				productTypeDTO.setModificationDate(new Date());
 				productService.updateProduct(productTypeDTO, getUserName());
 				screenMode = UIOperation.VIEW;
 			} catch (Exception e) {
@@ -121,7 +126,7 @@ public class ProductSingleBean extends TravelSingleBean {
 		} else {
 			screenMode = UIOperation.UPDATE;
 			operationStatus = Status.FAIL;
-			operationMessage = "This Model is already exist." ;
+			operationMessage = "This Product is already exist." ;
 		}
 		loggerService.logPortalInfo(" end update method of ProductSingleBean ");
 		
@@ -142,6 +147,9 @@ public class ProductSingleBean extends TravelSingleBean {
 			productTypeDTO = productService.findProductById(productId,
 					getUserName());
 
+			
+			oldproductTypeDTO = productTypeDTO ;
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -153,7 +161,15 @@ public class ProductSingleBean extends TravelSingleBean {
 	@Override
 	public boolean validate() {
 		// TODO Auto-generated method stub
-		return true;
+
+		if (screenMode.equals(UIOperation.ADD)) {
+			return productService.checkUniqueProductWithService(productTypeDTO.getName(),productTypeDTO.getServiceId().getId());
+		} else {
+			if (oldproductTypeDTO.getName().equals(productTypeDTO.getName()) && oldproductTypeDTO.getServiceId().getId() == productTypeDTO.getServiceId().getId())
+				return true;
+			else
+				return false;
+		}
 	}
 
 	public ProductTypeDTO getProductTypeDTO() {
@@ -186,6 +202,14 @@ public class ProductSingleBean extends TravelSingleBean {
 
 	public void setProductId(Integer productId) {
 		this.productId = productId;
+	}
+
+	public ProductTypeDTO getOldproductTypeDTO() {
+		return oldproductTypeDTO;
+	}
+
+	public void setOldproductTypeDTO(ProductTypeDTO oldproductTypeDTO) {
+		this.oldproductTypeDTO = oldproductTypeDTO;
 	}
 
 }
