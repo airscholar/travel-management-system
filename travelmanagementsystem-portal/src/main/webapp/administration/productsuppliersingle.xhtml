@@ -9,8 +9,8 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:composites="http://java.sun.com/jsf/composite/composites">
-	
-	
+
+
 <h:head>
 	<script type="text/javascript">
 		
@@ -23,10 +23,10 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header">
-						<h1>Add a Product  </h1>
+						<h1>Add a Product Supplier</h1>
 					</div>
 					<div class="col-md-10">
-					<p:ajaxStatus onstart="PF('statusDialog').show()"
+						<p:ajaxStatus onstart="PF('statusDialog').show()"
 							onsuccess="PF('statusDialog').hide()" />
 
 						<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
@@ -34,9 +34,9 @@
 							<p:graphicImage value="../images/ajaxloadingbar.gif" />
 						</p:dialog>
 						<h:form styleClass="form-horizontal" id="formID">
-						
+
 							<c:if
-								test="#{productsingle.screenMode == 'VIEW' and productsingle.operationStatus == 'SUCCESS'}">
+								test="#{productsuppliersingle.screenMode == 'VIEW' and productsuppliersingle.operationStatus == 'SUCCESS'}">
 								<div class="alert alert-success">
 									<strong><h:outputText
 											value="#{sessionScope.screen.screenName}" /> is added
@@ -44,7 +44,7 @@
 								</div>
 							</c:if>
 							<c:if
-								test="#{productsingle.screenMode == 'UPDATE' and productsingle.operationStatus == 'SUCCESS'}">
+								test="#{productsuppliersingle.screenMode == 'UPDATE' and productsuppliersingle.operationStatus == 'SUCCESS'}">
 
 								<div class="alert alert-success">
 									<strong><h:outputText
@@ -52,89 +52,103 @@
 										successfully ! </strong>
 								</div>
 							</c:if>
-							<c:if test="#{productsingle.operationStatus == 'FAIL'}">
+							<c:if test="#{productsuppliersingle.operationStatus == 'FAIL'}">
 								<div class="alert alert-danger">
-									<strong>#{productsingle.operationMessage}</strong>
+									<strong>#{productsuppliersingle.operationMessage}</strong>
 								</div>
 							</c:if>
-							
-									<div class="form-group">
-								<h:outputLabel value="Service Name"
+
+
+
+
+							<div class="form-group">
+								<h:outputLabel value="Product Name"
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-3">
-									<h:selectOneMenu value="#{productsingle.productTypeDTO.serviceId}"
-										class="form-control" disabled="#{productsingle.screenMode == 'VIEW'}"
-										converter="#{productsingle.serviceConverter}">
-										<f:selectItems value="#{productsingle.serviceTypeDTOs}" var="servicemodel"
-											itemLabel="#{servicemodel.name}" itemValue="#{servicemodel}" />
+									<h:selectOneMenu
+									    id="productname"
+										value="#{productsuppliersingle.supplierProductDTO.productId}"
+										class="form-control"
+										disabled="#{productsuppliersingle.screenMode == 'VIEW'}"
+										converter="#{productsuppliersingle.productConverter}" 
+										required="true" 
+										requiredMessage="Product  Name  is required" >
+										<f:selectItem itemLabel="None" itemValue="#{null}" />
+										<f:selectItems value="#{productsuppliersingle.productTypeDTOs}"
+											var="productemodel" itemLabel="#{productemodel.name}"
+											itemValue="#{productemodel}" />
 									</h:selectOneMenu>
-									<h:message for="servicename" style="color:red" />
+									<h:message for="productname" style="color:red"  />
 								</div>
 							</div>
-							
-				
 							<div class="form-group">
-								<h:outputLabel value="Product  Name "
+								<h:outputLabel value="Supplier Name"
 									styleClass="control-label col-xs-3" />
-								<div class="col-xs-4">
-									<h:inputText value="#{productsingle.productTypeDTO.name}"
-										id="dtName" styleClass="form-control" required="true"
-										requiredMessage="Product  Name  is required"
-										disabled="#{productsingle.screenMode == 'VIEW'}">
-										</h:inputText>
-									<h:message for="dtName" style="color:red" />
+								<div class="col-xs-3">
+									<h:selectOneMenu
+										value="#{productsuppliersingle.supplierProductDTO.supplierId}"
+										class="form-control"
+										required="true"
+										id="suppliername"
+										requiredMessage="Supplier  Name  is required"
+										disabled="#{productsuppliersingle.screenMode == 'VIEW'}"
+										converter="#{productsuppliersingle.supplierConverter}">
+										<f:selectItem itemLabel="None" itemValue="#{null}" />
+										<f:selectItems value="#{productsuppliersingle.supplierDTOs}"
+											var="suppliermodel" itemLabel="#{suppliermodel.name}"
+											itemValue="#{suppliermodel}" />
+									</h:selectOneMenu>
+									<h:message for="suppliername" style="color:red" />
 								</div>
-							</div> 
-								<div class="form-group">
+							</div>
+							<div class="form-group">
 								<h:outputLabel value="Description "
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
-									<h:inputTextarea value="#{productsingle.productTypeDTO.description}"
-										id="desc" styleClass="form-control" 
-										disabled="#{productsingle.screenMode == 'VIEW'}">
-										</h:inputTextarea>
+									<h:inputTextarea
+										value="#{productsuppliersingle.supplierProductDTO.description}" id="desc"
+										styleClass="form-control"
+										disabled="#{productsuppliersingle.screenMode == 'VIEW'}">
+									</h:inputTextarea>
 									<h:message for="desc" style="color:red" />
 								</div>
 							</div>
-							
-					
-						    
-						
-				
-					
+
+
 							<div class="form-group">
 								<div class="col-xs-offset-6 col-xs-6">
-									<c:if test="#{productsingle.screenMode == 'ADD'}">
+									<c:if test="#{productsuppliersingle.screenMode == 'ADD'}">
 										<h:commandButton id="submitButton" value="Save"
-											actionListener="#{productsingle.save}" styleClass="btn btn-default">
-											<f:ajax execute="@form" render="@form" />
-										</h:commandButton>
-									</c:if>
-									<c:if test="#{productsingle.screenMode == 'UPDATE'}">
-										<h:commandButton id="submitButton" value="Update"
-											actionListener="#{productsingle.update}"
+											actionListener="#{productsuppliersingle.save}"
 											styleClass="btn btn-default">
 											<f:ajax execute="@form" render="@form" />
 										</h:commandButton>
 									</c:if>
-									<c:if test="#{productsingle.screenMode == 'VIEW'}">
+									<c:if test="#{productsuppliersingle.screenMode == 'UPDATE'}">
+										<h:commandButton id="submitButton" value="Update"
+											actionListener="#{productsuppliersingle.update}"
+											styleClass="btn btn-default">
+											<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
+									</c:if>
+									<c:if test="#{productsuppliersingle.screenMode == 'VIEW'}">
 										<h:commandButton id="submitButton" value="Back"
 											action="#{controller.showPage}" styleClass="btn btn-default">
 											<f:setPropertyActionListener target="#{controller.screenURL}"
-												value="administration/productlist.xhtml" />
+												value="administration/productsupplierlist.xhtml" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Product Name " />
+												value="Product Supplier Name " />
 										</h:commandButton>
 									</c:if>
 									<c:if
-										test="#{productsingle.screenMode == 'UPDATE' || productsingle.screenMode == 'ADD'}">
-										<h:commandButton id="cancelButton" value="Back"
+										test="#{productsuppliersingle.screenMode == 'UPDATE' || productsuppliersingle.screenMode == 'ADD'}">
+										<h:commandButton id="cancelButton" value="Cancel"
 											immediate="true" action="#{controller.showPage}"
 											styleClass="btn btn-default cancel-margin">
 											<f:setPropertyActionListener target="#{controller.screenURL}"
-												value="administration/productlist.xhtml" />
+												value="administration/productsupplierlist.xhtml" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Product Name " />
+												value="Product Supplier Name " />
 										</h:commandButton>
 									</c:if>
 								</div>

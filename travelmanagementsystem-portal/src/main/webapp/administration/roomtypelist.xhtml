@@ -20,20 +20,20 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header">
-						<h1> Products Management  </h1>
+						<h1> Rooms Types Management   </h1>
 					</div>
 					<!-- Add User Button -->
 					<div class="col-md-3">
 						<h:form>
 							<h:commandButton class="btn btn-default btn-lg btn-block"
-								value="Add Product " action="#{controller.showPage}"
+								value=" Add A Room Type " action="#{controller.showPage}"
 								style="max-width: 400px;">
 								<f:setPropertyActionListener target="#{controller.screenURL}"
-									value="administration/productsingle.xhtml" />
+									value="administration/roomtypesingle.xhtml" />
 								<f:setPropertyActionListener target="#{controller.screenMode}"
 									value="0" />
 								<f:setPropertyActionListener target="#{controller.screeName}"
-									value="Add Product" />
+									value="Add A Room Type" />
 							</h:commandButton>
 						</h:form>
 					</div>
@@ -41,26 +41,23 @@
 					<div class="col-md-12" style="height: 10px" />
 					<!-- List companys Data Table-->
 					<div class="col-md-11">
-						<p:dataTable var="productmodel" value="#{productlist.productTypeDTOs}"
-							rows="5" rowKey="#{productmodel.id}"
+						<p:dataTable var="roomtypemodel" value="#{roomtypelist.roomTypeDTOs}"
+							rows="5" rowKey="#{roomtypemodel.id}"
 							tableStyleClass="table table-striped" id="userTable"
 							paginator="true" rowsPerPageTemplate="5,10,15"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-							<p:column headerText=" Product Name ">
-								<h:outputText value="#{productmodel.name}" />
+							<p:column headerText=" Room Type  Name ">
+								<h:outputText value="#{roomtypemodel.name}" />
 							</p:column>
 							
 						
-							<p:column headerText=" Service Name ">
-								<h:outputText value="#{productmodel.serviceId.name}" />
-							</p:column>
 						
-							<p:column headerText=" Product  Status">
+							<p:column headerText=" Room Type Status">
 								<center>
 									<h:form>
-										<p:selectBooleanCheckbox value="#{productmodel.status}">
-											<p:ajax listener="#{productlist.changeStatus}" />
-											<f:attribute name="productmodel" value="#{productmodel}" />
+										<p:selectBooleanCheckbox value="#{roomtypemodel.status}">
+											<p:ajax listener="#{roomtypelist.changeStatus}" />
+											<f:attribute name="roomtypemodel" value="#{roomtypemodel}" />
 										</p:selectBooleanCheckbox>
 									</h:form>
 								</center>
@@ -73,13 +70,13 @@
 										<h:commandLink action="#{controller.showPage}">
 											<span class="fa fa-edit fa-fw"></span>
 											<f:setPropertyActionListener target="#{controller.screenURL}"
-												value="administration/productsingle.xhtml" />
+												value="administration/roomtypesingle.xhtml" />
 											<f:setPropertyActionListener
 												target="#{controller.screenMode}" value="1" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Update Product" />
+												value="Update Room Type" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
-												value="#{productmodel.id}" />
+												value="#{roomtypemodel.id}" />
 										</h:commandLink>
 									</center>
 								</h:form>
@@ -90,13 +87,13 @@
 										<h:commandLink action="#{controller.showPage}">
 											<span class="fa fa-eye fa-1x"></span>
 											<f:setPropertyActionListener target="#{controller.screenURL}"
-												value="administration/productsingle.xhtml" />
+												value="administration/roomtypesingle.xhtml" />
 											<f:setPropertyActionListener
 												target="#{controller.screenMode}" value="2" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Add Product" />
+												value="Add a Room Type" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
-												value="#{productmodel.id}" />
+												value="#{roomtypemodel.id}" />
 										</h:commandLink>
 									</center>
 								</h:form>
