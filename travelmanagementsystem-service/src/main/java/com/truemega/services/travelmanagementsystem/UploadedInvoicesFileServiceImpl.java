@@ -31,7 +31,10 @@ public class UploadedInvoicesFileServiceImpl implements
 		loggerService
 				.logServiceInfo("Start  listUploadedInvoiceFiles Method with userName  "
 						+ userName);
-		String query = "select model from UploadedInvoiceFile model ";
+		// String query = "select model from UploadedInvoiceFile model ";
+
+		String query = "select model1 from UploadedInvoiceFile model1 where model1.id in "
+				+ " (select DISTINCT model.uploadedInvoiceFileId.id from InvoicesTemp model )";
 		return mapper.mapAsList(baseDao.findListByQuery(query),
 				UploadedInvoiceFileDTO.class);
 

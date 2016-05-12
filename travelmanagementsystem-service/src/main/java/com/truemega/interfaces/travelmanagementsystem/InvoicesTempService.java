@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import com.truemega.entities.InvoicesTemp;
+import com.truemega.dto.InvoicesTempDTO;
 
 @Remote
 public interface InvoicesTempService {
 
-	public List<InvoicesTemp> listInvoicesTempsByFileID(Integer fileID)
-			throws Exception;
+	public List<InvoicesTempDTO> listInvoicesTempsByFileID(Integer fileID,
+			String userName) throws Exception;
 }
