@@ -14,6 +14,7 @@ public interface SupplierService {
 	public SupplierDTO updateSupplier(SupplierDTO supplierDTO , String userName);
 
 	public SupplierDTO findSupplierById(Integer supplierId , String userName);
+	public SupplierDTO findSupplierByName(String supplierName , String userName);
 
 	public List<SupplierDTO> getAllSuppliers(String userName);
 

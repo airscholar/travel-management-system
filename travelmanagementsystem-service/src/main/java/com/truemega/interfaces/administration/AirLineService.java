@@ -14,6 +14,7 @@ public interface AirLineService {
 	public AirlineDTO updateAirLine(AirlineDTO airlineDTO , String userName);
 
 	public AirlineDTO findAirLineById(Integer airLineId , String userName);
+	public AirlineDTO findAirLineByName(String airLineName , String userName);
 
 	public List<AirlineDTO> getAllAirLines(String userName);
 

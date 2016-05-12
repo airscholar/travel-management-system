@@ -6,8 +6,10 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.truemega.dao.GenericDAO;
+import com.truemega.dto.AirlineDTO;
 import com.truemega.dto.SupplierDTO;
 import com.truemega.entities.ProductType;
+import com.truemega.entities.RoomType;
 import com.truemega.entities.Supplier;
 import com.truemega.interfaces.administration.SupplierService;
 import com.truemega.logger.LoggerService;
@@ -143,20 +145,17 @@ public class SupplierServiceImpl implements SupplierService {
 
 	@Override
 	public boolean checkUniqueSupplierName(String supplierName) {
-		// TODO Auto-generated method stub
 
-		// TODO Auto-generated method stub
 		loggerService
 				.logServiceInfo("Start  checkUniqueSupplierName Method with  supplierName "
 						+ supplierName);
 		try {
 
-			// SELECT * from PRODUCT_TYPE where NAME like '%s%' and SERVICE_ID =
-			// 1;
+		
 			String query = "select model FROM Supplier model where lower(model.name) = lower( '"
 					+ supplierName + "')";
 
-			System.out.println("qqqqqqqq ==========" + query);
+			System.out.println("checkUniqueSupplierName  ==========" + query);
 			List<Supplier> list = baseDao.findListByQuery(query);
 			loggerService
 					.logServiceInfo("End  checkUniqueSupplierName Method");
@@ -170,5 +169,56 @@ public class SupplierServiceImpl implements SupplierService {
 		}
 	
 	}
+
+	@Override
+	public List<SupplierDTO> getAllSuppliersActive(String userName) {
+		// TODO Auto-generated method stub
+
+		// TODO Auto-generated method stub
+		loggerService
+				.logServiceInfo("Start  getAllSuppliers Method with userName  "
+						+ userName);
+
+		try {
+
+			String query = "select model from Supplier model where  model.status = 1";
+			List<Supplier> result = baseDao.findListByQuery(query);
+
+			loggerService.logServiceInfo("End  getAllSuppliers Method");
+			return mapper.mapAsList(result, SupplierDTO.class);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			loggerService.logServiceError("can't  getAllSuppliers ", e);
+			return null;
+		}
+	
+	}
+
+	@Override
+	public SupplierDTO findSupplierByName(String supplierName, String userName) {
+		// TODO Auto-generated method stub
+
+
+		loggerService
+				.logServiceInfo("Start  findAirLineByName Method with  roomName "
+						+ userName);
+
+		String query = "select model FROM Supplier model where lower(model.name) = lower( '"
+				+ supplierName + "')";
+
+		System.out.println("findSupplierByName ==========" + query);
+		List<Supplier> list = baseDao.findListByQuery(query);
+		loggerService.logServiceInfo("End  findAirLineByName Method");
+
+		if (list.size() == 0)
+			return null;
+		else
+			return mapper.map(list.get(0), SupplierDTO.class);
+
+	
+	}
+
+
 
 }

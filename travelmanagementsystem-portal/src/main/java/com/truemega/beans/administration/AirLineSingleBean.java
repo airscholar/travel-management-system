@@ -170,10 +170,22 @@ public class AirLineSingleBean  extends TravelSingleBean {
 		if (screenMode.equals(UIOperation.ADD)) {
 			return airLineService.checkUniqueAirLineName(airlineDTO.getName());
 		} else {
-			if (oldAirlineDTO.getName().equals(airlineDTO.getName()) )
-				return true;
-			else
-				return false;
+		
+		 AirlineDTO  tempAirLineDTO =  airLineService.findAirLineByName(airlineDTO.getName(), getUserName());
+		 if(tempAirLineDTO == null)
+			 return true  ;
+			 else
+			 {
+				 if(tempAirLineDTO.getId() == airlineDTO.getId() )
+					 return true ;
+				 else
+				 {
+					 operationMessage = "This AirLine already exist. ";
+					 return false ;
+					 
+				 }
+				 
+			 }
 		}
 	
 	

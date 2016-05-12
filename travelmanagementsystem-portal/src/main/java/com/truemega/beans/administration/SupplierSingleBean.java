@@ -165,10 +165,22 @@ public class SupplierSingleBean extends TravelSingleBean {
 		if (screenMode.equals(UIOperation.ADD)) {
 			return supplierService.checkUniqueSupplierName(supplierDTO.getName());
 		} else {
-			if (supplierDTO.getName().equals(supplierDTO.getName()) )
-				return true;
-			else
-				return false;
+	  SupplierDTO tempSupplierDTO = supplierService.findSupplierByName(supplierDTO.getName(), getUserName());
+	  
+	      if(tempSupplierDTO == null)
+	    	  return true ;
+	      else
+	      {
+	    	  if(tempSupplierDTO.getId() == supplierDTO.getId())
+	    		  return true ;
+	    	  else
+	    	  {
+	    		  operationMessage = "This Supplier is already exist." ;
+	    		  return false ;
+	    	  }
+	    	  
+	      }
+	  
 		}
 	
 	}

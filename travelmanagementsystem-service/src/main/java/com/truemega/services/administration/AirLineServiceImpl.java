@@ -7,7 +7,9 @@ import javax.ejb.Stateless;
 
 import com.truemega.dao.GenericDAO;
 import com.truemega.dto.AirlineDTO;
+import com.truemega.dto.RoomTypeDTO;
 import com.truemega.entities.Airline;
+import com.truemega.entities.RoomType;
 import com.truemega.interfaces.administration.AirLineService;
 import com.truemega.logger.LoggerService;
 import com.truemega.mapping.MappingFactory;
@@ -174,6 +176,28 @@ public class AirLineServiceImpl implements AirLineService{
 		}
 	
 	
+	}
+
+	@Override
+	public AirlineDTO findAirLineByName(String airLineName, String userName) {
+		// TODO Auto-generated method stub
+
+		loggerService
+				.logServiceInfo("Start  findAirLineByName Method with  roomName "
+						+ userName);
+
+		String query = "select model FROM Airline model where lower(model.name) = lower( '"
+				+ airLineName + "')";
+
+		System.out.println("Airline ==========" + query);
+		List<Airline> list = baseDao.findListByQuery(query);
+		loggerService.logServiceInfo("End  findAirLineByName Method");
+
+		if (list.size() == 0)
+			return null;
+		else
+			return mapper.map(list.get(0), AirlineDTO.class);
+
 	}
 	
 	

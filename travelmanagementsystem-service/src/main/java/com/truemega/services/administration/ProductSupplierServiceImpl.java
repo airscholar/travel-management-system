@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import com.truemega.dao.GenericDAO;
 import com.truemega.dto.SupplierProductDTO;
+import com.truemega.entities.ProductType;
 import com.truemega.entities.SupplierProduct;
 import com.truemega.interfaces.administration.ProductSupplierService;
 import com.truemega.logger.LoggerService;
@@ -148,10 +149,57 @@ public class ProductSupplierServiceImpl implements ProductSupplierService {
 	
 	}
 
+
 	@Override
-	public boolean checkUniqueSupplierProductName(String supplierProductName) {
-		// TODO Auto-generated method stub
-		return false;
+	public SupplierProductDTO checkUniqueSupplierWithProduct(Integer supplierId,
+			Integer productId) {
+	
+
+		loggerService
+				.logServiceInfo("Start  checkUniqueSupplierWithProduct Method with  roomName "
+						+ supplierId +"and productId  " +productId);
+
+		String query = "select model FROM SupplierProduct model where model.supplierId.id =  "
+				+ supplierId + " and  model.productId.id = " + productId ;
+
+		System.out.println("SupplierProduct  ==========" + query);
+		List<SupplierProduct> list = baseDao.findListByQuery(query);
+		loggerService.logServiceInfo("End  checkUniqueSupplierWithProduct Method");
+
+		if (list.size() == 0)
+			return null;
+		else
+			return mapper.map(list.get(0), SupplierProductDTO.class);
+
+	
 	}
+
+	@Override
+	public boolean checkUniqueSupplierProduct(Integer  productId , Integer supplierId ) {
+		// TODO Auto-generated method stub
+		loggerService
+				.logServiceInfo("Start  checkUniqueSupplierProduct Method with  productId and  supplierId"
+						+ productId + supplierId);
+		try {
+
+			// SELECT * from PRODUCT_TYPE where NAME like '%s%' and SERVICE_ID =
+			// 1;
+			String query = "select model FROM SupplierProduct model where lower(model.productId.id) = "
+					+ productId + "and  lower ( model.supplierId.id ) = " + supplierId ;
+
+			System.out.println("qqqqqqqq ==========" + query);
+			List<ProductType> list = baseDao.findListByQuery(query);
+			loggerService
+					.logServiceInfo("End  checkUniqueSupplierProduct Method");
+			return list.size() > 0 ? false : true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			loggerService.logServiceError(
+					"can't  checkUniqueProductWithService", e);
+			return false;
+		}
+	}
+
 
 }
