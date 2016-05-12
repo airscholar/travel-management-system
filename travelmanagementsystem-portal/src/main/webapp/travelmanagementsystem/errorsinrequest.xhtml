@@ -21,13 +21,13 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header">
-						<h1>Drug Test Per Driver</h1>
+						<h1>Errors In Request</h1>
 					</div>
 					<!-- Search Paaaaaaaaaaaaaaaaaaaaaaaaaart -->
 
 
 					<!-- Add  Button -->
-					
+
 
 
 					<!-- divider -->
@@ -35,41 +35,34 @@
 					<!-- List companys Data Table-->
 					<div class="col-md-11">
 						<h:form id="listForm">
-							<p:dataTable var="usermodel"
-								value="#{driverdrugtestlist.driverDrugTestDTOs}" rows="5"
-								rowKey="#{usermodel.id}" tableStyleClass="table table-striped"
-								id="userTable" paginator="true" rowsPerPageTemplate="5,10,15"
+							<p:dataTable var="uploadedInvoiceFileModel"
+								value="#{uploadedInvoicesList.uploadedInvoiceFileDTOs}" rows="5"
+								rowKey="#{uploadedInvoiceFileModel.id}"
+								tableStyleClass="table table-striped"
+								id="uploadedInvoiceFileTable" paginator="true"
+								rowsPerPageTemplate="5,10,15"
 								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-								<p:column headerText="Driver Staff ID">
-									<h:outputText value="#{usermodel.driverStaffId}" />
+								<p:column headerText="Name">
+									<h:outputText value="#{uploadedInvoiceFileModel.name}" />
 								</p:column>
 
-								<p:column headerText="Driver Name">
-									<h:outputText value="#{usermodel.driverName}" />
+								<p:column headerText="Invoices Month">
+									<h:outputText value="#{uploadedInvoiceFileModel.invoicesMonth}" />
 								</p:column>
 
-								<p:column headerText="Drug Test Name">
-									<h:outputText value="#{usermodel.drugTestId.name}" />
-								</p:column>
-
-								<p:column headerText="Drug Test Status  ">
-									<h:outputText value="#{usermodel.drugTestStatusId.name}" />
-								</p:column>
-
-								
 								<p:column headerText="View">
 									<center>
 										<h:commandLink action="#{controller.showPage}">
 											<span class="fa fa-eye fa-1x"></span>
 											<f:setPropertyActionListener target="#{controller.screenURL}"
-												value="roadmanagementsystem/driverdrugtestsingle.xhtml" />
+												value="travelmanagementsystem/errorsinrequestrecords.xhtml" />
 											<f:setPropertyActionListener
 												target="#{controller.screenMode}" value="2" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Add Driver Drug Test" />
+												value="Errors In Request" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
-												value="#{usermodel.id}" />
+												value="#{uploadedInvoiceFileModel.id}" />
 										</h:commandLink>
 									</center>
 								</p:column>

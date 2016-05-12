@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+</h:head>
+
+<h:body>
+	<ui:composition template="/layout/master-page.xhtml">
+		<ui:define name="script">
+			<script type="text/javascript" src="../js/test.js"></script>
+		</ui:define>
+		<ui:define name="content">
+			<div class="container-fluid left-border">
+				<div class="row" style="width: 2953px;">
+					<div class="col-md-12 col-lg-12 page-header">
+						<h1>Errors In Request</h1>
+					</div>
+					<!-- Search Paaaaaaaaaaaaaaaaaaaaaaaaaart -->
+
+
+					<!-- Add  Button -->
+
+
+
+					<!-- divider -->
+					<div class="col-md-12" style="height: 10px" />
+					<!-- List companys Data Table-->
+
+					<h:form id="listForm">
+						<p:dataTable var="invoicesTempModel"
+							value="#{uploadedInvoiceRecordsList.invoicesTempDTOs}" rows="5"
+							rowKey="#{invoicesTempModel.id}"
+							tableStyleClass="table table-striped" id="invoicesTempTable"
+							paginator="true" rowsPerPageTemplate="5,10,15"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+							<p:column headerText="Record Number">
+								<h:outputText
+									value="#{invoicesTempModel.invoicesTempPK.invoiceOrder}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.invoiceNumber == null ? 'redBackgroundTd':''}   #{invoicesTempModel.invoiceNumberValid == false ? 'redBackgroundTd':''}  "
+								headerText="Invoice Number">
+								<h:outputText value="#{invoicesTempModel.invoiceNumber}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.bookingFileNumber == null ? 'redBackgroundTd':''}"
+								headerText="Booking File Number">
+								<h:outputText value="#{invoicesTempModel.bookingFileNumber}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.airMandatoryValid == false and invoicesTempModel.departureDate == null ? 'redBackgroundTd':''}"
+								headerText="Departure Date">
+								<h:outputText value="#{invoicesTempModel.departureDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.airMandatoryValid == false and invoicesTempModel.arrivalDate == null ? 'redBackgroundTd':''}"
+								headerText="Arrival Date">
+								<h:outputText value="#{invoicesTempModel.arrivalDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.employeeId == null ? 'redBackgroundTd':''}"
+								headerText="Employee Id">
+								<h:outputText value="#{invoicesTempModel.employeeId}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.costCenter == null ? 'redBackgroundTd':''}"
+								headerText="Cost Center">
+								<h:outputText value="#{invoicesTempModel.costCenter}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.employeeDepartment == null ? 'redBackgroundTd':''}"
+								headerText="Employee Department">
+								<h:outputText value="#{invoicesTempModel.employeeDepartment}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.costCenterDepartment == null ? 'redBackgroundTd':''}"
+								headerText="Cost Center Department">
+								<h:outputText value="#{invoicesTempModel.costCenterDepartment}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.passengerName == null ? 'redBackgroundTd':''}"
+								headerText="Passenger Name">
+								<h:outputText value="#{invoicesTempModel.passengerName}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.serviceType == null ? 'redBackgroundTd':''}   #{ invoicesTempModel.serviceTypeValid == false ? 'redBackgroundTd':''}"
+								headerText="Service Type">
+								<h:outputText value="#{invoicesTempModel.serviceType}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.serviceDesc == null ? 'redBackgroundTd':''}  #{ invoicesTempModel.serviceDescriptionValid == false ? 'redBackgroundTd':''} "
+								headerText="Product Type">
+								<h:outputText value="#{invoicesTempModel.serviceDesc}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.airMandatoryValid == false and invoicesTempModel.routing == null ? 'redBackgroundTd':''}"
+								headerText="Routing">
+								<h:outputText value="#{invoicesTempModel.routing}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.airMandatoryValid == false and invoicesTempModel.interDom == null ? 'redBackgroundTd':''}  #{ invoicesTempModel.interDomValid == false ? 'redBackgroundTd':''}"
+								headerText="Int'l / Dom">
+								<h:outputText value="#{invoicesTempModel.interDom}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.hotelMandatoryValid == false and invoicesTempModel.checkIn == null ? 'redBackgroundTd':''}"
+								headerText="Check In">
+								<h:outputText value="#{invoicesTempModel.checkIn}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.hotelMandatoryValid == false and invoicesTempModel.checkOut == null ? 'redBackgroundTd':''}"
+								headerText="Check Out">
+								<h:outputText value="#{invoicesTempModel.checkOut}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.hotelMandatoryValid == false and invoicesTempModel.numberOfNights == null ? 'redBackgroundTd':''} #{ invoicesTempModel.numberOfNightsValid == false  ? 'redBackgroundTd':''}"
+								headerText="Number of Nights">
+								<h:outputText value="#{invoicesTempModel.numberOfNights}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.hotelMandatoryValid == false and invoicesTempModel.numberOfRooms == null ? 'redBackgroundTd':''}"
+								headerText="Number of Rooms">
+								<h:outputText value="#{invoicesTempModel.numberOfRooms}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.airMandatoryValid == false and invoicesTempModel.airline == null ? 'redBackgroundTd':''}    #{ invoicesTempModel.airlineValid == false  ? 'redBackgroundTd':''}  "
+								headerText="Airline">
+								<h:outputText value="#{invoicesTempModel.airline}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.hotelMandatoryValid == false and invoicesTempModel.roomType == null ? 'redBackgroundTd':''}  #{ invoicesTempModel.roomTypeValid == false  ? 'redBackgroundTd':''} "
+								headerText="Room Type">
+								<h:outputText value="#{invoicesTempModel.roomType}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.supplierName == null ? 'redBackgroundTd':''}  #{ invoicesTempModel.supplierNameValid == false  ? 'redBackgroundTd':''} "
+								headerText="Supplier Name">
+								<h:outputText value="#{invoicesTempModel.supplierName}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.netAmount == null ? 'redBackgroundTd':''}"
+								headerText="Net Amount">
+								<h:outputText value="#{invoicesTempModel.netAmount}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.operationFees == null ? 'redBackgroundTd':''}"
+								headerText="Operation Fees">
+								<h:outputText value="#{invoicesTempModel.operationFees}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.totalAmount == null ? 'redBackgroundTd':''} #{ invoicesTempModel.totalAmountValid == false ? 'redBackgroundTd':''}"
+								headerText="Total Amount">
+								<h:outputText value="#{invoicesTempModel.totalAmount}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.ticketNo == null ? 'redBackgroundTd':''}"
+								headerText="Ticket No">
+								<h:outputText value="#{invoicesTempModel.ticketNo}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.travelFormNumber == null ? 'redBackgroundTd':''}"
+								headerText="Travel Form Number">
+								<h:outputText value="#{invoicesTempModel.travelFormNumber}" />
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.otherMandatoryValid == false and invoicesTempModel.from == null ? 'redBackgroundTd':''}"
+								headerText="From">
+								<h:outputText value="#{invoicesTempModel.from}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.otherMandatoryValid == false and invoicesTempModel.to == null ? 'redBackgroundTd':''}"
+								headerText="To">
+								<h:outputText value="#{invoicesTempModel.to}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column
+								styleClass="#{ invoicesTempModel.generalMandatoryValid == false and invoicesTempModel.invoiceDate == null ? 'redBackgroundTd':''} #{ invoicesTempModel.invoiceDateRangeValid == false  ? 'redBackgroundTd':''}"
+								headerText="Invoice Date">
+								<h:outputText value="#{invoicesTempModel.invoiceDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Description">
+								<h:outputText value="#{invoicesTempModel.description}" />
+							</p:column>
+
+							<p:column width="20%" headerText="Errors">
+								<h:outputText
+									rendered="#{!invoicesTempModel.generalMandatoryValid}"
+									value="* One Or More Of General Mandatory Fields is/are Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.invoiceDateRangeValid}"
+									value="* Invoice Date is not Valid  &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.airMandatoryValid}"
+									value="* One Or More Of Air Mandatory Fields is/are Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.hotelMandatoryValid}"
+									value="* One Or More Of Hotel Mandatory Fields is/are Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.otherMandatoryValid}"
+									value="* One Or More Of Other Mandatory Fields is/are Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.interDomValid}"
+									value="* Int'l / Dom Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.numberOfNightsValid}"
+									value="* Number Of Nights Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.totalAmountValid}"
+									value="* Total Amount Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.serviceTypeValid}"
+									value="* Service Type Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.serviceDescriptionValid}"
+									value="* Product Type Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.supplierNameValid}"
+									value="* Supplier Name Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.airlineValid}"
+									value="* Airline Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText rendered="#{!invoicesTempModel.roomTypeValid}"
+									value="* Room Type Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+								<h:outputText
+									rendered="#{!invoicesTempModel.invoiceNumberValid}"
+									value="* Invoice Number Field Is Not Valid &lt;br /&gt;"
+									escape="false" />
+
+
+
+
+
+
+
+
+							</p:column>
+
+						</p:dataTable>
+					</h:form>
+
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

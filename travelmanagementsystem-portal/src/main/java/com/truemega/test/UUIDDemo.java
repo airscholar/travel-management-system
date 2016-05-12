@@ -20,6 +20,9 @@ public class UUIDDemo {
 				+ " (CASE WHEN  SERVICE_TYPE LIKE 'Air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) AIR_MANDATORY_VALID_N, \n"
+				+ " (CASE WHEN  SERVICE_TYPE LIKE 'Hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null ) \n"
+				+ " THEN 0  \n"
+				+ " ELSE 1 END) HOTEL_MANDATORY_VALID_N, \n"
 				+ " (CASE WHEN  NOT (SERVICE_TYPE  LIKE 'Air' OR SERVICE_TYPE  LIKE 'Hotel')  AND  ( FROM_DATE is null OR TO_DATE is null ) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) OTHER_MANDATORY_VALID_N, \n"
@@ -27,9 +30,34 @@ public class UUIDDemo {
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) INTER_DOM_VALID_N, \n"
 				+ " (CASE WHEN   (CHECK_OUT-CHECK_IN)+1 !=  NUMBER_OF_NIGHTS \n"
-				+ " THEN 0 \n" + " ELSE 1 END) NUMBER_OF_NIGHTS_VALID_N, \n"
+				+ " THEN 0 \n"
+				+ " ELSE 1 END) NUMBER_OF_NIGHTS_VALID_N, \n"
 				+ " (CASE WHEN   NET_AMOUNT+OPERATION_FEES !=  TOTAL_AMOUNT \n"
-				+ " THEN 0 \n" + " ELSE 1 END) TOTAL_AMOUNT_VALID_N \n"
+				+ " THEN 0 \n"
+				+ " ELSE 1 END) TOTAL_AMOUNT_VALID_N, \n"
+				+ " ( CASE WHEN SERVICE_TYPE not in (select name from service_type) \n"
+				+ "  THEN 0 \n"
+				+ "  ELSE 1 \n"
+				+ "  END)  SERVICE_TYPE_VALID_N1, \n"
+				+ " ( CASE WHEN SERVICE_DESC not in ((SELECT PRODUCT_TYPE.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID)) \n"
+				+ "   THEN 0 \n"
+				+ "  ELSE 1 \n"
+				+ "  END) SERVICE_DESC_VALID_N1, \n"
+				+ " ( CASE WHEN SUPPLIER_NAME not in ((SELECT SUPPLIER.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT ON PRODUCT_TYPE.ID = SUPPLIER_PRODUCT.PRODUCT_ID INNER JOIN SUPPLIER ON SUPPLIER.ID = SUPPLIER_PRODUCT.SUPPLIER_ID)) \n"
+				+ " THEN 0 \n"
+				+ " ELSE 1 \n"
+				+ " END) SUPPLIER_NAME_VALID_N1, \n"
+				+ " ( CASE  WHEN SERVICE_TYPE LIKE 'Air' AND  (AIRLINE not in (select name from AIRLINE)) \n"
+				+ " THEN 0 \n"
+				+ " ELSE 1 \n"
+				+ " END) AIRLINE_VALID_N1, \n"
+				+ "  ( CASE \n"
+				+ "  WHEN INVOICE_NUMBER in (select DISTINCT INVOICE_NUMBER from INVOICES) \n"
+				+ "  THEN 0 \n"
+				+ "  ELSE 1 \n"
+				+ "  END) INVOICE_NUMBER_VALID_N1, \n"
+				+ " ( CASE  WHEN SERVICE_TYPE LIKE 'Hotel' AND  (ROOM_TYPE not in (select name from ROOM_TYPE)) \n"
+				+ " THEN 0 \n" + "   ELSE 1 \n" + " END) ROOM_TYPE_VALID_N1 \n"
 				+ " FROM UPLOADED_INVOICE_FILE INNER JOIN INVOICES_TEMP \n"
 				+ " ON UPLOADED_INVOICE_FILE.ID = "
 				+ uploadedInvoiceFileId
@@ -51,6 +79,10 @@ public class UUIDDemo {
 				+ " ( \n"
 				+ " SERVICE_TYPE LIKE 'Air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " ) \n"
+				+ " OR  \n"
+				+ " (  \n"
+				+ " SERVICE_TYPE LIKE 'Hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null) \n"
+				+ " ) \n"
 				+ " OR \n"
 				+ " ( \n"
 				+ " NOT (SERVICE_TYPE  LIKE 'Air' OR SERVICE_TYPE  LIKE 'Hotel') \n"
@@ -68,7 +100,20 @@ public class UUIDDemo {
 				+ " OR \n"
 				+ " ( \n"
 				+ " NET_AMOUNT+OPERATION_FEES !=  TOTAL_AMOUNT \n"
-				+ " ) ) t2 \n"
+				+ " ) \n"
+				+ " OR \n"
+				+ " INVOICES_TEMP.SERVICE_TYPE not in (select name from service_type) \n"
+				+ "  OR \n"
+				+ "  INVOICES_TEMP.SERVICE_DESC not in ((SELECT PRODUCT_TYPE.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE st1 ON st1.ID = PRODUCT_TYPE.SERVICE_ID )) \n"
+				+ "  OR \n"
+				+ "   INVOICES_TEMP.SERVICE_TYPE LIKE 'Air' AND  (INVOICES_TEMP.AIRLINE not in (select name from AIRLINE)) \n"
+				+ "  OR \n"
+				+ "  INVOICES_TEMP.SERVICE_TYPE LIKE 'Hotel' AND  (INVOICES_TEMP.ROOM_TYPE not in (select name from ROOM_TYPE)) \n"
+				+ "  OR \n"
+				+ " INVOICES_TEMP.INVOICE_NUMBER in (select DISTINCT INVOICE_NUMBER from INVOICES) \n"
+				+ "  OR \n"
+				+ "  INVOICES_TEMP.SUPPLIER_NAME not in ((SELECT SUPPLIER.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT ON PRODUCT_TYPE.ID = SUPPLIER_PRODUCT.PRODUCT_ID INNER JOIN SUPPLIER ON SUPPLIER.ID = SUPPLIER_PRODUCT.SUPPLIER_ID)) \n"
+				+ " ) t2 \n"
 				+ " on( t1.INVOICE_ORDER   = t2.INVOICE_ORDER AND t1.TRANSACTION_ID = t2.TRANSACTION_ID ) \n"
 				+ " when matched then \n"
 				+ " update set  \n"
@@ -78,24 +123,40 @@ public class UUIDDemo {
 				+ " t1.OTHER_MANDATORY_VALID=t2.OTHER_MANDATORY_VALID_N, \n"
 				+ " t1.NUMBER_OF_NIGHTS_VALID=t2.NUMBER_OF_NIGHTS_VALID_N, \n"
 				+ " t1.TOTAL_AMOUNT_VALID=t2.TOTAL_AMOUNT_VALID_N, \n"
-				+ " t1.INTER_DOM_VALID=t2.INTER_DOM_VALID_N";
+				+ " t1.INTER_DOM_VALID=t2.INTER_DOM_VALID_N, \n"
+				+ " t1.HOTEL_MANDATORY_VALID=t2.HOTEL_MANDATORY_VALID_N, "
+				+ " t1.SERVICE_TYPE_VALID=t2.SERVICE_TYPE_VALID_N1, \n"
+				+ " t1.SERVICE_DESC_VALID=t2.SERVICE_DESC_VALID_N1, \n"
+				+ " t1.SUPPLIER_NAME_VALID=t2.SUPPLIER_NAME_VALID_N1, \n"
+				+ " t1.AIRLINE_VALID=t2.AIRLINE_VALID_N1, \n"
+				+ " t1.ROOM_TYPE_VALID=t2.ROOM_TYPE_VALID_N1, \n"
+				+ " t1.INVOICE_NUMBER_VALID=t2.INVOICE_NUMBER_VALID_N1";
+
 		return query;
 	}
 
+	private void getMergeStatement(Integer x) {
+		x=x+8;;
+	}
+
 	public static void main(String[] args) {
+		Integer x = new Integer(3);
+
 		UUIDDemo uuidDemo = new UUIDDemo();
-		System.out.println(uuidDemo.getMergeStatement(52));
+		uuidDemo.getMergeStatement(x);
+		System.out.println(x);
+		// System.out.println(uuidDemo.getMergeStatement(63));
 		// creating UUID
-		UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-
-		// checking the value of random UUID
-		for (int i = 0; i < 10; i++)
-			;
-		// System.out.println("Random UUID value: " + uid.randomUUID());
-
-		UUID idOne = UUID.randomUUID();
-		UUID idTwo = UUID.randomUUID();
-		System.out.println("UUID One: " + idOne.toString());
-		System.out.println("UUID Two: " + idTwo);
+		// UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+		//
+		// // checking the value of random UUID
+		// for (int i = 0; i < 10; i++)
+		// ;
+		// // System.out.println("Random UUID value: " + uid.randomUUID());
+		//
+		// UUID idOne = UUID.randomUUID();
+		// UUID idTwo = UUID.randomUUID();
+		// System.out.println("UUID One: " + idOne.toString());
+		// System.out.println("UUID Two: " + idTwo);
 	}
 }
