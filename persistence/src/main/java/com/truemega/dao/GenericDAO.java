@@ -61,7 +61,7 @@ public interface GenericDAO {
 
 	public <T> List<T> findAll(Class<T> klass);
 
-	public int executeDeleteNativeQuery(String sqlQuery);
+	public int executeUpdateNativeQuery(String sqlQuery);
 
 	public void flush();
 

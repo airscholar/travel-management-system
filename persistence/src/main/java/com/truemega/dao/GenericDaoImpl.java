@@ -242,9 +242,11 @@ public class GenericDaoImpl implements GenericDAO {
 		}
 		return null;
 	}
-
+ 
+	
+	// it is used to delete also
 	@Override
-	public int executeDeleteNativeQuery(String sqlQuery) {
+	public int executeUpdateNativeQuery(String sqlQuery) {
 		// TODO Auto-generated method stub
 
 		return em.createNativeQuery(sqlQuery).executeUpdate();
