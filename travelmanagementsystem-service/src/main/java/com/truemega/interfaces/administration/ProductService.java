@@ -20,5 +20,6 @@ public interface ProductService  {
     public void changeStatus(Boolean status, Integer productId,
  			String userName );
     public boolean checkUniqueProductWithService(String productName ,Integer serviceId);
+    public List<ProductTypeDTO> getAllProductActive(String userName);
 
 }

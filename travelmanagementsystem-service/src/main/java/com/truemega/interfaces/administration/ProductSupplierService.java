@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
+import antlr.debug.ParseTreeDebugParser;
+
+import com.truemega.dto.ProductTypeDTO;
+import com.truemega.dto.SupplierDTO;
 import com.truemega.dto.SupplierProductDTO;
 
 @Remote
@@ -20,7 +24,10 @@ public interface ProductSupplierService {
 
     public void changeStatus(Boolean status, Integer id,
  			String userName );
-    public boolean checkUniqueSupplierProductName(String supplierProductName  );
-	
+    
+    public SupplierProductDTO checkUniqueSupplierWithProduct( Integer  supplierId , Integer productId  );
+    
+    public boolean checkUniqueSupplierProduct(Integer  productId , Integer supplierId  );
+    
 
 }

@@ -20,4 +20,6 @@ public interface SupplierService {
     public void changeStatus(Boolean status, Integer id,
  			String userName );
     public boolean checkUniqueSupplierName(String supplierName  );
+    
+    public List<SupplierDTO> getAllSuppliersActive(String userName);
 }

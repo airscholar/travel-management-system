@@ -75,7 +75,7 @@
 										requiredMessage="Product  Name  is required" >
 										<f:selectItem itemLabel="None" itemValue="#{null}" />
 										<f:selectItems value="#{productsuppliersingle.productTypeDTOs}"
-											var="productemodel" itemLabel="#{productemodel.name}"
+											var="productemodel" itemLabel="#{productemodel.name} #{productemodel.serviceId.name}"
 											itemValue="#{productemodel}" />
 									</h:selectOneMenu>
 									<h:message for="productname" style="color:red"  />

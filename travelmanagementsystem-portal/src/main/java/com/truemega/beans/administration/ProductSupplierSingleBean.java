@@ -26,39 +26,39 @@ import com.truemega.utils.HttpJSFUtils;
 
 @ManagedBean(name = "productsuppliersingle")
 @ViewScoped
-public class ProductSupplierSingleBean extends TravelSingleBean{
+public class ProductSupplierSingleBean extends TravelSingleBean {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private LoggerService loggerService = new LoggerService();
-	
+
 	@EJB
-	private ProductSupplierService productSupplierService   ;
-	
-	
+	private ProductSupplierService productSupplierService;
+
 	@EJB
-	private SupplierService  supplierService ;
-	
+	private SupplierService supplierService;
+
 	@EJB
-	private ProductService  productService ;
-	
-	
-	private ProductConverter productConverter ;
-	private SupplierConverter supplierConverter ;
-	
-	private List<ProductTypeDTO> productTypeDTOs ;
-	private List<SupplierDTO> supplierDTOs ;
+	private ProductService productService;
+
+	private ProductConverter productConverter;
+	private SupplierConverter supplierConverter;
+
+	private List<ProductTypeDTO> productTypeDTOs;
+	private List<SupplierDTO> supplierDTOs;
 	private Integer productSupplierId;
-	private SupplierProductDTO supplierProductDTO = new SupplierProductDTO() ;
-	
+	private SupplierProductDTO supplierProductDTO = new SupplierProductDTO();
+
 	@PostConstruct
 	public void init() {
 
 		Screen screen = (Screen) HttpJSFUtils.getSession().getAttribute(
 				"screen");
+		productTypeDTOs = productService.getAllProductActive(getUserName());
+		supplierDTOs = supplierService.getAllSuppliersActive(getUserName());
 		switch (screen.getScreenMode()) {
 		case 0:
 			screenMode = UIOperation.ADD;
@@ -72,12 +72,8 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 			load();
 			break;
 		}
-		productTypeDTOs = productService.getAllProduct(getUserName());
-		System.out.println("productTypeDTOs ======= " + productTypeDTOs.size());
-		productConverter = new ProductConverter(productTypeDTOs);
 		
-		supplierDTOs = supplierService.getAllSuppliers(getUserName());
-		System.out.println("supplierDTOs ======= " + supplierDTOs.size());
+		productConverter = new ProductConverter(productTypeDTOs);
 		supplierConverter = new SupplierConverter(supplierDTOs);
 
 	}
@@ -85,8 +81,9 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 	@Override
 	public void save() {
 		// TODO Auto-generated method stub
-		
-		loggerService.logPortalInfo(" start save method of ProductSupplierSingleBean ");
+
+		loggerService
+				.logPortalInfo(" start save method of ProductSupplierSingleBean ");
 		boolean isValid = validate();
 		if (isValid) {
 
@@ -95,8 +92,8 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 				supplierProductDTO.setSystemUser(getUserName());
 				supplierProductDTO.setModificationDate(new Date());
 
-				supplierProductDTO = productSupplierService.saveSupplierProduct(supplierProductDTO,
-						getUserName());
+				supplierProductDTO = productSupplierService
+						.saveSupplierProduct(supplierProductDTO, getUserName());
 				screenMode = UIOperation.ADD;
 				screenMode = UIOperation.VIEW;
 				operationStatus = Status.SUCCESS;
@@ -105,27 +102,28 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 				e.printStackTrace();
 				operationStatus = Status.FAIL;
 				operationMessage = "Invalid Data";
-				loggerService.logPortalError("can't save supplierProductDTO ", e);
+				loggerService.logPortalError("can't save supplierProductDTO ",
+						e);
 			}
-			
-		}else {
+
+		} else {
 			// Error Message
 			screenMode = UIOperation.ADD;
 			operationStatus = Status.FAIL;
 			operationMessage = "This Product Supplier already exist. ";
 		}
-		
-		loggerService.logPortalInfo(" end save method of ProductSupplierSingleBean ");
-		
-	
-		
+
+		loggerService
+				.logPortalInfo(" end save method of ProductSupplierSingleBean ");
+
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		
-		loggerService.logPortalInfo(" start update method of ProductSupplierSingleBean ");
+
+		loggerService
+				.logPortalInfo(" start update method of ProductSupplierSingleBean ");
 		boolean isValid = validate();
 		if (isValid) {
 
@@ -134,8 +132,9 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 				supplierProductDTO.setSystemUser(getUserName());
 				supplierProductDTO.setModificationDate(new Date());
 
-				supplierProductDTO = productSupplierService.updateSupplierProduct(supplierProductDTO,
-						getUserName());
+				supplierProductDTO = productSupplierService
+						.updateSupplierProduct(supplierProductDTO,
+								getUserName());
 
 				screenMode = UIOperation.VIEW;
 				operationStatus = Status.SUCCESS;
@@ -144,57 +143,78 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 				e.printStackTrace();
 				operationStatus = Status.FAIL;
 				operationMessage = "Invalid Data";
-				loggerService.logPortalError("can't update supplierProductDTO ", e);
+				loggerService.logPortalError(
+						"can't update supplierProductDTO ", e);
 			}
-			
-		}else {
+
+		} else {
 			// Error Message
 			screenMode = UIOperation.UPDATE;
 			operationStatus = Status.FAIL;
 			operationMessage = "This Product Supplier already exist. ";
 		}
-		
-		loggerService.logPortalInfo(" end update method of ProductSupplierSingleBean ");
-		
-	
-		
+
+		loggerService
+				.logPortalInfo(" end update method of ProductSupplierSingleBean ");
+
 	}
 
 	@Override
 	public void load() {
 
-		loggerService
-				.logPortalInfo(" start load method of AirLineSingleBean ");
+		loggerService.logPortalInfo(" start load method of AirLineSingleBean ");
 		try {
 			Entity entity = (Entity) HttpJSFUtils.getSession().getAttribute(
 					"entity");
 			if (entity != null)
 				productSupplierId = entity.getEntityId();
 
-			supplierProductDTO = productSupplierService.findSupplierProductById(productSupplierId,
-					getUserName());
+			supplierProductDTO = productSupplierService
+					.findSupplierProductById(productSupplierId, getUserName());
+			
+			if (!supplierProductDTO.getProductId().getStatus())
+				productTypeDTOs.add(0, supplierProductDTO.getProductId());
+			
+			if (!supplierProductDTO.getSupplierId().getStatus())
+				supplierDTOs.add(0, supplierProductDTO.getSupplierId());
 
-			
-			productTypeDTOs = productService.getAllProduct(getUserName()) ;
-			System.out.println("productTypeDTOs ==== " + productTypeDTOs.size());
-			
-			supplierDTOs = supplierService.getAllSuppliers(getUserName()) ;
-			System.out.println("supplierDTOs ==== " + supplierDTOs.size());
-			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			loggerService.logPortalError("can't load  ", e);
 		}
 		loggerService.logPortalInfo(" end load method of AirLineSingleBean ");
-	
-	
+
 	}
 
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
-		return true;
+		//
+
+		if (screenMode.equals(UIOperation.ADD)) {
+			return  productSupplierService.checkUniqueSupplierProduct(supplierProductDTO.getProductId().getId(),supplierProductDTO.getSupplierId().getId());
+		} else {
+			//
+			SupplierProductDTO tempsupplierProductDTO = productSupplierService
+					.checkUniqueSupplierWithProduct(supplierProductDTO
+							.getSupplierId().getId(), supplierProductDTO
+							.getProductId().getId());
+
+			if (tempsupplierProductDTO == null)
+				return true;
+			else {
+				if (tempsupplierProductDTO.getId().intValue() == supplierProductDTO
+						.getId().intValue())
+					return true;
+
+				else {
+					operationMessage = "This Supplier Product is already exist. ";
+					return false;
+				}
+			}
+
+		}
+
 	}
 
 	public List<ProductTypeDTO> getProductTypeDTOs() {
@@ -252,7 +272,5 @@ public class ProductSupplierSingleBean extends TravelSingleBean{
 	public void setProductSupplierId(Integer productSupplierId) {
 		this.productSupplierId = productSupplierId;
 	}
-	
-	
 
 }

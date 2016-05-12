@@ -49,7 +49,7 @@
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 							<p:column headerText=" Product Name ">
-								<h:outputText value="#{supplierProductmodel.productId.name}" />
+								<h:outputText value="#{supplierProductmodel.productId.name} #{supplierProductmodel.productId.serviceId.name}" />
 							</p:column>
 
 							<p:column headerText=" Supplier Name ">

@@ -127,7 +127,7 @@ public class RoomTypeSingleBean  extends TravelSingleBean{
 			// Error Message
 			screenMode = UIOperation.UPDATE;
 			operationStatus = Status.FAIL;
-			operationMessage = "This Room Type already exist. ";
+			
 		}
 		
 		loggerService.logPortalInfo(" end save method of RoomTypeSingleBean ");
@@ -165,18 +165,29 @@ public class RoomTypeSingleBean  extends TravelSingleBean{
 
 	@Override
 	public boolean validate() {
-		// TODO Auto-generated method stub
-
-		// TODO Auto-generated method stub
+	
 
 
 		if (screenMode.equals(UIOperation.ADD)) {
 			return roomTypeService.checkUniqueRoomTypeName(roomTypeDTO.getName());
 		} else {
-			if (oldroomTypeDTO.getName().equals(roomTypeDTO.getName()) )
+			//
+			RoomTypeDTO tempRoomType = roomTypeService.findRoomByName(roomTypeDTO.getName(), getUserName());
+			
+			if(tempRoomType==null)
 				return true;
 			else
-				return false;
+			  {
+				if(tempRoomType.getId().intValue()==roomTypeDTO.getId().intValue())
+					return true;
+				
+				else
+				{
+					operationMessage = "This Room Type is already exist. ";
+					return false;
+				}
+			  }
+			 
 		}
 	
 	
