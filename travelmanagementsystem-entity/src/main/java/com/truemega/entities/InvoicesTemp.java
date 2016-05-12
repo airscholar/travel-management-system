@@ -99,19 +99,33 @@ public class InvoicesTemp implements Serializable {
 	private UploadedInvoiceFile uploadedInvoiceFileId;
 
 	@Column(name = "GENERAL_MANDATORY_VALID")
-	private Boolean generalMandatoryValid;
+	private Boolean generalMandatoryValid = true;
 	@Column(name = "INVOICE_DATE_RANGE_VALID")
-	private Boolean invoiceDateRangeValid;
+	private Boolean invoiceDateRangeValid = true;
 	@Column(name = "AIR_MANDATORY_VALID")
-	private Boolean airMandatoryValid;
+	private Boolean airMandatoryValid = true;
 	@Column(name = "OTHER_MANDATORY_VALID")
-	private Boolean otherMandatoryValid;
+	private Boolean otherMandatoryValid = true;
 	@Column(name = "INTER_DOM_VALID")
-	private Boolean interDomValid;
+	private Boolean interDomValid = true;
 	@Column(name = "NUMBER_OF_NIGHTS_VALID")
-	private Boolean numberOfNightsValid;
+	private Boolean numberOfNightsValid = true;
 	@Column(name = "TOTAL_AMOUNT_VALID")
-	private Boolean totalAmountValid;
+	private Boolean totalAmountValid = true;
+	@Column(name = "HOTEL_MANDATORY_VALID")
+	private Boolean hotelMandatoryValid = true;
+	@Column(name = "SERVICE_TYPE_VALID")
+	private Boolean serviceTypeValid = true;
+	@Column(name = "SERVICE_DESC_VALID")
+	private Boolean serviceDescriptionValid = true;
+	@Column(name = "SUPPLIER_NAME_VALID")
+	private Boolean supplierNameValid = true;
+	@Column(name = "AIRLINE_VALID")
+	private Boolean airlineValid = true;
+	@Column(name = "ROOM_TYPE_VALID")
+	private Boolean roomTypeValid = true;
+	@Column(name = "INVOICE_NUMBER_VALID")
+	private Boolean invoiceNumberValid = true;
 
 	public InvoicesTemp() {
 	}
@@ -456,6 +470,62 @@ public class InvoicesTemp implements Serializable {
 
 	public void setTotalAmountValid(Boolean totalAmountValid) {
 		this.totalAmountValid = totalAmountValid;
+	}
+
+	public Boolean getHotelMandatoryValid() {
+		return hotelMandatoryValid;
+	}
+
+	public void setHotelMandatoryValid(Boolean hotelMandatoryValid) {
+		this.hotelMandatoryValid = hotelMandatoryValid;
+	}
+
+	public Boolean getServiceTypeValid() {
+		return serviceTypeValid;
+	}
+
+	public void setServiceTypeValid(Boolean serviceTypeValid) {
+		this.serviceTypeValid = serviceTypeValid;
+	}
+
+	public Boolean getServiceDescriptionValid() {
+		return serviceDescriptionValid;
+	}
+
+	public void setServiceDescriptionValid(Boolean serviceDescriptionValid) {
+		this.serviceDescriptionValid = serviceDescriptionValid;
+	}
+
+	public Boolean getSupplierNameValid() {
+		return supplierNameValid;
+	}
+
+	public void setSupplierNameValid(Boolean supplierNameValid) {
+		this.supplierNameValid = supplierNameValid;
+	}
+
+	public Boolean getAirlineValid() {
+		return airlineValid;
+	}
+
+	public void setAirlineValid(Boolean airlineValid) {
+		this.airlineValid = airlineValid;
+	}
+
+	public Boolean getRoomTypeValid() {
+		return roomTypeValid;
+	}
+
+	public void setRoomTypeValid(Boolean roomTypeValid) {
+		this.roomTypeValid = roomTypeValid;
+	}
+
+	public Boolean getInvoiceNumberValid() {
+		return invoiceNumberValid;
+	}
+
+	public void setInvoiceNumberValid(Boolean invoiceNumberValid) {
+		this.invoiceNumberValid = invoiceNumberValid;
 	}
 
 }
