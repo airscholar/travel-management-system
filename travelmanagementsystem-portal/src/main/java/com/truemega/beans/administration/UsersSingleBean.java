@@ -74,7 +74,7 @@ public class UsersSingleBean extends TravelSingleBean {
 			try {
 				// Save Fleet User Entity
 
-				travelUserDTO.setEmployeeType("TMSUSER");
+//				travelUserDTO.setEmployeeType("TMSUSER");
 				travelUserDTO.setStatus(true);
 				travelUserDTO.setAccountname(travelUserDTO.getAccountname()
 						.toLowerCase());
