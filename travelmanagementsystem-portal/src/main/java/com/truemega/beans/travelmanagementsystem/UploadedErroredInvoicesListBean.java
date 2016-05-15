@@ -12,9 +12,9 @@ import com.truemega.dto.UploadedInvoiceFileDTO;
 import com.truemega.interfaces.travelmanagementsystem.UploadedInvoicesFileService;
 import com.truemega.logger.LoggerService;
 
-@ManagedBean(name = "uploadedInvoicesList")
+@ManagedBean(name = "uploadedErroredInvoicesList")
 @ViewScoped
-public class UploadedInvoicesListBean extends TravelListBean {
+public class UploadedErroredInvoicesListBean extends TravelListBean {
 
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class UploadedInvoicesListBean extends TravelListBean {
 		loggerService.logPortalInfo("Start load userName >> " + getUserName());
 
 		uploadedInvoiceFileDTOs = uploadedInvoicesFileService
-				.listUploadedInvoiceFiles(getUserName());
+				.listUploadedInvoiceTempFiles(getUserName());
 
 	}
 

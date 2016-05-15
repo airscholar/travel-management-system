@@ -14,9 +14,9 @@ import com.truemega.logger.LoggerService;
 import com.truemega.sessionbeans.Entity;
 import com.truemega.utils.HttpJSFUtils;
 
-@ManagedBean(name = "uploadedInvoiceRecordsList")
+@ManagedBean(name = "uploadedErroredInvoiceRecordsList")
 @ViewScoped
-public class UploadedInvoiceRecordsListBean extends TravelListBean {
+public class UploadedErroredInvoiceRecordsListBean extends TravelListBean {
 
 	/**
 	 * 
