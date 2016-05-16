@@ -26,7 +26,7 @@ public class RatesDTO implements Serializable {
 
 	private String systemUser;
 
-	private Boolean status;
+	private Boolean status = true;
 
 	private String description;
 
