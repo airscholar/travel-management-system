@@ -201,5 +201,35 @@ public class ProductSupplierServiceImpl implements ProductSupplierService {
 		}
 	}
 
+	@Override
+	public List<SupplierProductDTO> getAllSupplierProductsByServiceId(
+			Integer serviceId) {
+		// TODO Auto-generated method stub
+
+
+
+		loggerService
+				.logServiceInfo("Start  getAllSupplierProductsByServiceId Method with serviceId  "
+						+ serviceId);
+
+		try {
+
+			String query = "select model from SupplierProduct model where model.productId.serviceId.id = "+serviceId;
+			List<SupplierProduct> result = baseDao.findListByQuery(query);
+
+			loggerService.logServiceInfo("End  getAllSupplierProductsByServiceId Method");
+			return mapper.mapAsList(result, SupplierProductDTO.class);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			loggerService.logServiceError("can't  getAllSupplierProductsByServiceId ", e);
+			return null;
+		}
+	
+	
+	
+	
+	}
+
 
 }

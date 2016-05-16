@@ -7,9 +7,7 @@ import javax.ejb.Stateless;
 
 import com.truemega.dao.GenericDAO;
 import com.truemega.dto.AirlineDTO;
-import com.truemega.dto.RoomTypeDTO;
 import com.truemega.entities.Airline;
-import com.truemega.entities.RoomType;
 import com.truemega.interfaces.administration.AirLineService;
 import com.truemega.logger.LoggerService;
 import com.truemega.mapping.MappingFactory;
@@ -198,6 +196,31 @@ public class AirLineServiceImpl implements AirLineService{
 		else
 			return mapper.map(list.get(0), AirlineDTO.class);
 
+	}
+
+	@Override
+	public List<AirlineDTO> getAllAirlineActive(String userName) {
+		// TODO Auto-generated method stub
+
+		loggerService
+				.logServiceInfo("Start  getAllAirlineActive Method with userName  "
+						+ userName);
+
+		try {
+
+			String query = "select model from Airline model where  model.status = 1";
+			List<Airline> result = baseDao.findListByQuery(query);
+
+			loggerService.logServiceInfo("End  getAllAirlineActive Method");
+			return mapper.mapAsList(result, AirlineDTO.class);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			loggerService.logServiceError("can't  getAllAirlineActive ", e);
+			return null;
+		}
+	
+	
 	}
 	
 	

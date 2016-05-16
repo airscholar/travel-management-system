@@ -22,4 +22,5 @@ public interface RoomTypeService {
 	public void changeStatus(Boolean status, Integer id, String userName);
 
 	public boolean checkUniqueRoomTypeName(String roomTypeName);
+	public List<RoomTypeDTO> getAllRoomTypeActive(String userName);
 }

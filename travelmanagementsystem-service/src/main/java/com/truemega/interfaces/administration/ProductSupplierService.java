@@ -28,6 +28,7 @@ public interface ProductSupplierService {
     public SupplierProductDTO checkUniqueSupplierWithProduct( Integer  supplierId , Integer productId  );
     
     public boolean checkUniqueSupplierProduct(Integer  productId , Integer supplierId  );
+    public List<SupplierProductDTO> getAllSupplierProductsByServiceId(Integer serviceId);
     
 
 }

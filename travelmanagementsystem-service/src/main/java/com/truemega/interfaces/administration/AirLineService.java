@@ -21,5 +21,6 @@ public interface AirLineService {
     public void changeStatus(Boolean status, Integer id,
  			String userName );
     public boolean checkUniqueAirLineName(String airLineName  );
+    public List<AirlineDTO> getAllAirlineActive(String userName);
 
 }
