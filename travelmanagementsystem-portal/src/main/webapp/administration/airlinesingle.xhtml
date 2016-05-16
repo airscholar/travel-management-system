@@ -72,24 +72,25 @@
 										</h:inputText>
 									<h:message for="dtName" style="color:red" />
 								</div>
-							</div> 
-								<div class="form-group">
+							</div>
+							<div class="form-group">
 								<h:outputLabel value="Description "
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
-									<h:inputTextarea value="#{airlinesingle.airlineDTO.description}"
-										id="desc" styleClass="form-control" 
+									<h:inputTextarea
+										value="#{airlinesingle.airlineDTO.description}" id="desc"
+										styleClass="form-control"
 										disabled="#{airlinesingle.screenMode == 'VIEW'}">
-										</h:inputTextarea>
+									</h:inputTextarea>
 									<h:message for="desc" style="color:red" />
 								</div>
 							</div>
-							
-					
-						    
-						
-				
-					
+
+
+
+
+
+
 							<div class="form-group">
 								<div class="col-xs-offset-6 col-xs-6">
 									<c:if test="#{airlinesingle.screenMode == 'ADD'}">
