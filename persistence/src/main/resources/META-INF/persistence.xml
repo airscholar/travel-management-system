@@ -25,6 +25,7 @@
 		<class>com.truemega.entities.Supplier</class>
 		<class>com.truemega.entities.SupplierProduct</class>
 		<class>com.truemega.entities.UploadedInvoiceFile</class>
+		<class>com.truemega.entities.MaxMinValues</class>
 
 
 		<class>com.truemega.entities.InvoicesTemp</class>
