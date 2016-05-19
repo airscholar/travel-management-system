@@ -78,13 +78,13 @@
 										class="form-control"
 										disabled="#{ratessingle.screenMode == 'VIEW'}"
 										converter="#{ratessingle.serviceConverter}">
-										<f:selectItem var="servicemodel" itemLabel="None"
-											itemValue="#{null}" />
+										<f:selectItem itemLabel="None" itemValue="#{null}" />
 										<f:selectItems value="#{ratessingle.serviceTypeDTOs}"
 											var="servicemodel" itemLabel="#{servicemodel.name}"
 											itemValue="#{servicemodel}" />
 
-										<p:ajax update=":formID:NumberOfRetries :formID:RoomPanel  :formID:AirLinnePanel"
+										<p:ajax
+											update=":formID:NumberOfRetries :formID:RoomPanel  :formID:AirLinnePanel"
 											listener="#{ratessingle.changeService}" />
 										<f:attribute name="serviceObj"
 											value="#{ratessingle.serviceTypeDTO}" />
@@ -104,9 +104,11 @@
 										<div class="col-xs4">
 											<h:selectOneMenu
 												value="#{ratessingle.ratesDTO.supplierProductId}"
-												class="form-control"
+												class="form-control" id="productName" required="true"
+												requiredMessage="product supplier required"
 												disabled="#{ratessingle.screenMode == 'VIEW'}"
 												converter="#{ratessingle.supplierProductConverter}">
+												<f:selectItem itemLabel="None" itemValue="#{null}" />
 												<f:selectItems value="#{ratessingle.supplierProductDTOs}"
 													var="productmodel"
 													itemLabel="#{productmodel.productId.name} --  #{productmodel.supplierId.name}"
@@ -139,9 +141,11 @@
 											styleClass="control-label col-xs-3" />
 										<div class="col-xs-3">
 											<h:selectOneMenu value="#{ratessingle.ratesDTO.roomTypeId}"
-												class="form-control"
+												class="form-control" id="room" required="true"
+												requiredMessage="Room required"
 												disabled="#{ratessingle.screenMode == 'VIEW'}"
 												converter="#{ratessingle.roomConverter}">
+												<f:selectItem itemLabel="None" itemValue="#{null}" />
 												<f:selectItems value="#{ratessingle.roomTypeDTOs}"
 													var="roomemodel" itemLabel="#{roomemodel.name}"
 													itemValue="#{roomemodel}" />
@@ -151,25 +155,42 @@
 									</c:if>
 								</h:panelGroup>
 							</div>
-							<div class="form-group">
-								<h:panelGroup id="AirLinnePanel">
-									<c:if test="#{ratessingle.serviceTypeDTO.name == 'Air'}">
+
+							<h:panelGroup id="AirLinnePanel">
+								<c:if test="#{ratessingle.serviceTypeDTO.name == 'Air'}">
+									<div class="form-group">
 										<h:outputLabel value="Air Line"
 											styleClass="control-label col-xs-3" />
 										<div class="col-xs-3">
 											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
-												class="form-control"
+												class="form-control" id="airline" required="true"
+												requiredMessage="AirLinnePanel required"
 												disabled="#{ratessingle.screenMode == 'VIEW'}"
 												converter="#{ratessingle.airLineConverter}">
+												<f:selectItem itemLabel="None" itemValue="#{null}" />
 												<f:selectItems value="#{ratessingle.airlineDTOs}"
 													var="airlinemodel" itemLabel="#{airlinemodel.name}"
 													itemValue="#{airlinemodel}" />
 											</h:selectOneMenu>
 											<h:message for="airline" style="color:red" />
 										</div>
-									</c:if>
-								</h:panelGroup>
-							</div>
+									</div>
+									<div class="form-group">
+										<h:outputLabel value="Routing "
+											styleClass="control-label col-xs-3" />
+										<div class="col-xs-3">
+											<h:inputText value="#{ratessingle.ratesDTO.routing}"
+												id="routing" styleClass="form-control" required="true"
+												requiredMessage="Routing  is required"
+												disabled="#{ratessingle.screenMode == 'VIEW'}">
+											</h:inputText>
+											<h:message for="routing" style="color:red" />
+										</div>
+									</div>
+								</c:if>
+							</h:panelGroup>
+
+
 
 							<div class="form-group">
 								<h:outputLabel value=" Year "

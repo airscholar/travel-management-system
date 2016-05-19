@@ -20,7 +20,7 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header">
-						<h1> Rates Management  </h1>
+						<h1>Rates Management</h1>
 					</div>
 					<!-- Add User Button -->
 					<div class="col-md-3">
@@ -46,8 +46,39 @@
 							tableStyleClass="table table-striped" id="userTable"
 							paginator="true" rowsPerPageTemplate="5,10,15"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-							
-						
+
+
+
+							<p:column headerText=" Service Name ">
+								<h:outputText
+									value="#{ratemodel.supplierProductId.productId.serviceId.name}" />
+							</p:column>
+							<p:column headerText=" Product ">
+								<h:outputText
+									value="#{ratemodel.supplierProductId.productId.name}" />
+							</p:column>
+							<p:column headerText=" Supplier ">
+								<h:outputText
+									value="#{ratemodel.supplierProductId.supplierId.name}" />
+							</p:column>
+
+							<p:column headerText=" Room ">
+								<h:outputText value="#{ratemodel.roomTypeId.name}" />
+							</p:column>
+
+							<p:column headerText=" AirLine ">
+								<h:outputText value="#{ratemodel.airlineId.name}" />
+							</p:column>
+
+							<p:column headerText=" Rate ">
+								<h:outputText value="#{ratemodel.rate}" />
+							</p:column>
+
+							<p:column headerText=" Year ">
+								<h:outputText value="#{ratemodel.rate}" />
+							</p:column>
+
+
 							<p:column headerText=" Rate  Status">
 								<center>
 									<h:form>
@@ -58,8 +89,8 @@
 									</h:form>
 								</center>
 							</p:column>
-						
-						
+
+
 							<p:column headerText="Edit">
 								<h:form>
 									<center>
@@ -99,7 +130,7 @@
 					</div>
 				</div>
 			</div>
-		
+
 		</ui:define>
 	</ui:composition>
 </h:body>

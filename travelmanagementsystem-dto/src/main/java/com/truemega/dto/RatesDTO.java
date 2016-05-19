@@ -35,6 +35,8 @@ public class RatesDTO implements Serializable {
 	private RoomTypeDTO roomTypeId;
 
 	private AirlineDTO airlineId;
+	
+	private String routing;
 
 	public RatesDTO() {
 	}
@@ -151,6 +153,14 @@ public class RatesDTO implements Serializable {
 
 	public String toString() {
 		return "com.truemega.entities.Rates[ id=" + id + " ]";
+	}
+
+	public String getRouting() {
+		return routing;
+	}
+
+	public void setRouting(String routing) {
+		this.routing = routing;
 	}
 
 }

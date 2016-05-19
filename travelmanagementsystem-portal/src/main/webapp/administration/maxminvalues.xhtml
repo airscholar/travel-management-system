@@ -62,11 +62,12 @@
 
 
 							<div class="form-group">
-								<h:outputLabel value="  Visa  "
+								<h:outputLabel value="Visa Maximum Period (Days)"
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
 									<h:inputText value="#{maxminsingle.visa.maxMinValue}" id="visa"
-										styleClass="form-control"
+										styleClass="form-control" label="Visa"
+										converterMessage="Please enter digits only."
 										disabled="#{maxminsingle.screenMode == 'VIEW'}">
 									</h:inputText>
 									<h:message for="visa" style="color:red" />
@@ -74,34 +75,37 @@
 							</div>
 
 							<div class="form-group">
-								<h:outputLabel value=" Medical Insurance "
+								<h:outputLabel value=" Medical Insurance Maximum Period (Days) "
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
 									<h:inputText
 										value="#{maxminsingle.medicalInsurance.maxMinValue}"
 										id="medical" styleClass="form-control"
+										converterMessage="Please enter digits only."
 										disabled="#{maxminsingle.screenMode == 'VIEW'}">
 									</h:inputText>
 									<h:message for="medical" style="color:red" />
 								</div>
 							</div>
 							<div class="form-group">
-								<h:outputLabel value="Airplane Max  "
+								<h:outputLabel value="Airplane Max Price  "
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
 									<h:inputText value="#{maxminsingle.airplaneMax.maxMinValue}"
 										id="airplanemax" styleClass="form-control"
+										converterMessage="Please enter digits only."
 										disabled="#{maxminsingle.screenMode == 'VIEW'}">
 									</h:inputText>
 									<h:message for="airplanemax" style="color:red" />
 								</div>
 							</div>
 							<div class="form-group">
-								<h:outputLabel value="Airplane Min  "
+								<h:outputLabel value="Airplane Min Price "
 									styleClass="control-label col-xs-3" />
 								<div class="col-xs-4">
 									<h:inputText value="#{maxminsingle.airplanemin.maxMinValue}"
 										id="airplanemin" styleClass="form-control"
+										converterMessage="Please enter digits only."
 										disabled="#{maxminsingle.screenMode == 'VIEW'}">
 									</h:inputText>
 									<h:message for="airplanemin" style="color:red" />
@@ -121,6 +125,24 @@
 									<c:if test="#{maxminsingle.screenMode == 'UPDATE'}">
 										<h:commandButton id="submitButton" value="Update"
 											actionListener="#{maxminsingle.update}"
+											styleClass="btn btn-default">
+											<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
+									</c:if>
+
+
+									<c:if
+										test="#{maxminsingle.screenMode == 'UPDATE' || maxminsingle.screenMode == 'ADD'}">
+										<h:commandButton id="notification" value="UploadNotification"
+											actionListener="#{maxminsingle.uploadNotification}"
+											styleClass="btn btn-default">
+											<f:ajax execute="@form" render="@form" />
+										</h:commandButton>
+									</c:if>
+										<c:if
+										test="#{maxminsingle.screenMode == 'UPDATE' || maxminsingle.screenMode == 'ADD'}">
+										<h:commandButton id="unknownHotels" value="Unknown Hotels"
+											actionListener="#{maxminsingle.unknownHotls}"
 											styleClass="btn btn-default">
 											<f:ajax execute="@form" render="@form" />
 										</h:commandButton>

@@ -59,6 +59,9 @@ public class Rates implements Serializable {
 	@ManyToOne
 	private Airline airlineId;
 
+	@Column(name = "ROUTING")
+	private String routing;
+
 	public Rates() {
 	}
 
@@ -177,6 +180,14 @@ public class Rates implements Serializable {
 	@Override
 	public String toString() {
 		return "com.truemega.entities.Rates[ id=" + id + " ]";
+	}
+
+	public String getRouting() {
+		return routing;
+	}
+
+	public void setRouting(String routing) {
+		this.routing = routing;
 	}
 
 }
