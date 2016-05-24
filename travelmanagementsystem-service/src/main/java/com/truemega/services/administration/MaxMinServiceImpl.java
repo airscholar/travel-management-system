@@ -13,8 +13,8 @@ import com.truemega.logger.LoggerService;
 import com.truemega.mapping.MappingFactory;
 
 @Stateless
-public class MaxMinServiceImpl implements MaxMinService{
-    
+public class MaxMinServiceImpl implements MaxMinService {
+
 	@EJB
 	private GenericDAO baseDao;
 
@@ -22,10 +22,10 @@ public class MaxMinServiceImpl implements MaxMinService{
 	private MappingFactory mapper;
 
 	private LoggerService loggerService = new LoggerService();
-	
-	
+
 	@Override
-	public MaxMinValuesDTO saveMaxMinValues(MaxMinValuesDTO maxMinValuesDTO, String userName) {
+	public MaxMinValuesDTO saveMaxMinValues(MaxMinValuesDTO maxMinValuesDTO,
+			String userName) {
 		// TODO Auto-generated method stub
 
 		loggerService
@@ -33,7 +33,8 @@ public class MaxMinServiceImpl implements MaxMinService{
 						+ maxMinValuesDTO + "userName  " + userName);
 		try {
 
-			MaxMinValues MaxMinValues = mapper.map(maxMinValuesDTO, MaxMinValues.class);
+			MaxMinValues MaxMinValues = mapper.map(maxMinValuesDTO,
+					MaxMinValues.class);
 			baseDao.saveEntity(MaxMinValues);
 			loggerService.logServiceInfo("End  saveMaxMinValues Method");
 			return mapper.map(MaxMinValues, MaxMinValuesDTO.class);
@@ -45,20 +46,20 @@ public class MaxMinServiceImpl implements MaxMinService{
 			return null;
 		}
 
-	
 	}
 
 	@Override
-	public MaxMinValuesDTO updateMaxMinValues(MaxMinValuesDTO maxMinValuesDTO, String userName) {
+	public MaxMinValuesDTO updateMaxMinValues(MaxMinValuesDTO maxMinValuesDTO,
+			String userName) {
 		// TODO Auto-generated method stub
-
 
 		loggerService
 				.logServiceInfo("Start  updateMaxMinValues Method with  MaxMinValuesDTO "
 						+ maxMinValuesDTO + "userName  " + userName);
 		try {
 
-			MaxMinValues maxMinValues = mapper.map(maxMinValuesDTO, MaxMinValues.class);
+			MaxMinValues maxMinValues = mapper.map(maxMinValuesDTO,
+					MaxMinValues.class);
 			baseDao.updateEntity(maxMinValues);
 			loggerService.logServiceInfo("End  updateMaxMinValues Method");
 			return mapper.map(maxMinValues, MaxMinValuesDTO.class);
@@ -70,20 +71,19 @@ public class MaxMinServiceImpl implements MaxMinService{
 			return null;
 		}
 
-	
-	
 	}
 
 	@Override
-	public MaxMinValuesDTO findMaxMinValuesById(Integer maxMinValuesId, String userName) {
+	public MaxMinValuesDTO findMaxMinValuesById(Integer maxMinValuesId,
+			String userName) {
 
 		loggerService
 				.logServiceInfo("Start  findSupplierById Method with  MaxMinValuesId "
 						+ maxMinValuesId + "userName  " + userName);
 		try {
 
-			MaxMinValues MaxMinValues = baseDao.findEntityById(MaxMinValues.class,
-					maxMinValuesId);
+			MaxMinValues MaxMinValues = baseDao.findEntityById(
+					MaxMinValues.class, maxMinValuesId);
 			loggerService.logServiceInfo("End  findSupplierById Method");
 			return mapper.map(MaxMinValues, MaxMinValuesDTO.class);
 
@@ -94,7 +94,7 @@ public class MaxMinServiceImpl implements MaxMinService{
 			return null;
 
 		}
-	
+
 	}
 
 	@Override
@@ -118,19 +118,16 @@ public class MaxMinServiceImpl implements MaxMinService{
 			loggerService.logServiceError("can't  getAllMaxMinValuess ", e);
 			return null;
 		}
-	
-	
+
 	}
 
 	@Override
 	public void changeStatus(Boolean status, Integer id, String userName) {
 		// TODO Auto-generated method stub
 
-
 		loggerService
 				.logServiceInfo("Start changeStatus  Method with status == "
-						+ status + " and id == " + id
-						+ "user name " + userName);
+						+ status + " and id == " + id + "user name " + userName);
 		try {
 			String query = "update MaxMinValues model set model.status ="
 					+ status + " where model.id=" + id;
@@ -142,8 +139,6 @@ public class MaxMinServiceImpl implements MaxMinService{
 
 		loggerService.logServiceInfo("End  changeStatus  Method  ");
 
-	
-	
 	}
 
 	@Override
@@ -168,16 +163,16 @@ public class MaxMinServiceImpl implements MaxMinService{
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			loggerService.logServiceError(
-					"can't  checkUniqueMaxMinValuesName", e);
+			loggerService.logServiceError("can't  checkUniqueMaxMinValuesName",
+					e);
 			return false;
 		}
-	
-	
+
 	}
 
 	@Override
-	public MaxMinValuesDTO findMaxMinValuesByName(String MaxMinValuesName, String userName) {
+	public MaxMinValuesDTO findMaxMinValuesByName(String MaxMinValuesName,
+			String userName) {
 		// TODO Auto-generated method stub
 
 		loggerService
@@ -211,18 +206,38 @@ public class MaxMinServiceImpl implements MaxMinService{
 			String query = "select model from MaxMinValues model where  model.status = 1";
 			List<MaxMinValues> result = baseDao.findListByQuery(query);
 
-			loggerService.logServiceInfo("End  getAllMaxMinValuesActive Method");
+			loggerService
+					.logServiceInfo("End  getAllMaxMinValuesActive Method");
 			return mapper.mapAsList(result, MaxMinValuesDTO.class);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			loggerService.logServiceError("can't  getAllMaxMinValuesActive ", e);
+			loggerService
+					.logServiceError("can't  getAllMaxMinValuesActive ", e);
 			return null;
 		}
-	
-	
+
 	}
-	
-	
+
+	@Override
+	public List<MaxMinValuesDTO> updateMaxsMinsValues(
+			List<MaxMinValuesDTO> maxMinValuesDTOs, String userName)
+			throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			for (MaxMinValuesDTO maxMinValuesDTO : maxMinValuesDTOs) {
+				MaxMinValues maxMinValues = mapper.map(maxMinValuesDTO,
+						MaxMinValues.class);
+				baseDao.updateEntity(maxMinValues);
+
+			}
+			return maxMinValuesDTOs;
+		} catch (Exception e) {
+			
+			throw (e);
+			
+		}
+
+	}
 
 }
