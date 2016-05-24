@@ -102,7 +102,8 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 
 				uploadedInvoiceFileDTO = invoicesUploaderService
 						.uploadInvoicesExcelSheet(uploadedInvoiceFileDTO,
-								getUserName());
+								getUserName(), getYear(uploadedInvoiceFileDTO
+										.getInvoicesMonth()));
 				if (uploadedInvoiceFileDTO.getOperationMsg() != null) {
 					operationMessage = uploadedInvoiceFileDTO.getOperationMsg();
 					operationStatus = Status.FAIL;
@@ -278,6 +279,10 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private String getYear(String dateStr) {
+		return dateStr.substring(3);
 	}
 
 }
