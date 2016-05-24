@@ -89,7 +89,8 @@ public class NotificationSender implements NotificationInterface, Serializable {
 			String messageBody, List<String> attachments) {
 		try {
 			MailSenderThread senderThread = new MailSenderThread(to,
-					messageSubject, messageBody, null, getMailConfig(),attachments);
+					messageSubject, messageBody, null, getMailConfig(),
+					attachments);
 			Thread mailSenderThread = new Thread(senderThread);
 			mailSenderThread.start();
 			return true;
@@ -143,7 +144,7 @@ public class NotificationSender implements NotificationInterface, Serializable {
 
 	@PostConstruct
 	public void init() {
-		String query = "select  model from travelConfig model";
+		String query = "select  model from TravelConfig model";
 		List<TravelConfig> travelConfigs = baseDao.executeDynamicQuery(query,
 				TravelConfig.class, false);
 		for (Iterator iterator = travelConfigs.iterator(); iterator.hasNext();) {

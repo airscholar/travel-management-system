@@ -334,4 +334,15 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 	}
 
+	@Override
+	public void sendEMail(String body, String subject, List<String> ccs,
+			String to) {
+		try {
+			notificationInterface.sendNotification(to, ccs, subject, body);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 }
