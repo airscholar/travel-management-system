@@ -36,10 +36,10 @@
 
 					<h:form id="listForm">
 						<p:dataTable var="invoicesTempModel"
-							value="#{uploadedErroredInvoiceRecordsList.invoicesTempDTOs}" rows="5"
-							rowKey="#{invoicesTempModel.id}"
+							value="#{uploadedErroredInvoiceRecordsList.invoicesTempDTOs}"
+							rows="5" rowKey="#{invoicesTempModel.id}"
 							tableStyleClass="table table-striped" id="invoicesTempTable"
-							paginator="true" rowsPerPageTemplate="5,10,15"
+							paginator="true" rowsPerPageTemplate="15,30,45"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
 							<p:column headerText="Record Number">
@@ -297,13 +297,10 @@
 									value="* Invoice Number Field Is Not Valid &lt;br /&gt;"
 									escape="false" />
 
-
-
-
-
-
-
-
+								<h:outputText
+									rendered="#{!invoicesTempModel.ratesCombinationValid}"
+									value="* Rates Combination Is Not Valid &lt;br /&gt;"
+									escape="false" />
 							</p:column>
 
 						</p:dataTable>
