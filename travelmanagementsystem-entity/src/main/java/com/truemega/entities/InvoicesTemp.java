@@ -126,6 +126,8 @@ public class InvoicesTemp implements Serializable {
 	private Boolean roomTypeValid = true;
 	@Column(name = "INVOICE_NUMBER_VALID")
 	private Boolean invoiceNumberValid = true;
+	@Column(name = "RATES_COMBINATION_VALID")
+	private Boolean ratesCombinationValid = true;
 
 	public InvoicesTemp() {
 	}
@@ -526,6 +528,14 @@ public class InvoicesTemp implements Serializable {
 
 	public void setInvoiceNumberValid(Boolean invoiceNumberValid) {
 		this.invoiceNumberValid = invoiceNumberValid;
+	}
+
+	public Boolean getRatesCombinationValid() {
+		return ratesCombinationValid;
+	}
+
+	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
+		this.ratesCombinationValid = ratesCombinationValid;
 	}
 
 }
