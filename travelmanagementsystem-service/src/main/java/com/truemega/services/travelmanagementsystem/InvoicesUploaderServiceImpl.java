@@ -229,8 +229,8 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 
 	@Override
 	public UploadedInvoiceFileDTO uploadInvoicesExcelSheet(
-			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName)
-			throws Exception {
+			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName,
+			String year) throws Exception {
 		UploadedInvoiceFileDTO uploadedInvoiceFileDTOResult = null;
 		count = 0;
 		cal = Calendar.getInstance();
@@ -268,7 +268,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 
 			if (!uploadStatus.isExistRecord()) {
 				uploadedInvoiceFileDTOResult = addNewInvoicesExcelSheet(
-						uploadedInvoiceFileDTO, userName);
+						uploadedInvoiceFileDTO, userName, year);
 			} else {
 				if (uploadStatus.isTempData()) {
 					System.out.println("upload  and update master "
@@ -276,7 +276,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 					uploadedInvoiceFileDTO
 							.setId(uploadStatus.getFileUploadId());
 					uploadedInvoiceFileDTOResult = updateInvoicesExcelSheet(
-							uploadedInvoiceFileDTO, userName);
+							uploadedInvoiceFileDTO, userName, year);
 
 				} else {
 					if (uploadStatus.isApproved()) {
@@ -298,7 +298,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 						System.out.println("Upload  and add master as new");
 
 						uploadedInvoiceFileDTOResult = addNewInvoicesExcelSheet(
-								uploadedInvoiceFileDTO, userName);
+								uploadedInvoiceFileDTO, userName, year);
 					}
 
 					else {
@@ -396,7 +396,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 
 	}
 
-	private String getMergeStatement(int uploadedInvoiceFileId) {
+	private String getMergeStatement(int uploadedInvoiceFileId, String year) {
 		String query = " Merge into INVOICES_TEMP t1 using ( SELECT \n"
 				+ " INVOICE_ORDER, \n"
 				+ " TRANSACTION_ID, \n"
@@ -410,16 +410,16 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " OR TO_DATE('25/'  || UPLOADED_INVOICE_FILE.INVOICES_MONTH, 'dd/mm/yyyy') < TRUNC(INVOICES_TEMP.INVOICE_DATE) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) INVOICE_DATE_RANGE_VALID_N, \n"
-				+ " (CASE WHEN  SERVICE_TYPE LIKE 'Air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
+				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) AIR_MANDATORY_VALID_N, \n"
-				+ " (CASE WHEN  SERVICE_TYPE LIKE 'Hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null ) \n"
+				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null ) \n"
 				+ " THEN 0  \n"
 				+ " ELSE 1 END) HOTEL_MANDATORY_VALID_N, \n"
-				+ " (CASE WHEN  NOT (SERVICE_TYPE  LIKE 'Air' OR SERVICE_TYPE  LIKE 'Hotel')  AND  ( FROM_DATE is null OR TO_DATE is null ) \n"
+				+ " (CASE WHEN  NOT (LOWER(SERVICE_TYPE)  LIKE 'air' OR LOWER(SERVICE_TYPE)  LIKE 'hotel')  AND  ( FROM_DATE is null OR TO_DATE is null ) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) OTHER_MANDATORY_VALID_N, \n"
-				+ " (CASE WHEN  NOT (INTER_DOM  LIKE 'INTERNATIONAL' OR INTER_DOM  LIKE 'DOMESTIC') \n"
+				+ " (CASE WHEN  NOT (UPPER(INTER_DOM)  LIKE 'INTERNATIONAL' OR UPPER(INTER_DOM)  LIKE 'DOMESTIC') \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) INTER_DOM_VALID_N, \n"
 				+ " (CASE WHEN   (CHECK_OUT-CHECK_IN)+1 !=  NUMBER_OF_NIGHTS \n"
@@ -428,19 +428,19 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " (CASE WHEN   NET_AMOUNT+OPERATION_FEES !=  TOTAL_AMOUNT \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) TOTAL_AMOUNT_VALID_N, \n"
-				+ " ( CASE WHEN SERVICE_TYPE not in (select name from service_type) \n"
+				+ " ( CASE WHEN LOWER(SERVICE_TYPE) not in (select LOWER(name) from service_type) \n"
 				+ "  THEN 0 \n"
 				+ "  ELSE 1 \n"
 				+ "  END)  SERVICE_TYPE_VALID_N1, \n"
-				+ " ( CASE WHEN SERVICE_DESC not in ((SELECT PRODUCT_TYPE.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID)) \n"
+				+ " ( CASE WHEN (LOWER(SERVICE_DESC),LOWER(SERVICE_TYPE)) not in ((SELECT LOWER(PRODUCT_TYPE.NAME),LOWER(st1.NAME) FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE st1 ON st1.ID = PRODUCT_TYPE.SERVICE_ID)) \n"
 				+ "   THEN 0 \n"
 				+ "  ELSE 1 \n"
 				+ "  END) SERVICE_DESC_VALID_N1, \n"
-				+ " ( CASE WHEN SUPPLIER_NAME not in ((SELECT SUPPLIER.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT ON PRODUCT_TYPE.ID = SUPPLIER_PRODUCT.PRODUCT_ID INNER JOIN SUPPLIER ON SUPPLIER.ID = SUPPLIER_PRODUCT.SUPPLIER_ID)) \n"
+				+ " ( CASE WHEN  LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'hotel' and  (LOWER(SUPPLIER_NAME),LOWER(SERVICE_DESC),LOWER(SERVICE_TYPE)) not in ((SELECT LOWER(s.NAME),LOWER(pt2.NAME),LOWER(st2.NAME) FROM PRODUCT_TYPE pt2 INNER JOIN SERVICE_TYPE st2 ON st2.ID = pt2.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT sp ON pt2.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID)) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 \n"
 				+ " END) SUPPLIER_NAME_VALID_N1, \n"
-				+ " ( CASE  WHEN SERVICE_TYPE LIKE 'Air' AND  (AIRLINE not in (select name from AIRLINE)) \n"
+				+ " ( CASE  WHEN LOWER(SERVICE_TYPE) LIKE 'air' AND  (LOWER(AIRLINE) not in (select LOWER(name) from AIRLINE)) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 \n"
 				+ " END) AIRLINE_VALID_N1, \n"
@@ -449,8 +449,37 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ "  THEN 0 \n"
 				+ "  ELSE 1 \n"
 				+ "  END) INVOICE_NUMBER_VALID_N1, \n"
-				+ " ( CASE  WHEN SERVICE_TYPE LIKE 'Hotel' AND  (ROOM_TYPE not in (select name from ROOM_TYPE)) \n"
-				+ " THEN 0 \n" + "   ELSE 1 \n" + " END) ROOM_TYPE_VALID_N1 \n"
+				+ " ( CASE  WHEN LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (LOWER(ROOM_TYPE) not in (select LOWER(name) from ROOM_TYPE)) \n"
+				+ " THEN 0 \n"
+				+ "   ELSE 1 \n"
+				+ " END) ROOM_TYPE_VALID_N1, \n"
+
+				+ " (CASE WHEN  ( \n"
+				+ " LOWER(SERVICE_TYPE) like 'hotel' \n"
+				+ " AND \n"
+				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME),LOWER(ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
+				+ " ) \n"
+				+ " OR \n"
+				+ " ( \n"
+				+ " LOWER(SERVICE_TYPE) like 'air' \n"
+				+ " AND \n"
+				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME),LOWER(AIRLINE),LOWER(ROUTING)) not in (SELECT  lower(st.NAME), lower(pt.NAME), lower(s.NAME), lower(al.NAME), lower(r.ROUTING) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID INNER JOIN RATES r ON sp.ID = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN AIRLINE al ON al.ID = r.AIRLINE_ID) \n"
+				+ " ) \n"
+				+ " OR \n"
+				+ " ( \n"
+				+ " (LOWER(SERVICE_TYPE) not like 'air' and  LOWER(SERVICE_TYPE) not like 'hotel') \n"
+				+ " AND \n"
+				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME)) not in (SELECT lower(st.NAME), lower(pt.NAME), lower(s.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) not LIKE 'hotel' AND LOWER(st.NAME) not LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID) \n"
+				+ " ) \n"
+				+ " THEN 0 \n"
+				+ " ELSE 1 END) RATES_COMBINATION_VALID_N \n"
+
 				+ " FROM UPLOADED_INVOICE_FILE INNER JOIN INVOICES_TEMP \n"
 				+ " ON UPLOADED_INVOICE_FILE.ID = "
 				+ uploadedInvoiceFileId
@@ -470,21 +499,21 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " ) \n"
 				+ " OR \n"
 				+ " ( \n"
-				+ " SERVICE_TYPE LIKE 'Air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
+				+ " LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " ) \n"
 				+ " OR  \n"
 				+ " (  \n"
-				+ " SERVICE_TYPE LIKE 'Hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null) \n"
+				+ " LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null) \n"
 				+ " ) \n"
 				+ " OR \n"
 				+ " ( \n"
-				+ " NOT (SERVICE_TYPE  LIKE 'Air' OR SERVICE_TYPE  LIKE 'Hotel') \n"
+				+ " NOT (LOWER(SERVICE_TYPE)  LIKE 'air' OR LOWER(SERVICE_TYPE)  LIKE 'hotel') \n"
 				+ " AND  \n"
 				+ " ( FROM_DATE is null OR TO_DATE is null ) \n"
 				+ " ) \n"
 				+ " OR \n"
 				+ " (  \n"
-				+ " NOT (INTER_DOM  LIKE 'INTERNATIONAL' OR INTER_DOM  LIKE 'DOMESTIC') \n"
+				+ " NOT (UPPER(INTER_DOM)  LIKE 'INTERNATIONAL' OR UPPER(INTER_DOM)  LIKE 'DOMESTIC') \n"
 				+ " ) \n"
 				+ " OR \n"
 				+ " ( \n"
@@ -495,17 +524,47 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " NET_AMOUNT+OPERATION_FEES !=  TOTAL_AMOUNT \n"
 				+ " ) \n"
 				+ " OR \n"
-				+ " INVOICES_TEMP.SERVICE_TYPE not in (select name from service_type) \n"
+				+ " LOWER(INVOICES_TEMP.SERVICE_TYPE) not in (select LOWER(name) from service_type) \n"
 				+ "  OR \n"
-				+ "  INVOICES_TEMP.SERVICE_DESC not in ((SELECT PRODUCT_TYPE.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE st1 ON st1.ID = PRODUCT_TYPE.SERVICE_ID )) \n"
+				+ "  (LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SERVICE_TYPE)) not in ((SELECT LOWER(PRODUCT_TYPE.NAME),LOWER(st1.name) FROM  PRODUCT_TYPE INNER JOIN SERVICE_TYPE st1 ON st1.ID = PRODUCT_TYPE.SERVICE_ID )) \n"
 				+ "  OR \n"
-				+ "   INVOICES_TEMP.SERVICE_TYPE LIKE 'Air' AND  (INVOICES_TEMP.AIRLINE not in (select name from AIRLINE)) \n"
+				+ "   LOWER(INVOICES_TEMP.SERVICE_TYPE) LIKE 'air' AND  (LOWER(INVOICES_TEMP.AIRLINE) not in (select LOWER(name) from AIRLINE)) \n"
 				+ "  OR \n"
-				+ "  INVOICES_TEMP.SERVICE_TYPE LIKE 'Hotel' AND  (INVOICES_TEMP.ROOM_TYPE not in (select name from ROOM_TYPE)) \n"
+				+ "  LOWER(INVOICES_TEMP.SERVICE_TYPE) LIKE 'hotel' AND  (LOWER(INVOICES_TEMP.ROOM_TYPE) not in (select LOWER(name) from ROOM_TYPE)) \n"
 				+ "  OR \n"
 				+ " INVOICES_TEMP.INVOICE_NUMBER in (select DISTINCT INVOICE_NUMBER from INVOICES) \n"
 				+ "  OR \n"
-				+ "  INVOICES_TEMP.SUPPLIER_NAME not in ((SELECT SUPPLIER.NAME FROM PRODUCT_TYPE INNER JOIN SERVICE_TYPE ON SERVICE_TYPE.ID = PRODUCT_TYPE.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT ON PRODUCT_TYPE.ID = SUPPLIER_PRODUCT.PRODUCT_ID INNER JOIN SUPPLIER ON SUPPLIER.ID = SUPPLIER_PRODUCT.SUPPLIER_ID)) \n"
+				+ " ( \n"
+				+ " LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'hotel' and \n"
+				+ " (LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SERVICE_TYPE)) not in ((SELECT LOWER(s.NAME),LOWER(pt2.NAME),LOWER(st2.NAME) FROM PRODUCT_TYPE pt2 INNER JOIN SERVICE_TYPE st2 ON st2.ID = pt2.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT sp ON pt2.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID)) \n"
+				+ " ) \n"
+
+				+ " OR \n"
+				+ " ( \n"
+				+ "  ( \n"
+				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'hotel' \n"
+				+ "      AND \n"
+				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
+				+ "  ) \n"
+				+ "  OR \n"
+				+ "  ( \n"
+				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'air' \n"
+				+ "      AND \n"
+				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.AIRLINE),LOWER(INVOICES_TEMP.ROUTING)) not in (SELECT  lower(st.NAME), lower(pt.NAME), lower(s.NAME), lower(al.NAME), lower(r.ROUTING) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID INNER JOIN RATES r ON sp.ID = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN AIRLINE al ON al.ID = r.AIRLINE_ID) \n"
+				+ "  ) \n"
+				+ " OR \n"
+				+ "  ( \n"
+				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'air' and  LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'hotel') \n"
+				+ "      AND \n"
+				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME)) not in (SELECT lower(st.NAME), lower(pt.NAME), lower(s.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) not LIKE 'hotel' AND LOWER(st.NAME) not LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
+				+ year
+				+ " INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID) \n"
+				+ "  ) \n"
+				+ " ) \n"
 				+ " ) t2 \n"
 				+ " on( t1.INVOICE_ORDER   = t2.INVOICE_ORDER AND t1.TRANSACTION_ID = t2.TRANSACTION_ID ) \n"
 				+ " when matched then \n"
@@ -523,7 +582,8 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " t1.SUPPLIER_NAME_VALID=t2.SUPPLIER_NAME_VALID_N1, \n"
 				+ " t1.AIRLINE_VALID=t2.AIRLINE_VALID_N1, \n"
 				+ " t1.ROOM_TYPE_VALID=t2.ROOM_TYPE_VALID_N1, \n"
-				+ " t1.INVOICE_NUMBER_VALID=t2.INVOICE_NUMBER_VALID_N1";
+				+ " t1.INVOICE_NUMBER_VALID=t2.INVOICE_NUMBER_VALID_N1, \n"
+				+ " t1.RATES_COMBINATION_VALID=t2.RATES_COMBINATION_VALID_N";
 		return query;
 	}
 
@@ -714,23 +774,32 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 	}
 
 	public UploadedInvoiceFileDTO addNewInvoicesExcelSheet(
-			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName)
-			throws IOException {
+			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName,
+			String year) throws IOException {
 
 		UploadedInvoiceFileDTO uploadedInvoiceFileDTOResult = saveUploadedInvoiceFile(uploadedInvoiceFileDTO);
 		saveInvoicesTempRecords(uploadedInvoiceFileDTO,
 				uploadedInvoiceFileDTOResult.getId());
 		// baseDao.flush();
-		baseDao.executeUpdateNativeQuery(getMergeStatement(uploadedInvoiceFileDTOResult
-				.getId()));
+		baseDao.executeUpdateNativeQuery(getMergeStatement(
+				uploadedInvoiceFileDTOResult.getId(), year));
 		List<Object[]> result = null;
 		result = baseDao
 				.executeNativeQuery(getValidationQuery(uploadedInvoiceFileDTOResult
 						.getId()));
 
 		Object[] objects = result.get(0);
-		if (objects[0].toString().equalsIgnoreCase(objects[1].toString()))
+		if (objects[0].toString().equalsIgnoreCase(objects[1].toString())) {
+			baseDao.executeUpdateNativeQuery(getInsertIntoActualTableQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+
+			baseDao.executeUpdateNativeQuery(getDeleteFromTempTableQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+			baseDao.executeUpdateNativeQuery(getUpdateDataAsActualQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+
 			System.out.println("persist int the actual");
+		}
 
 		else {
 			System.out.println("not persist int the actual");
@@ -740,8 +809,8 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 	}
 
 	public UploadedInvoiceFileDTO updateInvoicesExcelSheet(
-			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName)
-			throws IOException {
+			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName,
+			String year) throws IOException {
 
 		// update master
 		UploadedInvoiceFileDTO uploadedInvoiceFileDTOResult = mapper.map(
@@ -768,8 +837,8 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 		saveInvoicesTempRecords(uploadedInvoiceFileDTO,
 				uploadedInvoiceFileDTOResult.getId());
 		// baseDao.flush();
-		baseDao.executeUpdateNativeQuery(getMergeStatement(uploadedInvoiceFileDTOResult
-				.getId()));
+		baseDao.executeUpdateNativeQuery(getMergeStatement(
+				uploadedInvoiceFileDTOResult.getId(), year));
 
 		List<Object[]> result = null;
 		result = baseDao
@@ -795,7 +864,9 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " )  , "
 				+ " ( "
 				+ " SELECT count(*)  as Number_Valid_records "
-				+ " FROM  INVOICES_TEMP where UPLOADED_INVOICE_FILE_ID= "+fileID+ " and "
+				+ " FROM  INVOICES_TEMP where UPLOADED_INVOICE_FILE_ID= "
+				+ fileID
+				+ " and "
 				+ " GENERAL_MANDATORY_VALID =1  and INVOICE_DATE_RANGE_VALID =1  and "
 				+ " AIR_MANDATORY_VALID =1  and OTHER_MANDATORY_VALID =1  and "
 				+ " INTER_DOM_VALID =1  and NUMBER_OF_NIGHTS_VALID =1  and  "
@@ -805,5 +876,34 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " INVOICE_NUMBER_VALID =1   ) ";
 
 		return q;
+	}
+
+	public String getInsertIntoActualTableQuery(int fileID) {
+		String query = "insert into INVOICES \n"
+				+ " (ID,INVOICE_ORDER,TRANSACTION_ID,INVOICE_NUMBER,BOOKING_FILE_NUMBER,DEPARTURE_DATE,ARRIVAL_DATE, \n"
+				+ " EMPLOYEE_ID,COST_CENTER,COST_CENTER_DEPARTMENT,PASSENGER_NAME,SERVICE_TYPE,SERVICE_DESC,ROUTING, \n"
+				+ " INTER_DOM,CHECK_IN,CHECK_OUT,NUMBER_OF_NIGHTS,NUMBER_OF_ROOMS,AIRLINE,ROOM_TYPE,SUPPLIER_NAME, \n"
+				+ " NET_AMOUNT,OPERATION_FEES,TOTAL_AMOUNT,TICKET_NO,TRAVEL_FORM_NUMBER,DESCRIPTION,FROM_DATE,TO_DATE, \n"
+				+ " UPLOADED_INVOICE_FILE_ID,EMPLOYEE_DEPARTMENT,INVOICE_DATE) \n"
+				+ " SELECT SEQ_INVOICES.nextval,INVOICE_ORDER,TRANSACTION_ID,INVOICE_NUMBER,BOOKING_FILE_NUMBER,DEPARTURE_DATE, \n"
+				+ " ARRIVAL_DATE,EMPLOYEE_ID,COST_CENTER,COST_CENTER_DEPARTMENT,PASSENGER_NAME,SERVICE_TYPE,SERVICE_DESC, \n"
+				+ " ROUTING,INTER_DOM,CHECK_IN,CHECK_OUT,NUMBER_OF_NIGHTS,NUMBER_OF_ROOMS,AIRLINE,ROOM_TYPE,SUPPLIER_NAME, \n"
+				+ " NET_AMOUNT,OPERATION_FEES,TOTAL_AMOUNT,TICKET_NO,TRAVEL_FORM_NUMBER,DESCRIPTION,FROM_DATE,TO_DATE, \n"
+				+ " UPLOADED_INVOICE_FILE_ID,EMPLOYEE_DEPARTMENT,INVOICE_DATE \n"
+				+ " from INVOICES_TEMP where UPLOADED_INVOICE_FILE_ID="
+				+ fileID + " \n";
+		return query;
+	}
+
+	public String getDeleteFromTempTableQuery(int fileID) {
+		String query = "delete from INVOICES_TEMP where UPLOADED_INVOICE_FILE_ID="
+				+ fileID;
+		return query;
+	}
+
+	public String getUpdateDataAsActualQuery(int fileID) {
+		String query = "update UPLOADED_INVOICE_FILE set TEMPLATE_TABLE=0 where ID="
+				+ fileID;
+		return query;
 	}
 }
