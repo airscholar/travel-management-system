@@ -78,6 +78,36 @@ public class InvoicesTempDTO implements Serializable {
 
 	private String employeeDepartment;
 
+	private Boolean generalMandatoryValid;
+
+	private Boolean invoiceDateRangeValid;
+
+	private Boolean airMandatoryValid;
+
+	private Boolean otherMandatoryValid;
+
+	private Boolean interDomValid;
+
+	private Boolean numberOfNightsValid;
+
+	private Boolean totalAmountValid;
+
+	private Boolean hotelMandatoryValid;
+
+	private Boolean serviceTypeValid;
+
+	private Boolean serviceDescriptionValid;
+
+	private Boolean supplierNameValid;
+
+	private Boolean airlineValid;
+
+	private Boolean roomTypeValid;
+
+	private Boolean invoiceNumberValid;
+	
+	private Boolean ratesCombinationValid;
+
 	public InvoicesTempDTO() {
 	}
 
@@ -362,6 +392,126 @@ public class InvoicesTempDTO implements Serializable {
 
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public Boolean getGeneralMandatoryValid() {
+		return generalMandatoryValid;
+	}
+
+	public void setGeneralMandatoryValid(Boolean generalMandatoryValid) {
+		this.generalMandatoryValid = generalMandatoryValid;
+	}
+
+	public Boolean getInvoiceDateRangeValid() {
+		return invoiceDateRangeValid;
+	}
+
+	public void setInvoiceDateRangeValid(Boolean invoiceDateRangeValid) {
+		this.invoiceDateRangeValid = invoiceDateRangeValid;
+	}
+
+	public Boolean getAirMandatoryValid() {
+		return airMandatoryValid;
+	}
+
+	public void setAirMandatoryValid(Boolean airMandatoryValid) {
+		this.airMandatoryValid = airMandatoryValid;
+	}
+
+	public Boolean getOtherMandatoryValid() {
+		return otherMandatoryValid;
+	}
+
+	public void setOtherMandatoryValid(Boolean otherMandatoryValid) {
+		this.otherMandatoryValid = otherMandatoryValid;
+	}
+
+	public Boolean getInterDomValid() {
+		return interDomValid;
+	}
+
+	public void setInterDomValid(Boolean interDomValid) {
+		this.interDomValid = interDomValid;
+	}
+
+	public Boolean getNumberOfNightsValid() {
+		return numberOfNightsValid;
+	}
+
+	public void setNumberOfNightsValid(Boolean numberOfNightsValid) {
+		this.numberOfNightsValid = numberOfNightsValid;
+	}
+
+	public Boolean getTotalAmountValid() {
+		return totalAmountValid;
+	}
+
+	public void setTotalAmountValid(Boolean totalAmountValid) {
+		this.totalAmountValid = totalAmountValid;
+	}
+
+	public Boolean getHotelMandatoryValid() {
+		return hotelMandatoryValid;
+	}
+
+	public void setHotelMandatoryValid(Boolean hotelMandatoryValid) {
+		this.hotelMandatoryValid = hotelMandatoryValid;
+	}
+
+	public Boolean getServiceTypeValid() {
+		return serviceTypeValid;
+	}
+
+	public void setServiceTypeValid(Boolean serviceTypeValid) {
+		this.serviceTypeValid = serviceTypeValid;
+	}
+
+	public Boolean getServiceDescriptionValid() {
+		return serviceDescriptionValid;
+	}
+
+	public void setServiceDescriptionValid(Boolean serviceDescriptionValid) {
+		this.serviceDescriptionValid = serviceDescriptionValid;
+	}
+
+	public Boolean getSupplierNameValid() {
+		return supplierNameValid;
+	}
+
+	public void setSupplierNameValid(Boolean supplierNameValid) {
+		this.supplierNameValid = supplierNameValid;
+	}
+
+	public Boolean getAirlineValid() {
+		return airlineValid;
+	}
+
+	public void setAirlineValid(Boolean airlineValid) {
+		this.airlineValid = airlineValid;
+	}
+
+	public Boolean getRoomTypeValid() {
+		return roomTypeValid;
+	}
+
+	public void setRoomTypeValid(Boolean roomTypeValid) {
+		this.roomTypeValid = roomTypeValid;
+	}
+
+	public Boolean getInvoiceNumberValid() {
+		return invoiceNumberValid;
+	}
+
+	public void setInvoiceNumberValid(Boolean invoiceNumberValid) {
+		this.invoiceNumberValid = invoiceNumberValid;
+	}
+
+	public Boolean getRatesCombinationValid() {
+		return ratesCombinationValid;
+	}
+
+	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
+		this.ratesCombinationValid = ratesCombinationValid;
 	}
 
 }

@@ -100,17 +100,18 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 					+ getUserName());
 			try {
 
-				System.out.println(uploadedInvoiceFileDTO.getName());
-				System.out.println(uploadedInvoiceFileDTO
-						.getInvoiceAttachmentDTOs().size());
+				uploadedInvoiceFileDTO = invoicesUploaderService
+						.uploadInvoicesExcelSheet(uploadedInvoiceFileDTO,
+								getUserName(), getYear(uploadedInvoiceFileDTO
+										.getInvoicesMonth()));
+				if (uploadedInvoiceFileDTO.getOperationMsg() != null) {
+					operationMessage = uploadedInvoiceFileDTO.getOperationMsg();
+					operationStatus = Status.FAIL;
+				} else {
+					operationMessage = "Invoice Excel Sheet Uploaded Successfully";
+					operationStatus = Status.SUCCESS;
+				}
 
-				// invoicesUploaderService.uploadInvoicesExcelSheet(event.getFile()
-				// .getInputstream(), fileName, fileType, getUserName());
-
-				invoicesUploaderService.uploadInvoicesExcelSheet(
-						uploadedInvoiceFileDTO, getUserName());
-				operationMessage = "Invoice Excel Sheet Uploaded Successfully";
-				operationStatus = Status.SUCCESS;
 				uploaded = true;
 				loggerService
 						.logPortalInfo("End uploadFile Successfully userName >> "
@@ -268,6 +269,20 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 	public void setUploadedInvoiceFileDTOs(
 			List<UploadedInvoiceFileDTO> uploadedInvoiceFileDTOs) {
 		this.uploadedInvoiceFileDTOs = uploadedInvoiceFileDTOs;
+	}
+
+	// --------
+	public void testStored() {
+		try {
+			invoicesUploaderService.testStored();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private String getYear(String dateStr) {
+		return dateStr.substring(3);
 	}
 
 }

@@ -9,11 +9,8 @@ import com.truemega.dto.UploadedInvoiceFileDTO;
 @Remote
 public interface InvoicesUploaderService {
 
-	public void uploadInvoicesExcelSheet(InputStream ins, String fileName,
-			String fileType, String userName) throws Exception;
-
-	public void uploadInvoicesExcelSheet(
-			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName)
+	public UploadedInvoiceFileDTO uploadInvoicesExcelSheet(
+			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName,String year)
 			throws Exception;
 
 	public void testStored() throws Exception;

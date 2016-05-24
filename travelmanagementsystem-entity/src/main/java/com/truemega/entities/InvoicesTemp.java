@@ -93,10 +93,41 @@ public class InvoicesTemp implements Serializable {
 	@Column(name = "INVOICE_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invoiceDate;
-	
+
 	@JoinColumn(name = "UPLOADED_INVOICE_FILE_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private UploadedInvoiceFile uploadedInvoiceFileId;
+
+	@Column(name = "GENERAL_MANDATORY_VALID")
+	private Boolean generalMandatoryValid = true;
+	@Column(name = "INVOICE_DATE_RANGE_VALID")
+	private Boolean invoiceDateRangeValid = true;
+	@Column(name = "AIR_MANDATORY_VALID")
+	private Boolean airMandatoryValid = true;
+	@Column(name = "OTHER_MANDATORY_VALID")
+	private Boolean otherMandatoryValid = true;
+	@Column(name = "INTER_DOM_VALID")
+	private Boolean interDomValid = true;
+	@Column(name = "NUMBER_OF_NIGHTS_VALID")
+	private Boolean numberOfNightsValid = true;
+	@Column(name = "TOTAL_AMOUNT_VALID")
+	private Boolean totalAmountValid = true;
+	@Column(name = "HOTEL_MANDATORY_VALID")
+	private Boolean hotelMandatoryValid = true;
+	@Column(name = "SERVICE_TYPE_VALID")
+	private Boolean serviceTypeValid = true;
+	@Column(name = "SERVICE_DESC_VALID")
+	private Boolean serviceDescriptionValid = true;
+	@Column(name = "SUPPLIER_NAME_VALID")
+	private Boolean supplierNameValid = true;
+	@Column(name = "AIRLINE_VALID")
+	private Boolean airlineValid = true;
+	@Column(name = "ROOM_TYPE_VALID")
+	private Boolean roomTypeValid = true;
+	@Column(name = "INVOICE_NUMBER_VALID")
+	private Boolean invoiceNumberValid = true;
+	@Column(name = "RATES_COMBINATION_VALID")
+	private Boolean ratesCombinationValid = true;
 
 	public InvoicesTemp() {
 	}
@@ -385,6 +416,126 @@ public class InvoicesTemp implements Serializable {
 
 	public void setInvoiceDate(Date invoiceDate) {
 		this.invoiceDate = invoiceDate;
+	}
+
+	public Boolean getGeneralMandatoryValid() {
+		return generalMandatoryValid;
+	}
+
+	public void setGeneralMandatoryValid(Boolean generalMandatoryValid) {
+		this.generalMandatoryValid = generalMandatoryValid;
+	}
+
+	public Boolean getInvoiceDateRangeValid() {
+		return invoiceDateRangeValid;
+	}
+
+	public void setInvoiceDateRangeValid(Boolean invoiceDateRangeValid) {
+		this.invoiceDateRangeValid = invoiceDateRangeValid;
+	}
+
+	public Boolean getAirMandatoryValid() {
+		return airMandatoryValid;
+	}
+
+	public void setAirMandatoryValid(Boolean airMandatoryValid) {
+		this.airMandatoryValid = airMandatoryValid;
+	}
+
+	public Boolean getOtherMandatoryValid() {
+		return otherMandatoryValid;
+	}
+
+	public void setOtherMandatoryValid(Boolean otherMandatoryValid) {
+		this.otherMandatoryValid = otherMandatoryValid;
+	}
+
+	public Boolean getInterDomValid() {
+		return interDomValid;
+	}
+
+	public void setInterDomValid(Boolean interDomValid) {
+		this.interDomValid = interDomValid;
+	}
+
+	public Boolean getNumberOfNightsValid() {
+		return numberOfNightsValid;
+	}
+
+	public void setNumberOfNightsValid(Boolean numberOfNightsValid) {
+		this.numberOfNightsValid = numberOfNightsValid;
+	}
+
+	public Boolean getTotalAmountValid() {
+		return totalAmountValid;
+	}
+
+	public void setTotalAmountValid(Boolean totalAmountValid) {
+		this.totalAmountValid = totalAmountValid;
+	}
+
+	public Boolean getHotelMandatoryValid() {
+		return hotelMandatoryValid;
+	}
+
+	public void setHotelMandatoryValid(Boolean hotelMandatoryValid) {
+		this.hotelMandatoryValid = hotelMandatoryValid;
+	}
+
+	public Boolean getServiceTypeValid() {
+		return serviceTypeValid;
+	}
+
+	public void setServiceTypeValid(Boolean serviceTypeValid) {
+		this.serviceTypeValid = serviceTypeValid;
+	}
+
+	public Boolean getServiceDescriptionValid() {
+		return serviceDescriptionValid;
+	}
+
+	public void setServiceDescriptionValid(Boolean serviceDescriptionValid) {
+		this.serviceDescriptionValid = serviceDescriptionValid;
+	}
+
+	public Boolean getSupplierNameValid() {
+		return supplierNameValid;
+	}
+
+	public void setSupplierNameValid(Boolean supplierNameValid) {
+		this.supplierNameValid = supplierNameValid;
+	}
+
+	public Boolean getAirlineValid() {
+		return airlineValid;
+	}
+
+	public void setAirlineValid(Boolean airlineValid) {
+		this.airlineValid = airlineValid;
+	}
+
+	public Boolean getRoomTypeValid() {
+		return roomTypeValid;
+	}
+
+	public void setRoomTypeValid(Boolean roomTypeValid) {
+		this.roomTypeValid = roomTypeValid;
+	}
+
+	public Boolean getInvoiceNumberValid() {
+		return invoiceNumberValid;
+	}
+
+	public void setInvoiceNumberValid(Boolean invoiceNumberValid) {
+		this.invoiceNumberValid = invoiceNumberValid;
+	}
+
+	public Boolean getRatesCombinationValid() {
+		return ratesCombinationValid;
+	}
+
+	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
+		this.ratesCombinationValid = ratesCombinationValid;
 	}
 
 }

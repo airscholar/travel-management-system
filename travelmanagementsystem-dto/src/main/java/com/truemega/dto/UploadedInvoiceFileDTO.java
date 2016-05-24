@@ -41,8 +41,10 @@ public class UploadedInvoiceFileDTO implements Serializable {
 	private List<InvoiceAttachmentDTO> invoiceAttachmentDTOs = new ArrayList<InvoiceAttachmentDTO>();
 
 	private Boolean templateTable = true;
-	
+
 	private String invoicesMonth;
+
+	private String operationMsg;
 
 	public UploadedInvoiceFileDTO() {
 	}
@@ -186,6 +188,14 @@ public class UploadedInvoiceFileDTO implements Serializable {
 
 	public void setInvoicesMonth(String invoicesMonth) {
 		this.invoicesMonth = invoicesMonth;
+	}
+
+	public String getOperationMsg() {
+		return operationMsg;
+	}
+
+	public void setOperationMsg(String operationMsg) {
+		this.operationMsg = operationMsg;
 	}
 
 }

@@ -17,8 +17,16 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header"></div>
-					<div class="col-md-10 col-lg-10">
-					</div>
+					<div class="col-md-10 col-lg-10"></div>
+					<h:form>
+						<h:commandButton id="testStored" value="testStored"
+							actionListener="#{test.testStored}"
+							styleClass="btn btn-default">
+							<f:ajax execute="@form" render="@form" />
+						</h:commandButton>
+					</h:form>
+
+					
 				</div>
 			</div>
 

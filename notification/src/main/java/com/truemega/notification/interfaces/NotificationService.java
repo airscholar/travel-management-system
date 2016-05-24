@@ -21,4 +21,7 @@ public interface NotificationService {
 	public void sendEMail(String body, String subject, String to,
 			List<String> attachments);
 
+	public void sendEMail(String body, String subject, List<String> ccs,
+			String to);
+
 }
