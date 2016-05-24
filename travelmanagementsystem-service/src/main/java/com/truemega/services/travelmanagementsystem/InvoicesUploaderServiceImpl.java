@@ -22,15 +22,20 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.truemega.dao.GenericDAO;
+import com.truemega.dto.ConfigDTO;
 import com.truemega.dto.InvoiceAttachmentDTO;
 import com.truemega.dto.UploadedInvoiceFileDTO;
 import com.truemega.dto.utils.UploadStatus;
 import com.truemega.entities.InvoiceAttachment;
 import com.truemega.entities.InvoicesTemp;
 import com.truemega.entities.UploadedInvoiceFile;
+import com.truemega.interfaces.administration.TMSConfigService;
+import com.truemega.interfaces.notification.UploadNotificationSender;
 import com.truemega.interfaces.travelmanagementsystem.InvoicesUploaderService;
 import com.truemega.logger.LoggerService;
+import com.truemega.lookups.TravelConfigEnum;
 import com.truemega.mapping.MappingFactory;
+import com.truemega.notification.interfaces.NotificationService;
 
 @Stateless
 public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
@@ -45,12 +50,20 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 
 	private Workbook wb;
 
+	@EJB
+	private NotificationService notificationService;
+
+	@EJB
+	private TMSConfigService configService;
+
+	@EJB
+	private UploadNotificationSender uploadNotificationSender;
+
 	Calendar cal = Calendar.getInstance();
 
 	@PostConstruct
 	public void init() {
-		System.out.println("####");
-		System.out.println("Count Var ");
+
 	}
 
 	private InvoicesTemp getInvoicesTempRecord(Integer invoiceOrder,
@@ -798,6 +811,8 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 			baseDao.executeUpdateNativeQuery(getUpdateDataAsActualQuery(uploadedInvoiceFileDTOResult
 					.getId()));
 
+			sendNotifications(uploadedInvoiceFileDTOResult.getInvoicesMonth(),
+					uploadedInvoiceFileDTOResult.getId(), year);
 			System.out.println("persist int the actual");
 		}
 
@@ -846,8 +861,20 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 						.getId()));
 
 		Object[] objects = result.get(0);
-		if (objects[0].toString().equalsIgnoreCase(objects[1].toString()))
+		if (objects[0].toString().equalsIgnoreCase(objects[1].toString())) {
+			baseDao.executeUpdateNativeQuery(getInsertIntoActualTableQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+
+			baseDao.executeUpdateNativeQuery(getDeleteFromTempTableQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+			baseDao.executeUpdateNativeQuery(getUpdateDataAsActualQuery(uploadedInvoiceFileDTOResult
+					.getId()));
+
+			sendNotifications(uploadedInvoiceFileDTOResult.getInvoicesMonth(),
+					uploadedInvoiceFileDTOResult.getId(), year);
+
 			System.out.println("persist int the actual");
+		}
 
 		else {
 			System.out.println("not persist int the actual");
@@ -873,7 +900,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ " TOTAL_AMOUNT_VALID =1  and HOTEL_MANDATORY_VALID =1  and "
 				+ " SERVICE_TYPE_VALID =1  and SERVICE_DESC_VALID =1  and  "
 				+ " SUPPLIER_NAME_VALID =1  and AIRLINE_VALID =1  and ROOM_TYPE_VALID =1  and "
-				+ " INVOICE_NUMBER_VALID =1   ) ";
+				+ " INVOICE_NUMBER_VALID =1 and RATES_COMBINATION_VALID =1   ) ";
 
 		return q;
 	}
@@ -905,5 +932,42 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 		String query = "update UPLOADED_INVOICE_FILE set TEMPLATE_TABLE=0 where ID="
 				+ fileID;
 		return query;
+	}
+
+	private void sendNotifications(String month, int fileID, String year) {
+		ConfigDTO configDTO = null;
+
+		configDTO = configService.findConfigurationByName(
+				TravelConfigEnum.TravelTeam.toString(), "");
+		String to = configDTO.getConfigValue();
+
+		configDTO = configService.findConfigurationByName(
+				TravelConfigEnum.AgentTeam.toString(), "");
+		String toAgentTeam = configDTO.getConfigValue();
+		// //
+		uploadNotificationSender.sendNotificationInvoiceUploaded(month, to);
+		uploadNotificationSender
+				.sendNotificationNotificationReservationUnknownHotel(month, to,
+						fileID);
+		uploadNotificationSender.sendNotificationMaxInsurancePeriod(month, to,
+				fileID);
+
+		uploadNotificationSender.sendNotificationMaxVisaPeriod(month, to,
+				fileID);
+
+		uploadNotificationSender.sendNotificationMaxAirLineTicket(month, to,
+				fileID);
+
+		uploadNotificationSender.sendNotificationMinAirLineTicket(month, to,
+				fileID);
+
+		uploadNotificationSender
+				.sendNotificationHotelRateAbovePreNegotiatedRates(month, to,
+						fileID, year);
+
+		uploadNotificationSender
+				.sendNotificationHotelRateBelowPreNegotiatedRates(month, to,
+						fileID, year);
+
 	}
 }
