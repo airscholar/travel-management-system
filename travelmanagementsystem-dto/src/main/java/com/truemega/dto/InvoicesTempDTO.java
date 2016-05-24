@@ -105,6 +105,8 @@ public class InvoicesTempDTO implements Serializable {
 	private Boolean roomTypeValid;
 
 	private Boolean invoiceNumberValid;
+	
+	private Boolean ratesCombinationValid;
 
 	public InvoicesTempDTO() {
 	}
@@ -502,6 +504,14 @@ public class InvoicesTempDTO implements Serializable {
 
 	public void setInvoiceNumberValid(Boolean invoiceNumberValid) {
 		this.invoiceNumberValid = invoiceNumberValid;
+	}
+
+	public Boolean getRatesCombinationValid() {
+		return ratesCombinationValid;
+	}
+
+	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
+		this.ratesCombinationValid = ratesCombinationValid;
 	}
 
 }
