@@ -72,17 +72,14 @@ public class UserPrivilegesBean extends TravelSingleBean {
 				tmsuserScreensDTO = new TraveluserScreensDTO();
 				tmsUserDTO = userService.findEmployeeById(employeeId,
 						getUserName());
-				SystemScreensDTO screensDTO = userService.findSystemScreenByID(
-						screenId, getUserName());
-				tmsuserScreensDTO.setScreen(screensDTO);
-				tmsuserScreensDTO.setEmployee(tmsUserDTO);
-				tmsuserScreensDTO.setAddMode(false);
-				tmsuserScreensDTO.setDeleteMode(false);
-				tmsuserScreensDTO.setEditMode(false);
-				tmsuserScreensDTO.setViewMode(false);
-				userService
-						.saveEmployeeScreen(tmsuserScreensDTO, getUserName());
-
+				if (screenId == null) {
+					for (int i = 0; i < systemScreens.size(); i++) {
+						assignScreenToEmployee(systemScreens.get(i)
+								.getScreenId());
+					}
+				} else {
+					assignScreenToEmployee(screenId);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				operationStatus = Status.FAIL;
@@ -100,6 +97,18 @@ public class UserPrivilegesBean extends TravelSingleBean {
 			screen.statusMessage = "This user is Exsit.";
 		}
 		loggerService.logPortalInfo(" end save method of UserPrivilegesBean ");
+	}
+
+	private void assignScreenToEmployee(Integer screenId) {
+		SystemScreensDTO screensDTO = userService.findSystemScreenByID(
+				screenId, getUserName());
+		tmsuserScreensDTO.setScreen(screensDTO);
+		tmsuserScreensDTO.setEmployee(tmsUserDTO);
+		tmsuserScreensDTO.setAddMode(false);
+		tmsuserScreensDTO.setDeleteMode(false);
+		tmsuserScreensDTO.setEditMode(false);
+		tmsuserScreensDTO.setViewMode(false);
+		userService.saveEmployeeScreen(tmsuserScreensDTO, getUserName());
 	}
 
 	public void updateUserStatus(AjaxBehaviorEvent event) {
@@ -173,6 +182,103 @@ public class UserPrivilegesBean extends TravelSingleBean {
 	public boolean validate() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public void removeAllScreensFromEmployee() {
+		loggerService
+				.logPortalInfo(" start removeAllScreensFromEmployee method of UserPrivilegesBean ");
+		try {
+			for (int i = 0; i < systemScreens.size(); i++) {
+				userService.deleteEmployeeScreen(tmsuserScreensDTOs.get(i),
+						getUserName());
+			}
+			load();
+		} catch (Exception e) {
+			loggerService.logPortalError(
+					"can't removeAllScreensFromEmployee  ", e);
+		}
+		loggerService
+				.logPortalInfo(" end removeAllScreensFromEmployee method of UserPrivilegesBean ");
+	}
+
+	public void selectAllprivilege() {
+		loggerService
+				.logPortalInfo(" start selectAllprivilege method of UserPrivilegesBean ");
+		try {
+			for (int i = 0; i < tmsuserScreensDTOs.size(); i++) {
+				TraveluserScreensDTO targetScreen = tmsuserScreensDTOs.get(i);
+				targetScreen.setAddMode(true);
+				targetScreen.setEditMode(true);
+				targetScreen.setDeleteMode(true);
+				targetScreen.setViewMode(true);
+				userService.updateEmployeeScreen(targetScreen, getUserName());
+			}
+		} catch (Exception e) {
+			loggerService
+					.logPortalInfo(" end selectAllprivilege method of UserPrivilegesBean ");
+		}
+
+		loggerService
+				.logPortalInfo(" end selectAllprivilege method of UserPrivilegesBean ");
+	}
+
+	public void unSelectAllprivilege() {
+		loggerService
+				.logPortalInfo(" start unSelectAllprivilege method of UserPrivilegesBean ");
+		try {
+			for (int i = 0; i < tmsuserScreensDTOs.size(); i++) {
+				TraveluserScreensDTO targetScreen = tmsuserScreensDTOs.get(i);
+				targetScreen.setAddMode(false);
+				targetScreen.setEditMode(false);
+				targetScreen.setDeleteMode(false);
+				targetScreen.setViewMode(false);
+				userService.updateEmployeeScreen(targetScreen, getUserName());
+			}
+		} catch (Exception e) {
+			loggerService
+					.logPortalInfo(" end unSelectAllprivilege method of UserPrivilegesBean ");
+		}
+
+		loggerService
+				.logPortalInfo(" end unSelectAllprivilege method of UserPrivilegesBean ");
+	}
+
+	public void checkAll(AjaxBehaviorEvent event) {
+		loggerService
+				.logPortalInfo(" start checkAll method of UserPrivilegesBean ");
+		try {
+			TraveluserScreensDTO targetScreen = (TraveluserScreensDTO) event
+					.getComponent().getAttributes().get("targetscreen");
+			targetScreen.setAddMode(true);
+			targetScreen.setEditMode(true);
+			targetScreen.setDeleteMode(true);
+			targetScreen.setViewMode(true);
+			userService.updateEmployeeScreen(targetScreen, getUserName());
+		} catch (Exception e) {
+			loggerService.logPortalError("can't checkAll  ", e);
+		}
+
+		loggerService
+				.logPortalInfo(" end checkAll method of UserPrivilegesBean ");
+	}
+
+	public void unCheckAll(AjaxBehaviorEvent event) {
+		loggerService
+				.logPortalInfo(" start unCheckAll method of UserPrivilegesBean ");
+		try {
+			TraveluserScreensDTO targetScreen = (TraveluserScreensDTO) event
+					.getComponent().getAttributes().get("targetscreen");
+			targetScreen.setAddMode(false);
+			targetScreen.setEditMode(false);
+			targetScreen.setDeleteMode(false);
+			targetScreen.setViewMode(false);
+			userService.updateEmployeeScreen(targetScreen, getUserName());
+		} catch (Exception e) {
+			loggerService.logPortalError("can't unCheckAll  ", e);
+		}
+
+		loggerService
+				.logPortalInfo(" end unCheckAll method of UserPrivilegesBean ");
 	}
 
 	public boolean isFlag() {
