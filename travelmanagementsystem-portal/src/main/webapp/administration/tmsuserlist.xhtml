@@ -58,11 +58,17 @@
 							<p:column headerText="Employee Account Name">
 								<h:outputText value="#{usermodel.accountname}" />
 							</p:column>
+
+							<p:column headerText="User Type">
+								<h:outputText value="#{usermodel.employeeType}" />
+							</p:column>
+
+
 							<p:column headerText="Employee Status">
 								<center>
 									<h:form>
 										<p:selectBooleanCheckbox value="#{usermodel.status}">
-											<p:ajax listener="#{userlist.changeStatus}"  />
+											<p:ajax listener="#{userlist.changeStatus}" />
 											<f:attribute name="user" value="#{usermodel}" />
 										</p:selectBooleanCheckbox>
 									</h:form>

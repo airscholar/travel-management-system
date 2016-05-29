@@ -24,7 +24,7 @@
 					</div>
 					<div class="col-md-12 col-lg-12 ">
 						<h:form styleClass="form-horizontal" id="formID">
-						<h:messages id="messages" showDetail="true" />
+							<h:messages id="messages" showDetail="true" />
 							<c:if
 								test="#{userPRV.screenMode == 'VIEW' and userPRV.operationStatus == 'SUCCESS'}">
 								<div class="form-group">
@@ -60,91 +60,151 @@
 									</div>
 								</div>
 							</c:if>
-							 
+
 							<div class="form-group">
 								<h:outputLabel value="Select User"
 									styleClass="control-label col-xs-2" />
 								<div class="col-xs-3">
-									<h:selectOneMenu styleClass="form-control" value="#{userPRV.employeeId}" >
-										<f:selectItems value="#{userPRV.roadUserList}" var="user" itemLabel="#{user.fullname}" itemValue="#{user.employeeId}"/>
-										<f:ajax event="change" listener="#{userPRV.getUserScreens}" render="screensList screensTable"/>
-									</h:selectOneMenu>
-								</div>
-							</div>
-							 
-							<div class="form-group">
-								<h:outputLabel value="Screen Name"
-									styleClass="control-label col-xs-2" />
-								<div class="col-xs-3">
-									<h:selectOneMenu id="screensList" styleClass="form-control" value="#{userPRV.screenId}" >
-										<f:selectItems value="#{userPRV.systemScreens}" var="screen" itemLabel="#{screen.screenName}" itemValue="#{screen.screenId}"/>
+									<h:selectOneMenu styleClass="form-control"
+										value="#{userPRV.employeeId}">
+										<f:selectItems value="#{userPRV.roadUserList}" var="user"
+											itemLabel="#{user.fullname}" itemValue="#{user.employeeId}" />
+										<f:ajax event="change" listener="#{userPRV.getUserScreens}"
+											render="screensList screensTable" />
 									</h:selectOneMenu>
 								</div>
 							</div>
 
 							<div class="form-group">
-								<div class="col-xs-offset-2 col-xs-6">																		
-										<h:commandButton id="submitButton" value="Save"
-											actionListener="#{userPRV.save}" styleClass="btn btn-default" >
-											<f:ajax execute="@form" render="screensList screensTable"/>
-										</h:commandButton>										
+								<h:outputLabel value="Screen Name"
+									styleClass="control-label col-xs-2" />
+								<div class="col-xs-3">
+									<h:selectOneMenu id="screensList" styleClass="form-control"
+										value="#{userPRV.screenId}">
+										<f:selectItem itemLabel="All" />
+										<f:selectItems value="#{userPRV.systemScreens}" var="screen"
+											itemLabel="#{screen.screenName}"
+											itemValue="#{screen.screenId}" />
+									</h:selectOneMenu>
 								</div>
 							</div>
-							<br/><br/>
+
+							<div class="form-group">
+								<div class="col-xs-offset-2 col-xs-6">
+									<h:commandButton id="submitButton" value="Save"
+										actionListener="#{userPRV.save}" styleClass="btn btn-default">
+										<f:ajax execute="@form" render="screensList screensTable" />
+									</h:commandButton>
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<div class="col-xs-offset-6">
+									<h:commandLink styleClass="btn btn-default">
+										<span class="glyphicon glyphicon-trash" />
+										Remove All
+										<p:ajax listener="#{userPRV.removeAllScreensFromEmployee}"
+											update=":formID:screensTable :formID:screensList" />
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-default"
+										style="margin-left:10px">
+										<span class="glyphicon glyphicon-ok" />
+										Check All
+										<p:ajax listener="#{userPRV.selectAllprivilege}"
+											update=":formID:screensTable" />
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-default"
+										style="margin-left:10px">
+										<span class="glyphicon glyphicon-remove" />
+										<p:ajax listener="#{userPRV.unSelectAllprivilege}"
+											update=":formID:screensTable" />
+										Uncheck All
+									</h:commandLink>
+								</div>
+							</div>
 							<!-- List companys Data Table-->
 							<div class="col-md-12" id="tableDiv">
-								<p:dataTable var="screen" value="#{userPRV.rmsuserScreensDTOs}"				
-									 id="screensTable"	
-									scrollable="true" scrollRows="20">
+								<p:dataTable var="screen" value="#{userPRV.tmsuserScreensDTOs}"
+									id="screensTable" scrollable="true" scrollRows="20">
 									<p:column headerText="Screen Name" width="40%">
-										<h:outputLabel value="#{screen.screen.screenName}"/>
+										<h:outputLabel value="#{screen.screen.screenName}" />
 									</p:column>
 									<p:column headerText="Add">
 										<center>
-										<p:selectBooleanCheckbox  value="#{screen.addMode}">
-											<p:ajax  listener="#{userPRV.updateUserStatus}" update="screensTable :formID:messages"/> 
-											<f:attribute name="targetscreen" value="#{screen}" />
-										</p:selectBooleanCheckbox>
+											<p:selectBooleanCheckbox value="#{screen.addMode}">
+												<p:ajax listener="#{userPRV.updateUserStatus}"
+													update="screensTable :formID:messages" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</p:selectBooleanCheckbox>
 										</center>
 									</p:column>
 									<p:column headerText="Edit">
 										<center>
-										<p:selectBooleanCheckbox  value="#{screen.editMode}">
-											<p:ajax  listener="#{userPRV.updateUserStatus}" update="screensTable :formID:messages"/> 
-											<f:attribute name="targetscreen" value="#{screen}" />
-										</p:selectBooleanCheckbox>
+											<p:selectBooleanCheckbox value="#{screen.editMode}">
+												<p:ajax listener="#{userPRV.updateUserStatus}"
+													update="screensTable :formID:messages" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</p:selectBooleanCheckbox>
 										</center>
 									</p:column>
 									<p:column headerText="Status">
 										<center>
-										<p:selectBooleanCheckbox  value="#{screen.deleteMode}">
-											<p:ajax  listener="#{userPRV.updateUserStatus}" update="screensTable :formID:messages"/> 
-											<f:attribute name="targetscreen" value="#{screen}" />
-										</p:selectBooleanCheckbox>
+											<p:selectBooleanCheckbox value="#{screen.deleteMode}">
+												<p:ajax listener="#{userPRV.updateUserStatus}"
+													update="screensTable :formID:messages" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</p:selectBooleanCheckbox>
 										</center>
 									</p:column>
 									<p:column headerText="View">
 										<center>
-										<p:selectBooleanCheckbox  value="#{screen.viewMode}">
-											<p:ajax  listener="#{userPRV.updateUserStatus}" update="screensTable :formID:messages"/> 
-											<f:attribute name="targetscreen" value="#{screen}" />
-										</p:selectBooleanCheckbox>
+											<p:selectBooleanCheckbox value="#{screen.viewMode}">
+												<p:ajax listener="#{userPRV.updateUserStatus}"
+													update="screensTable :formID:messages" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</p:selectBooleanCheckbox>
 										</center>
 									</p:column>
+
 									<p:column headerText="Remove">
 										<center>
-										<h:commandButton value="Remove" actionListener="#{userPRV.removeScreen}">											
-											<f:attribute name="targetscreen" value="#{screen}" />																																
-										</h:commandButton>
+											<h:commandLink actionListener="#{userPRV.removeScreen}">
+												<span class="fa fa-trash-o fa-fw" style="font-size: 20px;"></span>
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</h:commandLink>
+										</center>
+									</p:column>
+									<p:column headerText="Check All">
+										<center>
+											<h:commandLink>
+												<span class="glyphicon glyphicon-ok-circle"
+													style="font-size: 20px;"></span>
+												<p:ajax listener="#{userPRV.checkAll}"
+													update=":formID:screensTable" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</h:commandLink>
+										</center>
+									</p:column>
+									<p:column headerText="Uncheck All">
+										<center>
+											<h:commandLink>
+												<span class="glyphicon glyphicon-remove-circle"
+													style="font-size: 20px;"></span>
+												<p:ajax listener="#{userPRV.unCheckAll}"
+													update=":formID:screensTable" />
+												<f:attribute name="targetscreen" value="#{screen}" />
+											</h:commandLink>
 										</center>
 									</p:column>
 								</p:dataTable>
-							</div>							
+							</div>
 						</h:form>
 					</div>
 				</div>
 			</div>
-			<br/><br/>
+			<br />
+			<br />
 		</ui:define>
 	</ui:composition>
 </h:body>
