@@ -214,7 +214,7 @@ public class UUIDDemo {
 		// uuidDemo.getMergeStatement(x);
 		// System.out.println(x);
 
-		System.out.println(uuidDemo.getMergeStatement(121, "2016"));
+		System.out.println(uuidDemo.getMergeStatement(162, "2015"));
 
 		// creating UUID
 		// UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
