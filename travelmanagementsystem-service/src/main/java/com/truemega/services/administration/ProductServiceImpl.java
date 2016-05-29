@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 
 import com.truemega.dao.GenericDAO;
 import com.truemega.dto.ProductTypeDTO;
+import com.truemega.dto.ServiceTypeDTO;
 import com.truemega.entities.ProductType;
 import com.truemega.interfaces.administration.ProductService;
 import com.truemega.logger.LoggerService;
@@ -182,7 +183,22 @@ public class ProductServiceImpl implements ProductService {
 			loggerService.logServiceError("can't  getAllProduct ", e);
 			return null;
 		}
-	
+
+	}
+
+	@Override
+	public List<ProductTypeDTO> getProductsByService(
+			ServiceTypeDTO serviceTypeDTO) {
+
+		loggerService.logServiceInfo("Start  getProductsByService Method");
+
+		String query = "select model from ProductType model where model.serviceId.id =  "
+				+ serviceTypeDTO.getId();
+		List<ProductType> result = baseDao.findListByQuery(query);
+
+		loggerService.logServiceInfo("End  getAllProduct Method");
+		return mapper.mapAsList(result, ProductTypeDTO.class);
+
 	}
 
 }
