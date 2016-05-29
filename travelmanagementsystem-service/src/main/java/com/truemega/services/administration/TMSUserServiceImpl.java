@@ -76,8 +76,8 @@ public class TMSUserServiceImpl implements TMSUserService {
 						+ employeeId + "userName  " + userName);
 		TravelUserDTO result = null;
 		try {
-			TravelUser employee = baseDao
-					.findEntityById(TravelUser.class, employeeId);
+			TravelUser employee = baseDao.findEntityById(TravelUser.class,
+					employeeId);
 			result = mapper.map(employee, TravelUserDTO.class);
 		} catch (Exception e) {
 			loggerService.logServiceError("can't findEmployeeById  ", e);
@@ -87,7 +87,8 @@ public class TMSUserServiceImpl implements TMSUserService {
 	}
 
 	@Override
-	public TravelUserDTO findEmployeeByStaffID(Integer employeeId, String userName) {
+	public TravelUserDTO findEmployeeByStaffID(Integer employeeId,
+			String userName) {
 		loggerService
 				.logServiceInfo("Start findEmployeeByStaffID Method with  employeeId "
 						+ employeeId + "userName  " + userName);
@@ -117,8 +118,8 @@ public class TMSUserServiceImpl implements TMSUserService {
 				+ status + "userName  " + userName);
 		try {
 
-			String query = "update TravelUser model set model.status =" + status
-					+ " where model.employeeId=" + userId;
+			String query = "update TravelUser model set model.status ="
+					+ status + " where model.employeeId=" + userId;
 			baseDao.executeDynamicQuery(query, TravelUser.class, true);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -128,8 +129,8 @@ public class TMSUserServiceImpl implements TMSUserService {
 	}
 
 	@Override
-	public List<TraveluserScreensDTO> findAllUserPrivileges(Integer travelUserID,
-			String userName) {
+	public List<TraveluserScreensDTO> findAllUserPrivileges(
+			Integer travelUserID, String userName) {
 		loggerService
 				.logServiceInfo("Start findAllUserPrivileges Method with  travelUserID "
 						+ travelUserID + "userName  " + userName);
@@ -164,13 +165,15 @@ public class TMSUserServiceImpl implements TMSUserService {
 		List<SystemScreensDTO> systemScreensDTOs = new ArrayList<SystemScreensDTO>();
 		List<SystemScreens> systemScreens;
 		try {
-			List<Integer> screensIDs = null;
-			String firstQuery = "select e.screen.screenId from TraveluserScreens e where e.employee.employeeId="
-					+ employeeId;
-			screensIDs = baseDao.findListByQuery(firstQuery);
-			String query = "select s from SystemScreens as s where s.screenId NOT IN (:empScreensList) ";
+			// List<Integer> screensIDs = null;
+			// String firstQuery =
+			// "select e.screen.screenId from TraveluserScreens e where e.employee.employeeId="
+			// + employeeId;
+			// screensIDs = baseDao.findListByQuery(firstQuery);
+			String query = "select s from SystemScreens as s where s.screenId NOT IN (select e.screen.screenId from TraveluserScreens e where e.employee.employeeId="
+					+ employeeId + ") ";
 			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put("empScreensList", screensIDs);
+			// parameters.put("empScreensList", screensIDs);
 			systemScreens = baseDao.findListByQuery(query, parameters);
 			systemScreensDTOs = mapper.mapAsList(systemScreens,
 					SystemScreensDTO.class);
@@ -263,7 +266,8 @@ public class TMSUserServiceImpl implements TMSUserService {
 						+ Id + "userName  " + userName);
 		TraveluserScreens employeeScreens = null;
 		try {
-			employeeScreens = baseDao.findEntityById(TraveluserScreens.class, Id);
+			employeeScreens = baseDao.findEntityById(TraveluserScreens.class,
+					Id);
 		} catch (Exception e) {
 			loggerService.logServiceError("can't findEmployeeScreensByID ", e);
 		}
