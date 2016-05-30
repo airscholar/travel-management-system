@@ -1,6 +1,8 @@
 package com.truemega.report;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -60,6 +62,9 @@ public class RatesComparisonReport extends TravelReportBean {
 	private AirLineConverter airLineConverter;
 
 	private String year;
+
+	private String toMonth;
+	private String fromMonth;
 
 	private LoggerService loggerService = new LoggerService();
 
@@ -225,8 +230,29 @@ public class RatesComparisonReport extends TravelReportBean {
 					+ " INVOICES_TEMP.SUPPLIER_NAME, \n"
 					+ " NVL(to_char(INVOICES_TEMP.NET_AMOUNT/((INVOICES_TEMP.CHECK_OUT-INVOICES_TEMP.CHECK_IN)+1), '9999999999999.99'),'0')  AS HOTEL_RATE, \n"
 					+ " NVL(to_char(INVOICES_TEMP.NET_AMOUNT/((INVOICES_TEMP.TO_DATE-INVOICES_TEMP.FROM_DATE)+1), '9999999999999.99'),'0') AS INSURANCE_RATE, \n"
-					+ " NVL(INVOICES_TEMP.NET_AMOUNT,0) AS RATE \n"
-					+ " FROM INVOICES_TEMP ";
+					+ " NVL(INVOICES_TEMP.NET_AMOUNT,0) AS RATE, \n"
+					+ " UPLOADED_INVOICE_FILE.INVOICES_MONTH AS  INVOICES_MONTH, \n"
+					+ " RATES_VIEW.RATE       AS PRE_NEGOTIATED \n"
+					+ " FROM INVOICES_TEMP  INNER JOIN UPLOADED_INVOICE_FILE \n"
+					+ " ON UPLOADED_INVOICE_FILE.ID=INVOICES_TEMP.UPLOADED_INVOICE_FILE_ID";
+
+			if (toMonth != null && toMonth.length() > 0) {
+				Date toDate = convertStringToDate("01/" + toMonth);
+				queury += " and to_date (UPLOADED_INVOICE_FILE.INVOICES_MONTH, 'MM/YYYY') <= TO_DATE ('"
+						+ dateToString(toDate) + "', 'yyyy-MM-dd') ";
+			}
+
+			if (fromMonth != null && fromMonth.length() > 0) {
+				Date fromDate = convertStringToDate("01/" + fromMonth);
+				queury += " and to_date (UPLOADED_INVOICE_FILE.INVOICES_MONTH, 'MM/YYYY') >= TO_DATE ('"
+						+ dateToString(fromDate) + "', 'yyyy-MM-dd') ";
+			}
+
+			queury += " LEFT JOIN RATES_VIEW \n"
+					+ " ON INVOICES_TEMP.SERVICE_TYPE   = RATES_VIEW.SERVICE_NAME \n"
+					+ " AND INVOICES_TEMP.SERVICE_DESC  = RATES_VIEW.PRODUCT_NAME \n"
+					+ " AND INVOICES_TEMP.SUPPLIER_NAME = RATES_VIEW.SUPPLIER_NAME \n"
+					+ " AND SUBSTR(UPLOADED_INVOICE_FILE.INVOICES_MONTH,4) LIKE TO_CHAR(RATES_VIEW.YEAR) \n";
 
 			dynamicReport = new GenerateDynamicReport();
 
@@ -236,6 +262,8 @@ public class RatesComparisonReport extends TravelReportBean {
 			dynamicReport.fieldsNames.add("SERVICE_TYPE");
 			dynamicReport.fieldsNames.add("SERVICE_DESC");
 			dynamicReport.fieldsNames.add("SUPPLIER_NAME");
+			dynamicReport.fieldsNames.add("INVOICES_MONTH");
+			dynamicReport.fieldsNames.add("PRE_NEGOTIATED");
 
 			dynamicReport.columnsNames.add("Invoice Order");
 			dynamicReport.columnsNames.add("Invoice Number");
@@ -243,6 +271,8 @@ public class RatesComparisonReport extends TravelReportBean {
 			dynamicReport.columnsNames.add("Service Type");
 			dynamicReport.columnsNames.add("Service Desc");
 			dynamicReport.columnsNames.add("Supplier Name");
+			dynamicReport.columnsNames.add("Invoices Month");
+			dynamicReport.columnsNames.add("Pre-Negotiated Rates");
 
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
@@ -250,6 +280,8 @@ public class RatesComparisonReport extends TravelReportBean {
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
+			dynamicReport.dataTypes.add(DataType.STRING.toString());
+			dynamicReport.dataTypes.add(DataType.DOUBLE.toString());
 
 			String where = " where 1=1 ";
 
@@ -266,6 +298,8 @@ public class RatesComparisonReport extends TravelReportBean {
 						+ "')"
 						+ " and lower (INVOICES_TEMP.ROOM_TYPE) like lower('"
 						+ ratesDTO.getRoomTypeId().getName() + "')";
+
+				queury += " AND lower(INVOICES_TEMP.ROOM_TYPE)  like lower(RATES_VIEW.ROOM_TYPE_NAME) \n";
 
 				dynamicReport.fieldsNames.add("ROOM_TYPE");
 				dynamicReport.fieldsNames.add("HOTEL_RATE");
@@ -292,6 +326,8 @@ public class RatesComparisonReport extends TravelReportBean {
 						+ " and lower (INVOICES_TEMP.ROUTING) like lower('"
 						+ ratesDTO.getRouting() + "')";
 
+				queury += " AND lower(INVOICES_TEMP.AIRLINE)  like lower(RATES_VIEW.AIRLINE_NAME) \n";
+				queury += " AND lower(INVOICES_TEMP.ROUTING)  like lower(RATES_VIEW.ROUTING) \n";
 				dynamicReport.fieldsNames.add("ROUTING");
 				dynamicReport.fieldsNames.add("INTER_DOM");
 				dynamicReport.fieldsNames.add("AIRLINE");
@@ -335,9 +371,11 @@ public class RatesComparisonReport extends TravelReportBean {
 
 			dynamicReport.setReportName("RatesComparisonReport");
 			dynamicReport.setReportTitle("Rates Comparison Report");
-			dynamicReport.setReportQuery(queury + where);
+			dynamicReport.setReportQuery(queury + where
+					+ " order by to_date (INVOICES_MONTH, 'MM/YYYY') ");
 
-			System.out.println(queury + where);
+			System.out.println(queury + where
+					+ " order by to_date (INVOICES_MONTH, 'MM/YYYY') ");
 			String reportPath = dynamicReport.exportDynamicReportToExcel();
 			getDownloadableReportFile(reportPath);
 
@@ -345,6 +383,41 @@ public class RatesComparisonReport extends TravelReportBean {
 			e.printStackTrace();
 		}
 
+	}
+
+	public String getToMonth() {
+		return toMonth;
+	}
+
+	public void setToMonth(String toMonth) {
+		this.toMonth = toMonth;
+	}
+
+	public String getFromMonth() {
+		return fromMonth;
+	}
+
+	public void setFromMonth(String fromMonth) {
+		this.fromMonth = fromMonth;
+	}
+
+	public String dateToString(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+
+	public Date convertStringToDate(String s) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		try {
+			if (s != null && !s.isEmpty()) {
+				Date date = formatter.parse(s);
+				return date;
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
