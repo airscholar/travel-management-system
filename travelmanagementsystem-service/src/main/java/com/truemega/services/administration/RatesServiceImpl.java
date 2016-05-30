@@ -161,4 +161,48 @@ public class RatesServiceImpl implements RatesService {
 
 	}
 
+	@Override
+	public int cloneRates(String toYear, String fromYear, String systemUser) {
+		// TODO Auto-generated method stub
+		String q = "INSERT INTO TRAVEL.RATES (ID, SUPPLIER_PRODUCT_ID, RATE, ROOM_TYPE_ID,AIRLINE_ID, YEAR, MODIFICATION_DATE, SYSTEM_USER, STATUS,DESCRIPTION,ROUTING) \n"
+				+ " SELECT \n"
+				+ " SEQ_RATES.nextval, \n"
+				+ " SUPPLIER_PRODUCT_ID, \n"
+				+ " RATE, \n"
+				+ " ROOM_TYPE_ID, \n"
+				+ " AIRLINE_ID, \n"
+				+ " "
+				+ toYear
+				+ " AS YEAR, \n"
+				+ " sysDate AS MODIFICATION_DATE, \n"
+				+ " '"
+				+ systemUser
+				+ "' AS SYSTEM_USER, \n"
+				+ " STATUS, \n"
+				+ " DESCRIPTION, \n"
+				+ " ROUTING  From RATES  where  YEAR = "
+				+ fromYear;
+
+		return baseDao.executeUpdateNativeQuery(q);
+
+	}
+
+	@Override
+	public List<Object[]> listCountRatesOfTwoYears(String toYear,
+			String fromYear) {
+		// TODO Auto-generated method stub
+		String q = "SELECT * \n"
+				+ " FROM \n"
+				+ " (SELECT COUNT(*) AS first_Year_Rate FROM rates WHERE YEAR="
+				+ fromYear
+				+ " \n"
+				+ " ), \n"
+				+ " (SELECT COUNT(*) AS second_Year_Rate FROM rates WHERE YEAR="
+				+ toYear + " \n" + " ) \n";
+
+		List<Object[]> list = baseDao.executeNativeQuery(q);
+
+		return list;
+
+	}
 }

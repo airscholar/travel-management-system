@@ -20,4 +20,8 @@ public interface RatesService {
 	public void changeStatus(Boolean status, Integer id, String userName);
 
 	public List<RatesDTO> getAllRatessActive(String userName);
+
+	public int cloneRates(String toYear, String fromYear, String systemUser);
+
+	public List<Object[]> listCountRatesOfTwoYears(String toYear, String fromYear);
 }
