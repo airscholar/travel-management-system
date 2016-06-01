@@ -94,8 +94,8 @@ public class RatesSingleBean extends TravelSingleBean {
 	private Integer rateId;
 
 	public void changeService(AjaxBehaviorEvent event) {
-
-		loggerService.logPortalInfo(getUserName() + ">> Start changeService()");
+		loggerService
+				.logPortalInfo(getUserName() + " >> Start changeService()");
 		ServiceTypeDTO serviceTypeDTO = (ServiceTypeDTO) event.getComponent()
 				.getAttributes().get("serviceObj");
 		if (serviceTypeDTO != null) {
@@ -122,6 +122,8 @@ public class RatesSingleBean extends TravelSingleBean {
 		switch (screen.getScreenMode()) {
 		case 0:
 			screenMode = UIOperation.ADD;
+			serviceTypeDTO.setId(2);
+			serviceTypeDTO.setName("Car");
 			break;
 		case 1:
 			screenMode = UIOperation.UPDATE;
@@ -132,6 +134,7 @@ public class RatesSingleBean extends TravelSingleBean {
 			load();
 			break;
 		}
+
 		serviceTypeDTOs = serviceService.getAllServices(getUserName());
 		System.out.println("serviceTypeDTOs======= " + serviceTypeDTOs.size());
 		serviceConverter = new ServiceConverter(serviceTypeDTOs);
@@ -144,6 +147,7 @@ public class RatesSingleBean extends TravelSingleBean {
 		airlineDTOs = airLineService.getAllAirlineActive(getUserName());
 		airLineConverter = new AirLineConverter(airlineDTOs);
 		System.out.println("airlineDTOs======= " + airlineDTOs.size());
+
 	}
 
 	@Override
@@ -214,11 +218,12 @@ public class RatesSingleBean extends TravelSingleBean {
 		// TODO Auto-generated method stub
 		loggerService.logPortalInfo(" start load method of RatesSingleBean ");
 		try {
+
 			Entity entity = (Entity) HttpJSFUtils.getSession().getAttribute(
 					"entity");
 			if (entity != null)
-				rateId = entity.getEntityId();
 
+				rateId = entity.getEntityId();
 			ratesDTO = ratesService.findRatesById(rateId, getUserName());
 			serviceTypeDTO = ratesDTO.getSupplierProductId().getProductId()
 					.getServiceId();

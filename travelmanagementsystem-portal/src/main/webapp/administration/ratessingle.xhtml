@@ -78,13 +78,13 @@
 										class="form-control"
 										disabled="#{ratessingle.screenMode == 'VIEW'}"
 										converter="#{ratessingle.serviceConverter}">
-										<f:selectItem itemLabel="None" itemValue="#{null}" />
+
 										<f:selectItems value="#{ratessingle.serviceTypeDTOs}"
 											var="servicemodel" itemLabel="#{servicemodel.name}"
 											itemValue="#{servicemodel}" />
 
 										<p:ajax
-											update=":formID:NumberOfRetries :formID:RoomPanel  :formID:AirLinnePanel"
+											update=":formID:NumberOfRetries :formID:RoomPanel  :formID:AirLinnePanel :formID:ratePanel "
 											listener="#{ratessingle.changeService}" />
 										<f:attribute name="serviceObj"
 											value="#{ratessingle.serviceTypeDTO}" />
@@ -122,16 +122,31 @@
 
 
 							<div class="form-group">
-								<h:outputLabel value="Rate " styleClass="control-label col-xs-3" />
-								<div class="col-xs-3">
-									<h:inputText value="#{ratessingle.ratesDTO.rate}" id="rate"
-										styleClass="form-control" required="true"
-										requiredMessage="Rate  is required"
-										disabled="#{ratessingle.screenMode == 'VIEW'}">
-									</h:inputText>
-									<h:message for="rate" style="color:red" />
-								</div>
+								<h:panelGroup id="ratePanel">
+									<c:if test="#{ratessingle.serviceTypeDTO.name == 'Insurance'}">
+										<h:outputLabel value="Rate Per Day "
+											styleClass="control-label col-xs-3" />
+											</c:if>
+											<c:if test="#{ratessingle.serviceTypeDTO.name == 'Car' || ratessingle.serviceTypeDTO.name == 'Air' || ratessingle.serviceTypeDTO.name == 'CWT Fee' || ratessingle.serviceTypeDTO.name == 'Hotel' || ratessingle.serviceTypeDTO.name == 'Tour'|| ratessingle.serviceTypeDTO.name == 'Others' || ratessingle.serviceTypeDTO.name == 'Restaurant'  }">
+										<h:outputLabel value="Rate "
+											styleClass="control-label col-xs-3" />
+											</c:if>
+											
+										<div class="col-xs-3">
+											<h:inputText value="#{ratessingle.ratesDTO.rate}" id="rate"
+												styleClass="form-control" required="true"
+												requiredMessage="Rate  is required"
+												converterMessage="please insert numbers only."
+												disabled="#{ratessingle.screenMode == 'VIEW'}">
+											</h:inputText>
+											<h:message for="rate" style="color:red" />
+										</div>
+									
+								</h:panelGroup>
 							</div>
+
+					
+
 
 
 							<div class="form-group">
@@ -176,7 +191,7 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<h:outputLabel value="Routing "
+										<h:outputLabel value="Routing"
 											styleClass="control-label col-xs-3" />
 										<div class="col-xs-3">
 											<h:inputText value="#{ratessingle.ratesDTO.routing}"
