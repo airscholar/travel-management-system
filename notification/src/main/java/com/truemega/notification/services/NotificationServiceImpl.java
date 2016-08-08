@@ -44,7 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(fileContent);
+		
 		return fileContent;
 	}
 
@@ -217,7 +217,7 @@ public class NotificationServiceImpl implements NotificationService {
 					break;
 				}
 			}
-			System.out.println(param.toString());
+			
 			counter = counter + 1;
 			param = input;
 		}
@@ -243,7 +243,7 @@ public class NotificationServiceImpl implements NotificationService {
 					String singleMethodName = getMethodName(fields[i]);
 					listParam = getObject(singleMethodName, listParam);
 				}
-				System.out.println(listParam.toString());
+				
 				values = values + "," + listParam.toString();
 			}
 			param = input;
