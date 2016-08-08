@@ -90,6 +90,18 @@ public class InvoicesTemp implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date to;
 
+	@Column(name = "DESTINATION")
+	private String destination;
+
+	@Column(name = "CITY")
+	private String city;
+
+	@Column(name = "COUNTRY")
+	private String country;
+
+	@Column(name = "TRIP_PURPOSE")
+	private String tripPurpose;
+
 	@Column(name = "INVOICE_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date invoiceDate;
@@ -536,6 +548,38 @@ public class InvoicesTemp implements Serializable {
 
 	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
 		this.ratesCombinationValid = ratesCombinationValid;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getTripPurpose() {
+		return tripPurpose;
+	}
+
+	public void setTripPurpose(String tripPurpose) {
+		this.tripPurpose = tripPurpose;
 	}
 
 }

@@ -8,6 +8,7 @@ package com.truemega.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -47,6 +48,8 @@ public class Invoices implements Serializable {
 	private Date arrivalDate;
 	@Column(name = "EMPLOYEE_ID")
 	private String employeeId;
+	@Column(name = "EMPLOYEE_DEPARTMENT")
+	private String employeeDepartment;
 	@Column(name = "COST_CENTER")
 	private String costCenter;
 	@Column(name = "COST_CENTER_DEPARTMENT")
@@ -89,15 +92,38 @@ public class Invoices implements Serializable {
 	private String travelFormNumber;
 	@Column(name = "DESCRIPTION")
 	private String description;
-	@Column(name = "FROM")
+	@Column(name = "FROM_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date from;
-	@Column(name = "TO")
+	@Column(name = "TO_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date to;
+
+	@Column(name = "DESTINATION")
+	private String destination;
+
+	@Column(name = "CITY")
+	private String city;
+
+	@Column(name = "COUNTRY")
+	private String country;
+
+	@Column(name = "TRIP_PURPOSE")
+	private String tripPurpose;
 	@JoinColumn(name = "UPLOADED_INVOICE_FILE_ID", referencedColumnName = "ID")
 	@ManyToOne(optional = false)
 	private UploadedInvoiceFile uploadedInvoiceFileId;
+
+	@Column(name = "INVOICE_ORDER")
+	private Integer invoiceOrder;
+
+	@Column(name = "TRANSACTION_ID")
+	private String transactionId;
+	
+	@Column(name = "INVOICE_DATE")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date invoiceDate;
+
 
 	public Invoices() {
 	}
@@ -364,6 +390,70 @@ public class Invoices implements Serializable {
 	@Override
 	public String toString() {
 		return "com.truemega.entities.Invoices[ id=" + id + " ]";
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getTripPurpose() {
+		return tripPurpose;
+	}
+
+	public void setTripPurpose(String tripPurpose) {
+		this.tripPurpose = tripPurpose;
+	}
+
+	public Integer getInvoiceOrder() {
+		return invoiceOrder;
+	}
+
+	public void setInvoiceOrder(Integer invoiceOrder) {
+		this.invoiceOrder = invoiceOrder;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public String getEmployeeDepartment() {
+		return employeeDepartment;
+	}
+
+	public void setEmployeeDepartment(String employeeDepartment) {
+		this.employeeDepartment = employeeDepartment;
+	}
+
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
 	}
 
 }
