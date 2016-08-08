@@ -44,10 +44,10 @@ public class ReminderServiceImpl implements ReminderServiceInterface {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/yyyy");
 		Date date = new Date();
 		String currentMonth = dateFormat.format(date);
-		System.out.println(currentMonth); // 2013/10/15 16:16:39
+		loggerService.logServiceInfo(currentMonth); // 2013/10/15 16:16:39
 		List<UploadedInvoiceFileDTO> list = uploadedInvoicesFileService
 				.listUploadedInvoiceByMonth(currentMonth, "System");
-		System.out.println(list + "list");
+		loggerService.logServiceInfo(list + "list");
 		if (!(list != null && list.size() > 0)) {
 			ConfigDTO configDTO = null;
 
@@ -58,7 +58,7 @@ public class ReminderServiceImpl implements ReminderServiceInterface {
 			configDTO = configService.findConfigurationByName(
 					TravelConfigEnum.AgentTeam.toString(), "");
 			String to = configDTO.getConfigValue();
-			System.out.println("cc" + cc);
+			loggerService.logServiceInfo("cc" + cc);
 			List<String> ccs = new ArrayList<String>();
 			ccs.add(cc);
 			String body = null;
