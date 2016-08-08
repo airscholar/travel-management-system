@@ -155,7 +155,7 @@ public class MaxMinServiceImpl implements MaxMinService {
 			String query = "select model FROM MaxMinValues model where lower(model.name) = lower( '"
 					+ MaxMinValuesName + "')";
 
-			System.out.println("qqqqqqqq ==========" + query);
+			
 			List<MaxMinValues> list = baseDao.findListByQuery(query);
 			loggerService
 					.logServiceInfo("End  checkUniqueMaxMinValuesName Method");
@@ -182,7 +182,7 @@ public class MaxMinServiceImpl implements MaxMinService {
 		String query = "select model FROM MaxMinValues model where lower(model.name) = lower( '"
 				+ MaxMinValuesName + "')";
 
-		System.out.println("MaxMinValues ==========" + query);
+		
 		List<MaxMinValues> list = baseDao.findListByQuery(query);
 		loggerService.logServiceInfo("End  findMaxMinValuesByName Method");
 

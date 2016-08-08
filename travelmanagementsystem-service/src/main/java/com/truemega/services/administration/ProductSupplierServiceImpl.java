@@ -162,7 +162,7 @@ public class ProductSupplierServiceImpl implements ProductSupplierService {
 		String query = "select model FROM SupplierProduct model where model.supplierId.id =  "
 				+ supplierId + " and  model.productId.id = " + productId ;
 
-		System.out.println("SupplierProduct  ==========" + query);
+		
 		List<SupplierProduct> list = baseDao.findListByQuery(query);
 		loggerService.logServiceInfo("End  checkUniqueSupplierWithProduct Method");
 
@@ -187,7 +187,7 @@ public class ProductSupplierServiceImpl implements ProductSupplierService {
 			String query = "select model FROM SupplierProduct model where lower(model.productId.id) = "
 					+ productId + "and  lower ( model.supplierId.id ) = " + supplierId ;
 
-			System.out.println("qqqqqqqq ==========" + query);
+			
 			List<ProductType> list = baseDao.findListByQuery(query);
 			loggerService
 					.logServiceInfo("End  checkUniqueSupplierProduct Method");

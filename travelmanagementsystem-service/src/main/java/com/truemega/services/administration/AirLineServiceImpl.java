@@ -13,8 +13,8 @@ import com.truemega.logger.LoggerService;
 import com.truemega.mapping.MappingFactory;
 
 @Stateless
-public class AirLineServiceImpl implements AirLineService{
-    
+public class AirLineServiceImpl implements AirLineService {
+
 	@EJB
 	private GenericDAO baseDao;
 
@@ -22,8 +22,7 @@ public class AirLineServiceImpl implements AirLineService{
 	private MappingFactory mapper;
 
 	private LoggerService loggerService = new LoggerService();
-	
-	
+
 	@Override
 	public AirlineDTO saveAirLine(AirlineDTO airlineDTO, String userName) {
 		// TODO Auto-generated method stub
@@ -45,13 +44,11 @@ public class AirLineServiceImpl implements AirLineService{
 			return null;
 		}
 
-	
 	}
 
 	@Override
 	public AirlineDTO updateAirLine(AirlineDTO airlineDTO, String userName) {
 		// TODO Auto-generated method stub
-
 
 		loggerService
 				.logServiceInfo("Start  updateAirLine Method with  airlineDTO "
@@ -70,8 +67,6 @@ public class AirLineServiceImpl implements AirLineService{
 			return null;
 		}
 
-	
-	
 	}
 
 	@Override
@@ -82,8 +77,7 @@ public class AirLineServiceImpl implements AirLineService{
 						+ airLineId + "userName  " + userName);
 		try {
 
-			Airline airline = baseDao.findEntityById(Airline.class,
-					airLineId);
+			Airline airline = baseDao.findEntityById(Airline.class, airLineId);
 			loggerService.logServiceInfo("End  findSupplierById Method");
 			return mapper.map(airline, AirlineDTO.class);
 
@@ -94,7 +88,7 @@ public class AirLineServiceImpl implements AirLineService{
 			return null;
 
 		}
-	
+
 	}
 
 	@Override
@@ -118,22 +112,19 @@ public class AirLineServiceImpl implements AirLineService{
 			loggerService.logServiceError("can't  getAllAirLines ", e);
 			return null;
 		}
-	
-	
+
 	}
 
 	@Override
 	public void changeStatus(Boolean status, Integer id, String userName) {
 		// TODO Auto-generated method stub
 
-
 		loggerService
 				.logServiceInfo("Start changeStatus  Method with status == "
-						+ status + " and id == " + id
-						+ "user name " + userName);
+						+ status + " and id == " + id + "user name " + userName);
 		try {
-			String query = "update Airline model set model.status ="
-					+ status + " where model.id=" + id;
+			String query = "update Airline model set model.status =" + status
+					+ " where model.id=" + id;
 			baseDao.executeDynamicQuery(query, Airline.class, true);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -142,8 +133,6 @@ public class AirLineServiceImpl implements AirLineService{
 
 		loggerService.logServiceInfo("End  changeStatus  Method  ");
 
-	
-	
 	}
 
 	@Override
@@ -160,20 +149,16 @@ public class AirLineServiceImpl implements AirLineService{
 			String query = "select model FROM Airline model where lower(model.name) = lower( '"
 					+ airLineName + "')";
 
-			System.out.println("qqqqqqqq ==========" + query);
 			List<Airline> list = baseDao.findListByQuery(query);
-			loggerService
-					.logServiceInfo("End  checkUniqueairLineName Method");
+			loggerService.logServiceInfo("End  checkUniqueairLineName Method");
 			return list.size() > 0 ? false : true;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			loggerService.logServiceError(
-					"can't  checkUniqueairLineName", e);
+			loggerService.logServiceError("can't  checkUniqueairLineName", e);
 			return false;
 		}
-	
-	
+
 	}
 
 	@Override
@@ -187,7 +172,7 @@ public class AirLineServiceImpl implements AirLineService{
 		String query = "select model FROM Airline model where lower(model.name) = lower( '"
 				+ airLineName + "')";
 
-		System.out.println("Airline ==========" + query);
+		
 		List<Airline> list = baseDao.findListByQuery(query);
 		loggerService.logServiceInfo("End  findAirLineByName Method");
 
@@ -219,10 +204,7 @@ public class AirLineServiceImpl implements AirLineService{
 			loggerService.logServiceError("can't  getAllAirlineActive ", e);
 			return null;
 		}
-	
-	
+
 	}
-	
-	
 
 }

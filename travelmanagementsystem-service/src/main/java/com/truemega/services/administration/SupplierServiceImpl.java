@@ -155,7 +155,7 @@ public class SupplierServiceImpl implements SupplierService {
 			String query = "select model FROM Supplier model where lower(model.name) = lower( '"
 					+ supplierName + "')";
 
-			System.out.println("checkUniqueSupplierName  ==========" + query);
+			
 			List<Supplier> list = baseDao.findListByQuery(query);
 			loggerService
 					.logServiceInfo("End  checkUniqueSupplierName Method");
@@ -207,7 +207,7 @@ public class SupplierServiceImpl implements SupplierService {
 		String query = "select model FROM Supplier model where lower(model.name) = lower( '"
 				+ supplierName + "')";
 
-		System.out.println("findSupplierByName ==========" + query);
+		
 		List<Supplier> list = baseDao.findListByQuery(query);
 		loggerService.logServiceInfo("End  findAirLineByName Method");
 

@@ -151,7 +151,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 			String query = "select model FROM RoomType model where lower(model.name) = lower( '"
 					+ roomTypeName + "')";
 
-			System.out.println("qqqqqqqq ==========" + query);
+			
 			List<RoomType> list = baseDao.findListByQuery(query);
 			loggerService.logServiceInfo("End  checkUniqueroomTypeName Method");
 			return list.size() > 0 ? false : true;
@@ -175,7 +175,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 		String query = "select model FROM RoomType model where lower(model.name) = lower( '"
 				+ roomName + "')";
 
-		System.out.println("qqqqqqqq ==========" + query);
+		
 		List<RoomType> list = baseDao.findListByQuery(query);
 		loggerService.logServiceInfo("End  findRoomByName Method");
 

@@ -147,7 +147,7 @@ public class ProductServiceImpl implements ProductService {
 			String query = "select model FROM ProductType model where lower(model.name) = lower( '"
 					+ productName + "') and  model.serviceId.id = " + serviceId;
 
-			System.out.println("qqqqqqqq ==========" + query);
+			
 			List<ProductType> list = baseDao.findListByQuery(query);
 			loggerService
 					.logServiceInfo("End  checkUniqueProductWithService Method");
