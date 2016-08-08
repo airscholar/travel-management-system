@@ -72,6 +72,14 @@ public class InvoicesTempDTO implements Serializable {
 
 	private Date to;
 
+	private String destination;
+
+	private String city;
+
+	private String country;
+
+	private String tripPurpose;
+
 	private Date invoiceDate;
 
 	private UploadedInvoiceFileDTO uploadedInvoiceFileId;
@@ -105,7 +113,7 @@ public class InvoicesTempDTO implements Serializable {
 	private Boolean roomTypeValid;
 
 	private Boolean invoiceNumberValid;
-	
+
 	private Boolean ratesCombinationValid;
 
 	public InvoicesTempDTO() {
@@ -512,6 +520,38 @@ public class InvoicesTempDTO implements Serializable {
 
 	public void setRatesCombinationValid(Boolean ratesCombinationValid) {
 		this.ratesCombinationValid = ratesCombinationValid;
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getTripPurpose() {
+		return tripPurpose;
+	}
+
+	public void setTripPurpose(String tripPurpose) {
+		this.tripPurpose = tripPurpose;
 	}
 
 }

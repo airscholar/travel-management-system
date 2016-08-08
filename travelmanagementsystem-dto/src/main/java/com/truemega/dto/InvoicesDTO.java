@@ -67,7 +67,24 @@ public class InvoicesDTO implements Serializable {
 	private String description;
 	private Date from;
 	private Date to;
+
+	private String destination;
+
+	private String city;
+
+	private String country;
+
+	private String tripPurpose;
+
 	private UploadedInvoiceFileDTO uploadedInvoiceFileId;
+
+	private Integer invoiceOrder;
+
+	private String transactionId;
+
+	private String employeeDepartment;
+
+	private Date invoiceDate;
 
 	public InvoicesDTO() {
 	}
@@ -334,6 +351,70 @@ public class InvoicesDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "com.truemega.entities.Invoices[ id=" + id + " ]";
+	}
+
+	public String getDestination() {
+		return destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getTripPurpose() {
+		return tripPurpose;
+	}
+
+	public void setTripPurpose(String tripPurpose) {
+		this.tripPurpose = tripPurpose;
+	}
+
+	public Integer getInvoiceOrder() {
+		return invoiceOrder;
+	}
+
+	public void setInvoiceOrder(Integer invoiceOrder) {
+		this.invoiceOrder = invoiceOrder;
+	}
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+	public String getEmployeeDepartment() {
+		return employeeDepartment;
+	}
+
+	public void setEmployeeDepartment(String employeeDepartment) {
+		this.employeeDepartment = employeeDepartment;
+	}
+
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
 	}
 
 }
