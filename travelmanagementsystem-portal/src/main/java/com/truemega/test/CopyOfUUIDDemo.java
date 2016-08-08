@@ -2,29 +2,28 @@ package com.truemega.test;
 
 import java.util.UUID;
 
-public class UUIDDemo {
-
-	private String getMergeStatement(int uploadedInvoiceFileId, String year) {
+public class CopyOfUUIDDemo {
+	private String getMergeStatement(int uploadedInvoiceFileId) {
 		String query = " Merge into INVOICES_TEMP t1 using ( SELECT \n"
 				+ " INVOICE_ORDER, \n"
 				+ " TRANSACTION_ID, \n"
 				+ " (CASE WHEN  INVOICE_NUMBER is null OR BOOKING_FILE_NUMBER is null OR EMPLOYEE_ID is null OR COST_CENTER is null \n"
 				+ " OR EMPLOYEE_DEPARTMENT is null OR COST_CENTER_DEPARTMENT is null OR PASSENGER_NAME is null OR SERVICE_TYPE is null \n"
 				+ " OR SERVICE_DESC is null OR SUPPLIER_NAME is null OR NET_AMOUNT is null OR OPERATION_FEES is null OR TOTAL_AMOUNT is null OR \n"
-				+ " TICKET_NO is null OR TRAVEL_FORM_NUMBER is null OR INVOICE_DATE is null OR TRIP_PURPOSE is null   \n"
+				+ " TICKET_NO is null OR TRAVEL_FORM_NUMBER is null OR INVOICE_DATE is null  \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) GENERAL_MANDATORY_VALID_N, \n"
 				+ " (CASE WHEN  add_months(TO_DATE('26/'  || UPLOADED_INVOICE_FILE.INVOICES_MONTH, 'dd/mm/yyyy'), -1) > TRUNC(INVOICES_TEMP.INVOICE_DATE) \n"
 				+ " OR TO_DATE('25/'  || UPLOADED_INVOICE_FILE.INVOICES_MONTH, 'dd/mm/yyyy') < TRUNC(INVOICES_TEMP.INVOICE_DATE) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) INVOICE_DATE_RANGE_VALID_N, \n"
-				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null OR DESTINATION is null OR  CITY is null OR  COUNTRY is null ) \n"
+				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) AIR_MANDATORY_VALID_N, \n"
-				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null OR DESTINATION is null OR  CITY is null OR  COUNTRY is null ) \n"
+				+ " (CASE WHEN  LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null ) \n"
 				+ " THEN 0  \n"
 				+ " ELSE 1 END) HOTEL_MANDATORY_VALID_N, \n"
-				+ " (CASE WHEN  NOT (LOWER(SERVICE_TYPE) LIKE 'air' OR LOWER(SERVICE_TYPE) LIKE 'hotel') AND NOT ( (LOWER(SERVICE_TYPE) LIKE 'car') OR ( LOWER(SERVICE_TYPE) LIKE 'cwt fee' AND (UPPER(SERVICE_DESC) LIKE 'MEET AND GREET' OR (UPPER(SERVICE_DESC) LIKE 'MEET AND GREET EMERGENCY') ) ) ) AND (FROM_DATE IS NULL OR TO_DATE IS NULL)  \n"
+				+ " (CASE WHEN  NOT (LOWER(SERVICE_TYPE)  LIKE 'air' OR LOWER(SERVICE_TYPE)  LIKE 'hotel')  AND  ( FROM_DATE is null OR TO_DATE is null ) \n"
 				+ " THEN 0 \n"
 				+ " ELSE 1 END) OTHER_MANDATORY_VALID_N, \n"
 				+ " (CASE WHEN  NOT (UPPER(INTER_DOM)  LIKE 'INTERNATIONAL' OR UPPER(INTER_DOM)  LIKE 'DOMESTIC') \n"
@@ -58,36 +57,7 @@ public class UUIDDemo {
 				+ "  ELSE 1 \n"
 				+ "  END) INVOICE_NUMBER_VALID_N1, \n"
 				+ " ( CASE  WHEN LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (LOWER(ROOM_TYPE) not in (select LOWER(name) from ROOM_TYPE)) \n"
-				+ " THEN 0 \n"
-				+ "   ELSE 1 \n"
-				+ " END) ROOM_TYPE_VALID_N1, \n"
-
-				+ " (CASE WHEN  ( \n"
-				+ " LOWER(SERVICE_TYPE) like 'hotel' \n"
-				+ " AND \n"
-				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME),LOWER(ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
-				+ " ) \n"
-				+ " OR \n"
-				+ " ( \n"
-				+ " LOWER(SERVICE_TYPE) like 'air' \n"
-				+ " AND \n"
-				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME),LOWER(AIRLINE),LOWER(ROUTING)) not in (SELECT  lower(st.NAME), lower(pt.NAME), lower(s.NAME), lower(al.NAME), lower(r.ROUTING) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID INNER JOIN RATES r ON sp.ID = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN AIRLINE al ON al.ID = r.AIRLINE_ID) \n"
-				+ " ) \n"
-				+ " OR \n"
-				+ " ( \n"
-				+ " (LOWER(SERVICE_TYPE) not like 'air' and  LOWER(SERVICE_TYPE) not like 'hotel') \n"
-				+ " AND \n"
-				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME)) not in (SELECT lower(st.NAME), lower(pt.NAME), lower(s.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) not LIKE 'hotel' AND LOWER(st.NAME) not LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID) \n"
-				+ " ) \n"
-				+ " THEN 0 \n"
-				+ " ELSE 1 END) RATES_COMBINATION_VALID_N \n"
-
+				+ " THEN 0 \n" + "   ELSE 1 \n" + " END) ROOM_TYPE_VALID_N1 \n"
 				+ " FROM UPLOADED_INVOICE_FILE INNER JOIN INVOICES_TEMP \n"
 				+ " ON UPLOADED_INVOICE_FILE.ID = "
 				+ uploadedInvoiceFileId
@@ -103,18 +73,21 @@ public class UUIDDemo {
 				+ " INVOICE_NUMBER is null OR BOOKING_FILE_NUMBER is null OR EMPLOYEE_ID is null OR COST_CENTER is null \n"
 				+ " OR EMPLOYEE_DEPARTMENT is null OR COST_CENTER_DEPARTMENT is null OR PASSENGER_NAME is null OR SERVICE_TYPE is null \n"
 				+ " OR SERVICE_DESC is null OR SUPPLIER_NAME is null OR NET_AMOUNT is null OR OPERATION_FEES is null OR TOTAL_AMOUNT is null OR \n"
-				+ " TICKET_NO is null OR TRAVEL_FORM_NUMBER is null OR INVOICE_DATE is null OR TRIP_PURPOSE is null  \n"
+				+ " TICKET_NO is null OR TRAVEL_FORM_NUMBER is null OR INVOICE_DATE is null  \n"
 				+ " ) \n"
 				+ " OR \n"
 				+ " ( \n"
-				+ " LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null OR DESTINATION is null OR  CITY is null OR  COUNTRY is null ) \n"
+				+ " LOWER(SERVICE_TYPE) LIKE 'air' AND  (DEPARTURE_DATE is null OR ARRIVAL_DATE is null OR ROUTING is null OR INTER_DOM is null OR AIRLINE is null) \n"
 				+ " ) \n"
 				+ " OR  \n"
 				+ " (  \n"
-				+ " LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null OR DESTINATION is null OR  CITY is null OR  COUNTRY is null ) \n"
+				+ " LOWER(SERVICE_TYPE) LIKE 'hotel' AND  (CHECK_IN is null OR CHECK_OUT is null OR NUMBER_OF_NIGHTS is null OR NUMBER_OF_ROOMS is null OR ROOM_TYPE is null) \n"
 				+ " ) \n"
 				+ " OR \n"
-				+ " (   NOT (LOWER(SERVICE_TYPE) LIKE 'air' OR LOWER(SERVICE_TYPE) LIKE 'hotel') AND NOT ( (LOWER(SERVICE_TYPE) LIKE 'car') OR ( LOWER(SERVICE_TYPE) LIKE 'cwt fee' AND (UPPER(SERVICE_DESC) LIKE 'MEET AND GREET' OR (UPPER(SERVICE_DESC) LIKE 'MEET AND GREET EMERGENCY') ) ) ) AND (FROM_DATE IS NULL OR TO_DATE IS NULL)  \n"
+				+ " ( \n"
+				+ " NOT (LOWER(SERVICE_TYPE)  LIKE 'air' OR LOWER(SERVICE_TYPE)  LIKE 'hotel') \n"
+				+ " AND  \n"
+				+ " ( FROM_DATE is null OR TO_DATE is null ) \n"
 				+ " ) \n"
 				+ " OR \n"
 				+ " (  \n"
@@ -143,33 +116,6 @@ public class UUIDDemo {
 				+ " LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'hotel' and \n"
 				+ " (LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SERVICE_TYPE)) not in ((SELECT LOWER(s.NAME),LOWER(pt2.NAME),LOWER(st2.NAME) FROM PRODUCT_TYPE pt2 INNER JOIN SERVICE_TYPE st2 ON st2.ID = pt2.SERVICE_ID INNER JOIN SUPPLIER_PRODUCT sp ON pt2.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID)) \n"
 				+ " ) \n"
-
-				+ " OR \n"
-				+ " ( \n"
-				+ "  ( \n"
-				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'hotel' \n"
-				+ "      AND \n"
-				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
-				+ "  ) \n"
-				+ "  OR \n"
-				+ "  ( \n"
-				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'air' \n"
-				+ "      AND \n"
-				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.AIRLINE),LOWER(INVOICES_TEMP.ROUTING)) not in (SELECT  lower(st.NAME), lower(pt.NAME), lower(s.NAME), lower(al.NAME), lower(r.ROUTING) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID INNER JOIN RATES r ON sp.ID = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN AIRLINE al ON al.ID = r.AIRLINE_ID) \n"
-				+ "  ) \n"
-				+ " OR \n"
-				+ "  ( \n"
-				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'air' and  LOWER(INVOICES_TEMP.SERVICE_TYPE) not like 'hotel') \n"
-				+ "      AND \n"
-				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME)) not in (SELECT lower(st.NAME), lower(pt.NAME), lower(s.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) not LIKE 'hotel' AND LOWER(st.NAME) not LIKE 'air' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID) \n"
-				+ "  ) \n"
-				+ " ) \n"
 				+ " ) t2 \n"
 				+ " on( t1.INVOICE_ORDER   = t2.INVOICE_ORDER AND t1.TRANSACTION_ID = t2.TRANSACTION_ID ) \n"
 				+ " when matched then \n"
@@ -187,8 +133,7 @@ public class UUIDDemo {
 				+ " t1.SUPPLIER_NAME_VALID=t2.SUPPLIER_NAME_VALID_N1, \n"
 				+ " t1.AIRLINE_VALID=t2.AIRLINE_VALID_N1, \n"
 				+ " t1.ROOM_TYPE_VALID=t2.ROOM_TYPE_VALID_N1, \n"
-				+ " t1.INVOICE_NUMBER_VALID=t2.INVOICE_NUMBER_VALID_N1, \n"
-				+ " t1.RATES_COMBINATION_VALID=t2.RATES_COMBINATION_VALID_N \n";
+				+ " t1.INVOICE_NUMBER_VALID=t2.INVOICE_NUMBER_VALID_N1";
 		return query;
 	}
 
@@ -197,23 +142,13 @@ public class UUIDDemo {
 		;
 	}
 
-	private String getYear(String dateStr) {
-		String str = null;
-		System.out.println(dateStr.substring(3));
-		return str;
-	}
-
 	public static void main(String[] args) {
 		Integer x = new Integer(3);
 
-		UUIDDemo uuidDemo = new UUIDDemo();
-
-		// uuidDemo.getYear("00/2016");
+		CopyOfUUIDDemo uuidDemo = new CopyOfUUIDDemo();
 		// uuidDemo.getMergeStatement(x);
 		// System.out.println(x);
-
-		System.out.println(uuidDemo.getMergeStatement(181, "2015"));
-
+		System.out.println(uuidDemo.getMergeStatement(121));
 		// creating UUID
 		// UUID uid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
 		//
