@@ -42,7 +42,7 @@ public class Configuration implements Serializable {
 		try {
 			logger = loggerService.getLoggerService();
 			loadConfiguration();
-			System.out.println("QQQQQQQQQQQQQQQQQQ");
+			System.out.println("init of Configuration");
 		} catch (Exception e) {
 			// TODO: handle exception
 			loggerService.logPortalError("can't load init  ", e);
