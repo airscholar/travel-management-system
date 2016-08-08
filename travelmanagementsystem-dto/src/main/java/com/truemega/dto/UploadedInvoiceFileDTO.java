@@ -5,10 +5,15 @@
  */
 package com.truemega.dto;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  * 
@@ -45,6 +50,8 @@ public class UploadedInvoiceFileDTO implements Serializable {
 	private String invoicesMonth;
 
 	private String operationMsg;
+
+	private StreamedContent file;
 
 	public UploadedInvoiceFileDTO() {
 	}
@@ -196,6 +203,16 @@ public class UploadedInvoiceFileDTO implements Serializable {
 
 	public void setOperationMsg(String operationMsg) {
 		this.operationMsg = operationMsg;
+	}
+
+	public StreamedContent getFile() {
+		InputStream is = new ByteArrayInputStream(content);
+		file = new DefaultStreamedContent(is, type, name);
+		return file;
+	}
+
+	public void setFile(StreamedContent file) {
+		this.file = file;
 	}
 
 }
