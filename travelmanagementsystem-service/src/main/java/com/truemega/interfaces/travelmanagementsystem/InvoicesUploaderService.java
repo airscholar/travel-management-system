@@ -13,5 +13,5 @@ public interface InvoicesUploaderService {
 			UploadedInvoiceFileDTO uploadedInvoiceFileDTO, String userName,String year)
 			throws Exception;
 
-	public void testStored() throws Exception;
+	
 }
