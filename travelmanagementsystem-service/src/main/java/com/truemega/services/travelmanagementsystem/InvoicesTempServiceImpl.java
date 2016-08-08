@@ -40,7 +40,8 @@ public class InvoicesTempServiceImpl implements InvoicesTempService {
 				+ "  or  model1.totalAmountValid = false or  model1.hotelMandatoryValid = false "
 				+ "  or  model1.serviceTypeValid = false or  model1.serviceDescriptionValid = false"
 				+ "  or  model1.supplierNameValid = false or  model1.airlineValid = false"
-				+ " or  model1.roomTypeValid = false or  model1.invoiceNumberValid = false ) "
+				+ " or  model1.roomTypeValid = false or  model1.invoiceNumberValid = false  "
+				+ " or model1.ratesCombinationValid = false  ) "
 				+ " ORDER BY model1.invoicesTempPK.invoiceOrder ";
 
 		return mapper.mapAsList(baseDao.findListByQuery(query),

@@ -108,7 +108,7 @@ public class UploadedInvoicesFileServiceImpl implements
 	public void testNotification() {
 
 		String year = "2016";
-		int fileID=141;
+		int fileID = 141;
 
 		String query = "SELECT \n" + " RESULT1.SERVICE_DESC, \n"
 				+ " RESULT1.SUPPLIER_NAME, \n" + " RESULT1.ROOM_TYPE, \n"
@@ -142,7 +142,9 @@ public class UploadedInvoicesFileServiceImpl implements
 				+ " FROM INVOICES i \n"
 				+ " INNER JOIN UPLOADED_INVOICE_FILE uif \n"
 				+ " ON uif.ID = i.UPLOADED_INVOICE_FILE_ID \n"
-				+ " AND uif.ID= "+fileID+" \n"
+				+ " AND uif.ID= "
+				+ fileID
+				+ " \n"
 				+ " And LOWER(i.SERVICE_TYPE) like 'hotel') RESULT2 \n"
 
 				+ " ON RESULT2.ROOM_TYPE LIKE RESULT1.ROOM_TYPE \n"
@@ -153,7 +155,7 @@ public class UploadedInvoicesFileServiceImpl implements
 		List<Object[]> result = null;
 		result = baseDao.executeNativeQuery(query);
 
-		System.out.println(result.size());
+		loggerService.logServiceInfo("" + result.size());
 
 	}
 
@@ -206,7 +208,10 @@ public class UploadedInvoicesFileServiceImpl implements
 	@Override
 	public List<UploadedInvoiceFileDTO> listUploadedInvoiceByMonth(
 			String month, String userName) {
-		System.out.println(month);
+		loggerService
+				.logServiceInfo("Start listUploadedInvoiceByMonth ===> userName "
+						+ userName);
+		loggerService.logServiceInfo(month);
 		loggerService
 				.logServiceInfo("Start  listUploadedInvoiceByMonth Method with userName  "
 						+ userName);
@@ -214,7 +219,7 @@ public class UploadedInvoicesFileServiceImpl implements
 		String query = "select model1 from UploadedInvoiceFile model1 where model1.invoicesMonth like '"
 				+ month + "'";
 		List<Object> result = baseDao.findListByQuery(query);
-		System.out.println(result + "reult");
+		loggerService.logServiceInfo(result + "reult");
 		return mapper.mapAsList(result, UploadedInvoiceFileDTO.class);
 	}
 }
