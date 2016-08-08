@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<ui:composition template="/layout/master-page.xhtml">
+		<ui:define name="script">
+			<script type="text/javascript" src="../js/test.js"></script>
+		</ui:define>
+		<ui:define name="content">
+			<div class="container-fluid left-border">
+				<div class="row" style="width: 3453px;">
+					<div class="col-md-12 col-lg-12 page-header">
+						<h1>Invoice</h1>
+					</div>
+					<!-- Search Paaaaaaaaaaaaaaaaaaaaaaaaaart -->
+
+
+					<!-- Add  Button -->
+
+
+
+					<!-- divider -->
+					<div class="col-md-12" style="height: 10px" />
+					<!-- List companys Data Table-->
+
+					<h:form id="listForm">
+						<p:dataTable var="invoicesTempModel"
+							value="#{uploadedInvoiceRecordsListBean.invoicesDTOs}" rows="15"
+							rowKey="#{invoicesTempModel.id}"
+							tableStyleClass="table table-striped" id="invoicesTempTable"
+							paginator="true" rowsPerPageTemplate="15,30,45"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+							<p:column headerText="Record Number">
+								<h:outputText
+									value="#{invoicesTempModel.invoiceOrder}" />
+							</p:column>
+
+							<p:column headerText="Invoice Number">
+								<h:outputText value="#{invoicesTempModel.invoiceNumber}" />
+							</p:column>
+
+							<p:column headerText="Booking File Number">
+								<h:outputText value="#{invoicesTempModel.bookingFileNumber}" />
+							</p:column>
+
+							<p:column headerText="Departure Date">
+								<h:outputText value="#{invoicesTempModel.departureDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Arrival Date">
+								<h:outputText value="#{invoicesTempModel.arrivalDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Employee Id">
+								<h:outputText value="#{invoicesTempModel.employeeId}" />
+							</p:column>
+
+							<p:column headerText="Cost Center">
+								<h:outputText value="#{invoicesTempModel.costCenter}" />
+							</p:column>
+
+							<p:column headerText="Employee Department">
+								<h:outputText value="#{invoicesTempModel.employeeDepartment}" />
+							</p:column>
+
+							<p:column headerText="Cost Center Department">
+								<h:outputText value="#{invoicesTempModel.costCenterDepartment}" />
+							</p:column>
+
+							<p:column headerText="Passenger Name">
+								<h:outputText value="#{invoicesTempModel.passengerName}" />
+							</p:column>
+
+							<p:column headerText="Service Type">
+								<h:outputText value="#{invoicesTempModel.serviceType}" />
+							</p:column>
+
+							<p:column headerText="Product Type">
+								<h:outputText value="#{invoicesTempModel.serviceDesc}" />
+							</p:column>
+
+							<p:column headerText="Routing">
+								<h:outputText value="#{invoicesTempModel.routing}" />
+							</p:column>
+
+							<p:column headerText="Int'l / Dom">
+								<h:outputText value="#{invoicesTempModel.interDom}" />
+							</p:column>
+
+							<p:column headerText="Check In">
+								<h:outputText value="#{invoicesTempModel.checkIn}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Check Out">
+								<h:outputText value="#{invoicesTempModel.checkOut}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Number of Nights">
+								<h:outputText value="#{invoicesTempModel.numberOfNights}" />
+							</p:column>
+
+							<p:column headerText="Number of Rooms">
+								<h:outputText value="#{invoicesTempModel.numberOfRooms}" />
+							</p:column>
+
+							<p:column headerText="Airline">
+								<h:outputText value="#{invoicesTempModel.airline}" />
+							</p:column>
+
+							<p:column headerText="Room Type">
+								<h:outputText value="#{invoicesTempModel.roomType}" />
+							</p:column>
+
+							<p:column headerText="Supplier Name">
+								<h:outputText value="#{invoicesTempModel.supplierName}" />
+							</p:column>
+
+							<p:column headerText="Net Amount">
+								<h:outputText value="#{invoicesTempModel.netAmount}" />
+							</p:column>
+
+							<p:column headerText="Operation Fees">
+								<h:outputText value="#{invoicesTempModel.operationFees}" />
+							</p:column>
+
+							<p:column headerText="Total Amount">
+								<h:outputText value="#{invoicesTempModel.totalAmount}" />
+							</p:column>
+
+							<p:column headerText="Ticket No">
+								<h:outputText value="#{invoicesTempModel.ticketNo}" />
+							</p:column>
+
+							<p:column headerText="Travel Form Number">
+								<h:outputText value="#{invoicesTempModel.travelFormNumber}" />
+							</p:column>
+
+							<p:column headerText="From">
+								<h:outputText value="#{invoicesTempModel.from}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="To">
+								<h:outputText value="#{invoicesTempModel.to}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Destination">
+								<h:outputText value="#{invoicesTempModel.destination}" />
+							</p:column>
+
+							<p:column headerText="City">
+								<h:outputText value="#{invoicesTempModel.city}" />
+							</p:column>
+
+							<p:column headerText="Country">
+								<h:outputText value="#{invoicesTempModel.country}" />
+							</p:column>
+
+							<p:column headerText="Trip Purpose">
+								<h:outputText value="#{invoicesTempModel.tripPurpose}" />
+							</p:column>
+
+							<p:column headerText="Invoice Date">
+								<h:outputText value="#{invoicesTempModel.invoiceDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Description">
+								<h:outputText value="#{invoicesTempModel.description}" />
+							</p:column>
+
+						</p:dataTable>
+					</h:form>
+
+				</div>
+			</div>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

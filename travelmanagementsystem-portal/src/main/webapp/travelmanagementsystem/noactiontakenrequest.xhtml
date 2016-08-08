@@ -51,6 +51,34 @@
 									<h:outputText value="#{uploadedInvoiceFileModel.invoicesMonth}" />
 								</p:column>
 
+								<p:column headerText="Action Taken">
+									<h:outputText
+										rendered="#{ uploadedInvoiceFileModel.approved ne null and !uploadedInvoiceFileModel.approved}"
+										value="Rejected" />
+									<h:outputText rendered="#{uploadedInvoiceFileModel.approved}"
+										value="Approved" />
+									<h:outputText
+										rendered="#{uploadedInvoiceFileModel.approved eq null}"
+										value="No Action taken" />
+								</p:column>
+
+								<p:column headerText="Action Taken Comment">
+
+									<h:outputText
+										value="#{uploadedInvoiceFileModel.rejectionReason}" />
+
+								</p:column>
+
+								<p:column headerText="Download">
+
+									<center>
+										<p:commandLink ajax="false">
+											<span class="fa fa-download fa-fw"></span>
+											<p:fileDownload value="#{uploadedInvoiceFileModel.file}" />
+										</p:commandLink>
+									</center>
+
+								</p:column>
 								<p:column headerText="Edit">
 
 									<center>
@@ -81,6 +109,22 @@
 												target="#{controller.screenMode}" value="2" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
 												value="Approve / Reject" />
+											<f:setPropertyActionListener target="#{controller.entityId}"
+												value="#{uploadedInvoiceFileModel.id}" />
+										</h:commandLink>
+									</center>
+								</p:column>
+
+								<p:column headerText="View Invoice">
+									<center>
+										<h:commandLink action="#{controller.showPage}">
+											<span class="fa fa-eye fa-1x"></span>
+											<f:setPropertyActionListener target="#{controller.screenURL}"
+												value="travelmanagementsystem/invoicerecord.xhtml" />
+											<f:setPropertyActionListener
+												target="#{controller.screenMode}" value="2" />
+											<f:setPropertyActionListener target="#{controller.screeName}"
+												value="Invoice" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
 												value="#{uploadedInvoiceFileModel.id}" />
 										</h:commandLink>

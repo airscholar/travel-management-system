@@ -96,19 +96,8 @@
 
 							<div class="form-group">
 								<div class="col-xs-offset-6 col-xs-6">
-									<h:commandButton id="submitButton88888" value="TestNotification"
-										actionListener="#{invoicesActionTaker.testNotifiction}"
-										styleClass="btn btn-default">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
-									
-									
-									<h:commandButton id="submitButton888889999" value="TestNotification_BLOEW"
-										actionListener="#{invoicesActionTaker.testNotifictionBELOW}"
-										styleClass="btn btn-default">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
-									
+
+
 									<c:if test="#{invoicesActionTaker.screenMode == 'ADD'}">
 										<h:commandButton id="submitButton" value="Save"
 											actionListener="#{invoicesActionTaker.save}"
