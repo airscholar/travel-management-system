@@ -31,7 +31,7 @@ public class MinAirLineTicket {
 		body.append("<th>Invoice Order</th>");
 		body.append("<th>Invoice Number</th>");	
 		body.append("<th>Service Type </th>");
-		body.append("<th>Production Type</th>");
+		body.append("<th>Product Type</th>");
 		body.append("<th>Supplier Name</th>");
 		body.append("<th>Net Amount</th>");
 		body.append("</tr>");

@@ -30,7 +30,7 @@ public class HotelRateIsAbovePreNegotiatedRates {
 		body.append("<tr>");
 		body.append("<th>Invoice Order</th>");
 		body.append("<th>Invoice Number</th>");	
-		body.append("<th>Production Type</th>");
+		body.append("<th>Product Type</th>");
 		body.append("<th>Supplier Name</th>");
 		body.append("<th>Room Type</th>");
 		body.append("<th>Rate </th>");

@@ -100,7 +100,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 				+ " AND i.UPLOADED_INVOICE_FILE_ID ="
 				+ fileId
 				+ " AND ( i.TO_DATE - i.FROM_DATE + 1) > (SELECT MAX_MIN_VALUE FROM MAX_MIN_VALUES WHERE ID = 2 )";
-
+		System.out.println(" maxInsurancePeriod : " + query);
 		List<Object[]> maxPeriods = baseDao.executeNativeQuery(query);
 
 		return maxPeriods;
@@ -143,7 +143,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 				+ " AND i.UPLOADED_INVOICE_FILE_ID    = "
 				+ filedId
 				+ " AND ( i.TO_DATE - i.FROM_DATE + 1) > (SELECT MAX_MIN_VALUE FROM MAX_MIN_VALUES WHERE ID = 1 )";
-		System.out.println(" Query = " + query);
+		System.out.println(" getVisaMaxPeriod : " + query);
 		List<Object[]> maxVisaPeriod = baseDao.executeNativeQuery(query);
 
 		return maxVisaPeriod;
@@ -188,7 +188,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 				+ " AND i.UPLOADED_INVOICE_FILE_ID = "
 				+ fileId
 				+ " AND i.NET_AMOUNT   >  (SELECT MAX_MIN_VALUE FROM MAX_MIN_VALUES WHERE ID = 3 )";
-
+		System.out.println("getmaxAirPlanTecket   " + query);
 		List<Object[]> maxAirPanlTecket = baseDao.executeNativeQuery(query);
 		return maxAirPanlTecket;
 
@@ -230,7 +230,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 				+ " AND i.UPLOADED_INVOICE_FILE_ID = "
 				+ fileId
 				+ " AND i.NET_AMOUNT    < (SELECT MAX_MIN_VALUE FROM MAX_MIN_VALUES WHERE ID = 4 ) ";
-
+		System.out.println("getminAirPlanTecket   " + query);
 		List<Object[]> maxAirPanlTecket = baseDao.executeNativeQuery(query);
 		return maxAirPanlTecket;
 
@@ -309,7 +309,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 
 		List<Object[]> result = null;
 		result = baseDao.executeNativeQuery(query);
-
+		System.out.println("getHotelRateAbovePreNegotiatedRates : " + query);
 		return result;
 	}
 
@@ -361,7 +361,7 @@ public class UploadNotificationSenderImpl implements UploadNotificationSender {
 		List<Object[]> result = null;
 		result = baseDao.executeNativeQuery(query);
 
-		System.out.println(result.size());
+		System.out.println("getHotelRateBelowPreNegotiatedRates : " + query);
 		return result;
 	}
 
