@@ -8,22 +8,23 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.truemega.beans.TravelReportBean;
+import com.truemega.logger.LoggerService;
 import com.truemega.reportgenerator.DataType;
 import com.truemega.reportgenerator.GenerateDynamicReport;
 
-
 @ManagedBean(name = "invoiceReport")
 @ViewScoped
-public class InvoiceReport extends TravelReportBean{
+public class InvoiceReport extends TravelReportBean {
 	private GenerateDynamicReport dynamicReport;
 	private String to;
 	private String from;
-	
-    @PostConstruct 
-    public void init()
-    {
-    }
-	
+
+	private LoggerService loggerService = new LoggerService();
+
+	@PostConstruct
+	public void init() {
+	}
+
 	@Override
 	public void search() {
 		// TODO Auto-generated method stub
@@ -31,41 +32,32 @@ public class InvoiceReport extends TravelReportBean{
 		try {
 
 			String whereClause = " where 1=1 ";
-			
+
 			Date toDate = convertStringToDate(to);
 			Date fromDate = convertStringToDate(from);
-//			if (accidentClass != null && accidentClass.length() > 0){
-//				whereClause += " and lower( ACCIDENT_CLASS )like lower('%"
-//						+ accidentClass + "%')";
-//				}
-//	
+			// if (accidentClass != null && accidentClass.length() > 0){
+			// whereClause += " and lower( ACCIDENT_CLASS )like lower('%"
+			// + accidentClass + "%')";
+			// }
+			//
 
 			if (to != null && to.length() > 0)
 				whereClause += " and INVOICE_DATE <= TO_DATE ('"
-						+ dateToString(toDate)
-						+ "', 'yyyy-MM-dd') ";
+						+ dateToString(toDate) + "', 'yyyy-MM-dd') ";
 
 			if (from != null && from.length() > 0)
 				whereClause += " and INVOICE_DATE >= TO_DATE ('"
-						+ dateToString(fromDate)
-						+ "', 'yyyy-MM-dd') ";
+						+ dateToString(fromDate) + "', 'yyyy-MM-dd') ";
 
 			String queury = " SELECT * FROM INVOICE_REPORT " + whereClause;
 
-			System.out.println(queury);
-
-
-
-
-
-
+			loggerService.logPortalInfo(queury);
 
 			dynamicReport = new GenerateDynamicReport();
 			dynamicReport.setReportName("InvoiceReport");
 			dynamicReport.setReportTitle("Invoice Report");
 			dynamicReport.setReportQuery(queury);
-			
-			
+
 			dynamicReport.columnsNames.add(" Invoice Order");
 			dynamicReport.columnsNames.add(" Transaction ID ");
 			dynamicReport.columnsNames.add("Invoice Number");
@@ -97,16 +89,10 @@ public class InvoiceReport extends TravelReportBean{
 			dynamicReport.columnsNames.add("To Date");
 			dynamicReport.columnsNames.add("Employee Department ");
 			dynamicReport.columnsNames.add("Invoice Date");
-			dynamicReport.columnsNames.add("Approved ");
-			dynamicReport.columnsNames.add("Rejection reason");
+			dynamicReport.columnsNames.add("Action Taken");
+			dynamicReport.columnsNames.add("Action Taken Comment");
 			dynamicReport.columnsNames.add("Invoices Month");
 			dynamicReport.columnsNames.add(" Name");
-			
-			
-			
-			
-			
-
 
 			dynamicReport.fieldsNames.add("INVOICE_ORDER");
 			dynamicReport.fieldsNames.add("TRANSACTION_ID");
@@ -139,13 +125,10 @@ public class InvoiceReport extends TravelReportBean{
 			dynamicReport.fieldsNames.add("TO_DATE");
 			dynamicReport.fieldsNames.add("EMPLOYEE_DEPARTMENT");
 			dynamicReport.fieldsNames.add("INVOICE_DATE");
-			dynamicReport.fieldsNames.add("APPROVED");
-			dynamicReport.fieldsNames.add("REJECTION_REASON");
+			dynamicReport.fieldsNames.add("ACTION_TAKEN");
+			dynamicReport.fieldsNames.add("ACTION_TAKEN_COMMENT");
 			dynamicReport.fieldsNames.add("INVOICES_MONTH");
 			dynamicReport.fieldsNames.add("NAME");
-			
-			
-
 
 			dynamicReport.dataTypes.add(DataType.INT.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
@@ -178,11 +161,10 @@ public class InvoiceReport extends TravelReportBean{
 			dynamicReport.dataTypes.add(DataType.DATE.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.DATE.toString());
-			dynamicReport.dataTypes.add(DataType.INT.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
-			
+			dynamicReport.dataTypes.add(DataType.STRING.toString());
 
 			String reportPath = dynamicReport.exportDynamicReportToExcel();
 			getDownloadableReportFile(reportPath);
@@ -190,11 +172,9 @@ public class InvoiceReport extends TravelReportBean{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
-		
-		
+
 	}
-	
+
 	public String dateToString(Date date) {
 		return new SimpleDateFormat("yyyy-MM-dd").format(date);
 	}
@@ -213,7 +193,6 @@ public class InvoiceReport extends TravelReportBean{
 		}
 		return null;
 	}
-
 
 	public String getTo() {
 		return to;

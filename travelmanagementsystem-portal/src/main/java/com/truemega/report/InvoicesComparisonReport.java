@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import com.truemega.beans.TravelReportBean;
 import com.truemega.reportgenerator.DataType;
@@ -28,47 +30,55 @@ public class InvoicesComparisonReport extends TravelReportBean {
 	public void search() {
 		// TODO Auto-generated method stub
 
+		if (firstMonth.equalsIgnoreCase(secondMonth)) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(
+							"please choose different months to compare"));
+			return;
+		}
+
 		try {
 
-			String queury = "SELECT nvl(TO_CHAR(INVOICES_TEMP.INVOICE_ORDER) ,'NA') AS INVOICE_ORDER \n"
-					+ " ,nvl(INVOICES_TEMP.INVOICE_NUMBER ,'NA') AS INVOICE_NUMBER \n"
-					+ " ,nvl(INVOICES_TEMP.BOOKING_FILE_NUMBER ,'NA') AS BOOKING_FILE_NUMBER \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.DEPARTURE_DATE, 'dd/mm/yyyy') ,'NA') AS DEPARTURE_DATE \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.ARRIVAL_DATE, 'dd/mm/yyyy') ,'NA') AS ARRIVAL_DATE \n"
-					+ " ,nvl(INVOICES_TEMP.EMPLOYEE_ID ,'NA') AS EMPLOYEE_ID \n"
-					+ " ,nvl(INVOICES_TEMP.COST_CENTER ,'NA') AS COST_CENTER \n"
-					+ " ,nvl(INVOICES_TEMP.COST_CENTER_DEPARTMENT ,'NA') AS COST_CENTER_DEPARTMENT \n"
-					+ " ,nvl(INVOICES_TEMP.PASSENGER_NAME ,'NA') AS PASSENGER_NAME \n"
-					+ " ,nvl(INVOICES_TEMP.SERVICE_TYPE ,'NA') AS SERVICE_TYPE \n"
-					+ " ,nvl(INVOICES_TEMP.SERVICE_DESC ,'NA') AS SERVICE_DESC \n"
-					+ " ,nvl(INVOICES_TEMP.ROUTING ,'NA') AS ROUTING \n"
-					+ " ,nvl(INVOICES_TEMP.INTER_DOM ,'NA') AS INTER_DOM \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.CHECK_IN, 'dd/mm/yyyy') ,'NA') AS CHECK_IN \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.CHECK_OUT, 'dd/mm/yyyy') ,'NA') AS CHECK_OUT \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.NUMBER_OF_NIGHTS) ,0) AS NUMBER_OF_NIGHTS \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.NUMBER_OF_ROOMS) ,0) AS NUMBER_OF_ROOMS \n"
-					+ " ,nvl(INVOICES_TEMP.AIRLINE ,'NA') AS AIRLINE \n"
-					+ " ,nvl(INVOICES_TEMP.ROOM_TYPE ,'NA') AS ROOM_TYPE \n"
-					+ " ,nvl(INVOICES_TEMP.SUPPLIER_NAME ,'NA') AS SUPPLIER_NAME \n"
-					+ " ,nvl(INVOICES_TEMP.NET_AMOUNT ,0) AS NET_AMOUNT \n"
-					+ " ,nvl(INVOICES_TEMP.OPERATION_FEES ,0) AS OPERATION_FEES \n"
-					+ " ,nvl(INVOICES_TEMP.TOTAL_AMOUNT ,0) AS TOTAL_AMOUNT \n"
-					+ " ,nvl(INVOICES_TEMP.TICKET_NO ,'NA') AS TICKET_NO \n"
-					+ " ,nvl(INVOICES_TEMP.TRAVEL_FORM_NUMBER ,'NA') AS TRAVEL_FORM_NUMBER \n"
-					+ " ,nvl(INVOICES_TEMP.DESCRIPTION ,'NA') AS DESCRIPTION \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.FROM_DATE, 'dd/mm/yyyy') ,'NA') AS FROM_DATE \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.TO_DATE, 'dd/mm/yyyy') ,'NA') AS TO_DATE \n"
-					+ " ,nvl(INVOICES_TEMP.EMPLOYEE_DEPARTMENT ,'NA') AS EMPLOYEE_DEPARTMENT \n"
-					+ " ,nvl(TO_CHAR(INVOICES_TEMP.INVOICE_DATE, 'dd/mm/yyyy') ,'NA') AS INVOICE_DATE \n"
+			String queury = "SELECT nvl(TO_CHAR(INVOICES.INVOICE_ORDER) ,'NA') AS INVOICE_ORDER \n"
+					+ " ,nvl(INVOICES.INVOICE_NUMBER ,'NA') AS INVOICE_NUMBER \n"
+					+ " ,nvl(INVOICES.BOOKING_FILE_NUMBER ,'NA') AS BOOKING_FILE_NUMBER \n"
+					+ " ,nvl(TO_CHAR(INVOICES.DEPARTURE_DATE, 'dd/mm/yyyy') ,'NA') AS DEPARTURE_DATE \n"
+					+ " ,nvl(TO_CHAR(INVOICES.ARRIVAL_DATE, 'dd/mm/yyyy') ,'NA') AS ARRIVAL_DATE \n"
+					+ " ,nvl(INVOICES.EMPLOYEE_ID ,'NA') AS EMPLOYEE_ID \n"
+					+ " ,nvl(INVOICES.COST_CENTER ,'NA') AS COST_CENTER \n"
+					+ " ,nvl(INVOICES.COST_CENTER_DEPARTMENT ,'NA') AS COST_CENTER_DEPARTMENT \n"
+					+ " ,nvl(INVOICES.PASSENGER_NAME ,'NA') AS PASSENGER_NAME \n"
+					+ " ,nvl(INVOICES.SERVICE_TYPE ,'NA') AS SERVICE_TYPE \n"
+					+ " ,nvl(INVOICES.SERVICE_DESC ,'NA') AS SERVICE_DESC \n"
+					+ " ,nvl(INVOICES.ROUTING ,'NA') AS ROUTING \n"
+					+ " ,nvl(INVOICES.INTER_DOM ,'NA') AS INTER_DOM \n"
+					+ " ,nvl(TO_CHAR(INVOICES.CHECK_IN, 'dd/mm/yyyy') ,'NA') AS CHECK_IN \n"
+					+ " ,nvl(TO_CHAR(INVOICES.CHECK_OUT, 'dd/mm/yyyy') ,'NA') AS CHECK_OUT \n"
+					+ " ,nvl(TO_CHAR(INVOICES.NUMBER_OF_NIGHTS) ,0) AS NUMBER_OF_NIGHTS \n"
+					+ " ,nvl(TO_CHAR(INVOICES.NUMBER_OF_ROOMS) ,0) AS NUMBER_OF_ROOMS \n"
+					+ " ,nvl(INVOICES.AIRLINE ,'NA') AS AIRLINE \n"
+					+ " ,nvl(INVOICES.ROOM_TYPE ,'NA') AS ROOM_TYPE \n"
+					+ " ,nvl(INVOICES.SUPPLIER_NAME ,'NA') AS SUPPLIER_NAME \n"
+					+ " ,nvl(INVOICES.NET_AMOUNT ,0) AS NET_AMOUNT \n"
+					+ " ,nvl(INVOICES.OPERATION_FEES ,0) AS OPERATION_FEES \n"
+					+ " ,nvl(INVOICES.TOTAL_AMOUNT ,0) AS TOTAL_AMOUNT \n"
+					+ " ,nvl(INVOICES.TICKET_NO ,'NA') AS TICKET_NO \n"
+					+ " ,nvl(INVOICES.TRAVEL_FORM_NUMBER ,'NA') AS TRAVEL_FORM_NUMBER \n"
+					+ " ,nvl(INVOICES.DESCRIPTION ,'NA') AS DESCRIPTION \n"
+					+ " ,nvl(TO_CHAR(INVOICES.FROM_DATE, 'dd/mm/yyyy') ,'NA') AS FROM_DATE \n"
+					+ " ,nvl(TO_CHAR(INVOICES.TO_DATE, 'dd/mm/yyyy') ,'NA') AS TO_DATE \n"
+					+ " ,nvl(INVOICES.EMPLOYEE_DEPARTMENT ,'NA') AS EMPLOYEE_DEPARTMENT \n"
+					+ " ,nvl(TO_CHAR(INVOICES.INVOICE_DATE, 'dd/mm/yyyy') ,'NA') AS INVOICE_DATE \n"
 					+ " ,nvl(UPLOADED_INVOICE_FILE.INVOICES_MONTH ,'NA') AS INVOICES_MONTH \n"
-					+ " FROM INVOICES_TEMP INNER JOIN UPLOADED_INVOICE_FILE \n"
-					+ " ON INVOICES_TEMP.UPLOADED_INVOICE_FILE_ID = UPLOADED_INVOICE_FILE.ID \n"
+					+ " FROM INVOICES INNER JOIN UPLOADED_INVOICE_FILE \n"
+					+ " ON INVOICES.UPLOADED_INVOICE_FILE_ID = UPLOADED_INVOICE_FILE.ID \n"
 					+ " WHERE UPLOADED_INVOICE_FILE.INVOICES_MONTH IN ('"
 					+ firstMonth
 					+ "','"
 					+ secondMonth
 					+ "') \n"
-					+ " ORDER BY UPLOADED_INVOICE_FILE.INVOICES_MONTH,INVOICES_TEMP.INVOICE_ORDER \n";
+					+ " ORDER BY UPLOADED_INVOICE_FILE.INVOICES_MONTH,INVOICES.INVOICE_ORDER \n";
 
 			dynamicReport = new GenerateDynamicReport();
 			dynamicReport.setReportName("InvoicesComparisonReport");

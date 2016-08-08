@@ -218,23 +218,23 @@ public class RatesComparisonReport extends TravelReportBean {
 
 		try {
 
-			String queury = " SELECT INVOICES_TEMP.INVOICE_ORDER, \n"
-					+ " INVOICES_TEMP.INVOICE_NUMBER, \n"
-					+ " NVL(INVOICES_TEMP.BOOKING_FILE_NUMBER, 'NA') AS BOOKING_FILE_NUMBER, \n"
-					+ " INVOICES_TEMP.SERVICE_TYPE, \n"
-					+ " INVOICES_TEMP.SERVICE_DESC, \n"
-					+ " NVL(INVOICES_TEMP.ROUTING, 'NA')   AS ROUTING, \n"
-					+ " NVL(INVOICES_TEMP.INTER_DOM, 'NA') AS INTER_DOM, \n"
-					+ " NVL(INVOICES_TEMP.AIRLINE, 'NA')   AS AIRLINE, \n"
-					+ " NVL(INVOICES_TEMP.ROOM_TYPE, 'NA') AS ROOM_TYPE, \n"
-					+ " INVOICES_TEMP.SUPPLIER_NAME, \n"
-					+ " NVL(to_char(INVOICES_TEMP.NET_AMOUNT/((INVOICES_TEMP.CHECK_OUT-INVOICES_TEMP.CHECK_IN)+1), '9999999999999.99'),'0')  AS HOTEL_RATE, \n"
-					+ " NVL(to_char(INVOICES_TEMP.NET_AMOUNT/((INVOICES_TEMP.TO_DATE-INVOICES_TEMP.FROM_DATE)+1), '9999999999999.99'),'0') AS INSURANCE_RATE, \n"
-					+ " NVL(INVOICES_TEMP.NET_AMOUNT,0) AS RATE, \n"
+			String queury = " SELECT INVOICES.INVOICE_ORDER, \n"
+					+ " INVOICES.INVOICE_NUMBER, \n"
+					+ " NVL(INVOICES.BOOKING_FILE_NUMBER, 'NA') AS BOOKING_FILE_NUMBER, \n"
+					+ " INVOICES.SERVICE_TYPE, \n"
+					+ " INVOICES.SERVICE_DESC, \n"
+					+ " NVL(INVOICES.ROUTING, 'NA')   AS ROUTING, \n"
+					+ " NVL(INVOICES.INTER_DOM, 'NA') AS INTER_DOM, \n"
+					+ " NVL(INVOICES.AIRLINE, 'NA')   AS AIRLINE, \n"
+					+ " NVL(INVOICES.ROOM_TYPE, 'NA') AS ROOM_TYPE, \n"
+					+ " INVOICES.SUPPLIER_NAME, \n"
+					+ " NVL(to_char(INVOICES.NET_AMOUNT/((INVOICES.CHECK_OUT-INVOICES.CHECK_IN)+1), '9999999999999.99'),'0')  AS HOTEL_RATE, \n"
+					+ " NVL(to_char(INVOICES.NET_AMOUNT/((INVOICES.TO_DATE-INVOICES.FROM_DATE)+1), '9999999999999.99'),'0') AS INSURANCE_RATE, \n"
+					+ " NVL(INVOICES.NET_AMOUNT,0) AS RATE, \n"
 					+ " UPLOADED_INVOICE_FILE.INVOICES_MONTH AS  INVOICES_MONTH, \n"
 					+ " RATES_VIEW.RATE       AS PRE_NEGOTIATED \n"
-					+ " FROM INVOICES_TEMP  INNER JOIN UPLOADED_INVOICE_FILE \n"
-					+ " ON UPLOADED_INVOICE_FILE.ID=INVOICES_TEMP.UPLOADED_INVOICE_FILE_ID";
+					+ " FROM INVOICES  INNER JOIN UPLOADED_INVOICE_FILE \n"
+					+ " ON UPLOADED_INVOICE_FILE.ID=INVOICES.UPLOADED_INVOICE_FILE_ID";
 
 			if (toMonth != null && toMonth.length() > 0) {
 				Date toDate = convertStringToDate("01/" + toMonth);
@@ -249,9 +249,9 @@ public class RatesComparisonReport extends TravelReportBean {
 			}
 
 			queury += " LEFT JOIN RATES_VIEW \n"
-					+ " ON INVOICES_TEMP.SERVICE_TYPE   = RATES_VIEW.SERVICE_NAME \n"
-					+ " AND INVOICES_TEMP.SERVICE_DESC  = RATES_VIEW.PRODUCT_NAME \n"
-					+ " AND INVOICES_TEMP.SUPPLIER_NAME = RATES_VIEW.SUPPLIER_NAME \n"
+					+ " ON INVOICES.SERVICE_TYPE   = RATES_VIEW.SERVICE_NAME \n"
+					+ " AND INVOICES.SERVICE_DESC  = RATES_VIEW.PRODUCT_NAME \n"
+					+ " AND INVOICES.SUPPLIER_NAME = RATES_VIEW.SUPPLIER_NAME \n"
 					+ " AND SUBSTR(UPLOADED_INVOICE_FILE.INVOICES_MONTH,4) LIKE TO_CHAR(RATES_VIEW.YEAR) \n";
 
 			dynamicReport = new GenerateDynamicReport();
@@ -287,19 +287,19 @@ public class RatesComparisonReport extends TravelReportBean {
 
 			if (serviceTypeDTO.getName().equalsIgnoreCase("hotel")) {
 				// ratesDTO.supplierProductId
-				where += " and lower (INVOICES_TEMP.SERVICE_TYPE) like 'hotel'  "
-						+ " and lower (INVOICES_TEMP.SERVICE_DESC) like lower('"
+				where += " and lower (INVOICES.SERVICE_TYPE) like 'hotel'  "
+						+ " and lower (INVOICES.SERVICE_DESC) like lower('"
 						+ ratesDTO.getSupplierProductId().getProductId()
 								.getName()
 						+ "')"
-						+ " and lower (INVOICES_TEMP.SUPPLIER_NAME) like lower('"
+						+ " and lower (INVOICES.SUPPLIER_NAME) like lower('"
 						+ ratesDTO.getSupplierProductId().getSupplierId()
 								.getName()
 						+ "')"
-						+ " and lower (INVOICES_TEMP.ROOM_TYPE) like lower('"
+						+ " and lower (INVOICES.ROOM_TYPE) like lower('"
 						+ ratesDTO.getRoomTypeId().getName() + "')";
 
-				queury += " AND lower(INVOICES_TEMP.ROOM_TYPE)  like lower(RATES_VIEW.ROOM_TYPE_NAME) \n";
+				queury += " AND lower(INVOICES.ROOM_TYPE)  like lower(RATES_VIEW.ROOM_TYPE_NAME) \n";
 
 				dynamicReport.fieldsNames.add("ROOM_TYPE");
 				dynamicReport.fieldsNames.add("HOTEL_RATE");
@@ -313,21 +313,21 @@ public class RatesComparisonReport extends TravelReportBean {
 			}
 
 			else if (serviceTypeDTO.getName().equalsIgnoreCase("air")) {
-				where += " and lower (INVOICES_TEMP.SERVICE_TYPE) like 'air'  "
-						+ " and lower (INVOICES_TEMP.SERVICE_DESC) like lower('"
+				where += " and lower (INVOICES.SERVICE_TYPE) like 'air'  "
+						+ " and lower (INVOICES.SERVICE_DESC) like lower('"
 						+ ratesDTO.getSupplierProductId().getProductId()
 								.getName()
 						+ "')"
-						+ " and lower (INVOICES_TEMP.SUPPLIER_NAME) like lower('"
+						+ " and lower (INVOICES.SUPPLIER_NAME) like lower('"
 						+ ratesDTO.getSupplierProductId().getSupplierId()
 								.getName() + "')"
-						+ " and lower (INVOICES_TEMP.AIRLINE) like lower('"
+						+ " and lower (INVOICES.AIRLINE) like lower('"
 						+ ratesDTO.getAirlineId().getName() + "')"
-						+ " and lower (INVOICES_TEMP.ROUTING) like lower('"
+						+ " and lower (INVOICES.ROUTING) like lower('"
 						+ ratesDTO.getRouting() + "')";
 
-				queury += " AND lower(INVOICES_TEMP.AIRLINE)  like lower(RATES_VIEW.AIRLINE_NAME) \n";
-				queury += " AND lower(INVOICES_TEMP.ROUTING)  like lower(RATES_VIEW.ROUTING) \n";
+				queury += " AND lower(INVOICES.AIRLINE)  like lower(RATES_VIEW.AIRLINE_NAME) \n";
+				queury += " AND lower(INVOICES.ROUTING)  like lower(RATES_VIEW.ROUTING) \n";
 				dynamicReport.fieldsNames.add("ROUTING");
 				dynamicReport.fieldsNames.add("INTER_DOM");
 				dynamicReport.fieldsNames.add("AIRLINE");
@@ -357,14 +357,14 @@ public class RatesComparisonReport extends TravelReportBean {
 					dynamicReport.dataTypes.add(DataType.DOUBLE.toString());
 
 				}
-				where += " and lower (INVOICES_TEMP.SERVICE_TYPE) like lower('"
+				where += " and lower (INVOICES.SERVICE_TYPE) like lower('"
 						+ serviceTypeDTO.getName()
 						+ "')  "
-						+ " and lower (INVOICES_TEMP.SERVICE_DESC) like lower('"
+						+ " and lower (INVOICES.SERVICE_DESC) like lower('"
 						+ ratesDTO.getSupplierProductId().getProductId()
 								.getName()
 						+ "')"
-						+ " and lower (INVOICES_TEMP.SUPPLIER_NAME) like lower('"
+						+ " and lower (INVOICES.SUPPLIER_NAME) like lower('"
 						+ ratesDTO.getSupplierProductId().getSupplierId()
 								.getName() + "')";
 			}
@@ -374,7 +374,7 @@ public class RatesComparisonReport extends TravelReportBean {
 			dynamicReport.setReportQuery(queury + where
 					+ " order by to_date (INVOICES_MONTH, 'MM/YYYY') ");
 
-			System.out.println(queury + where
+			loggerService.logPortalInfo(queury + where
 					+ " order by to_date (INVOICES_MONTH, 'MM/YYYY') ");
 			String reportPath = dynamicReport.exportDynamicReportToExcel();
 			getDownloadableReportFile(reportPath);
