@@ -39,15 +39,18 @@
 				<div class="row">
 					<div class="col-md-12">
 						<h:form>
+
 							<fieldset class="scheduler-border">
 								<legend class="scheduler-border">Search Criteria</legend>
-
+								<h:messages id="messages" showSummary="true"
+									styleClass="alert alert-danger" />
 
 								<div class="form-group col-md-8">
 									<div class='col-xs-6 input-group datepickeralign  date'
 										id='datetimepicker1'>
 										<h:inputText type='text' class="form-control"
-											name="firstMonth"
+											name="firstMonth" requiredMessage="First Month is required"
+											required="true"
 											value="#{invoicesComparisonReport.firstMonth}"
 											pt:placeholder="First Month" id="firstMonth">
 										</h:inputText>
@@ -55,18 +58,25 @@
 											class="glyphicon glyphicon-calendar"></span>
 										</span>
 									</div>
+									<div class='col-xs-4' style="margin-left: 220px">
+										<h:message for="firstMonth" style="color:red" />
+									</div>
 								</div>
 								<div class="form-group col-md-8">
 									<div class='col-xs-6 input-group datepickeralign  date'
 										id='datetimepicker2'>
 										<h:inputText type='text' class="form-control"
-											name="secondMonth"
+											name="secondMonth" requiredMessage="Second Month is required"
+											required="true"
 											value="#{invoicesComparisonReport.secondMonth}"
 											pt:placeholder="Second Month" id="secondMonth">
 										</h:inputText>
 										<span class="input-group-addon"> <span
 											class="glyphicon glyphicon-calendar"></span>
 										</span>
+									</div>
+									<div class='col-xs-4' style="margin-left: 220px">
+										<h:message for="secondMonth" style="color:red" />
 									</div>
 								</div>
 
