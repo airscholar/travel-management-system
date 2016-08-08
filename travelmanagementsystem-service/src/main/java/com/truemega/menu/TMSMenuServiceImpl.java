@@ -92,7 +92,7 @@ public class TMSMenuServiceImpl implements TMSMenuService {
 		try {
 			loggerService
 					.logServiceInfo(" Start of checkScreenForEmployee Method  ");
-			String query = "select s from EmployeeScreens s "
+			String query = "select s from TraveluserScreens s "
 					+ " where s.screen.screenURL='" + screenName + "'"
 					+ " and s.employee.employeeId=" + employeeId;
 
