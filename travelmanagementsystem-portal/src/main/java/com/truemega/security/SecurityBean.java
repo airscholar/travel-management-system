@@ -104,12 +104,13 @@ public class SecurityBean {
 			activeDirectory = new ActiveDirectory();
 			boolean ldapAuthinticated = activeDirectory.authenticateUser(
 					userName, password, ldapURL, ldapDomainName, LDAP_USERS_SB);
-			TravelUserDTO admin = null;
-			if (!ldapAuthinticated)
-				admin = configService.getAdministrator(userName);
-			if (ldapAuthinticated
-					|| (admin.getAccountname().equals(userName) && admin
-							.getAdminPassword().equals(password))) {
+			//TravelUserDTO admin = null;
+//			if (!ldapAuthinticated)
+//				admin = configService.getAdministrator(userName);
+//			if (ldapAuthinticated
+//					|| (admin.getAccountname().equals(userName) && admin
+//							.getAdminPassword().equals(password))) {
+			if (ldapAuthinticated) {
 				userName = userName.toLowerCase();
 
 				TravelUserDTO employee = employeeService.findUserByUserName(
@@ -169,13 +170,13 @@ public class SecurityBean {
 		loggerService
 				.logPortalInfo(" start getUserScreen method of SecurityBean ");
 		try {
-			loggerService.logPortalInfo("Stat Menu Preparation");
-			System.out.println("Stat Menu Preparation");
+			loggerService.logPortalInfo("Start Menu Preparation");
+			
 			categories = new ArrayList<CategoryDTO>();
 			categories = menuService.listAllCategories(userName);
 			List<CategoryDTO> userCategories = new ArrayList<CategoryDTO>();
 			for (CategoryDTO category : categories) {
-				System.out.println("Category Name ======== "
+				loggerService.logPortalInfo("Category Name ======== "
 						+ category.getCategoryName());
 				category.setEmployeeScreens(menuService
 						.listAllScreenByCategoryAndEmployee(
@@ -190,7 +191,7 @@ public class SecurityBean {
 			}
 
 			categories = userCategories;
-			System.out.println("Menu Preparation DONE");
+			loggerService.logPortalInfo("Menu Preparation DONE");
 			HttpJSFUtils.getSession().setAttribute("employeeScreens",
 					categories);
 		} catch (Exception e) {
