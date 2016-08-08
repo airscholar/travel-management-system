@@ -179,7 +179,7 @@
 										<div class="col-xs-3">
 											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
 												class="form-control" id="airline" required="true"
-												requiredMessage="AirLinnePanel required"
+												requiredMessage="AirLine required"
 												disabled="#{ratessingle.screenMode == 'VIEW'}"
 												converter="#{ratessingle.airLineConverter}">
 												<f:selectItem itemLabel="None" itemValue="#{null}" />
@@ -200,6 +200,42 @@
 												disabled="#{ratessingle.screenMode == 'VIEW'}">
 											</h:inputText>
 											<h:message for="routing" style="color:red" />
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<h:outputLabel value="Geographical"
+											styleClass="control-label col-xs-3" />
+										<div class="col-xs-3">
+											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
+												class="form-control" id="Geographical" required="true"
+												requiredMessage="AirLine required"
+												disabled="#{ratessingle.screenMode == 'VIEW'}"
+												converter="#{ratessingle.airLineConverter}">
+												<f:selectItem itemLabel="None" itemValue="#{null}" />
+												<f:selectItems value="#{ratessingle.airlineDTOs}"
+													var="airlinemodel" itemLabel="#{airlinemodel.name}"
+													itemValue="#{airlinemodel}" />
+											</h:selectOneMenu>
+											<h:message for="Geographical" style="color:red" />
+										</div>
+									</div>
+									
+									<div class="form-group">
+										<h:outputLabel value="Class"
+											styleClass="control-label col-xs-3" />
+										<div class="col-xs-3">
+											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
+												class="form-control" id="Class" required="true"
+												requiredMessage="AirLine required"
+												disabled="#{ratessingle.screenMode == 'VIEW'}"
+												converter="#{ratessingle.airLineConverter}">
+												<f:selectItem itemLabel="None" itemValue="#{null}" />
+												<f:selectItems value="#{ratessingle.airlineDTOs}"
+													var="airlinemodel" itemLabel="#{airlinemodel.name}"
+													itemValue="#{airlinemodel}" />
+											</h:selectOneMenu>
+											<h:message for="Class" style="color:red" />
 										</div>
 									</div>
 								</c:if>
