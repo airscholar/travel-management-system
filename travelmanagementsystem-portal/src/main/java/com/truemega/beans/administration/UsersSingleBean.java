@@ -132,8 +132,7 @@ public class UsersSingleBean extends TravelSingleBean {
 			if (entity != null)
 				userId = entity.getEntityId().intValue();
 			travelUserDTO = tmsUserService.findEmployeeById(userId, getUserName());
-			System.out.println("userId = " + userId);
-			System.out.println("travelUserDTO = " + travelUserDTO);
+			
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -149,7 +148,7 @@ public class UsersSingleBean extends TravelSingleBean {
 				.logPortalInfo(" start validate method of UsersSingleBean ");
 		TravelUserDTO employee = null;
 		try {
-			System.out.println("  userLdapSearch  ====" + userLdapSearch);
+			
 			if (userLdapSearch == travelUserDTO.getStaffid()) {
 				employee = tmsUserService.findEmployeeByStaffID(
 						travelUserDTO.getStaffid(), getUserName());

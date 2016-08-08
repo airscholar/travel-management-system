@@ -104,7 +104,7 @@ public class MaxMinSingleBean extends TravelSingleBean {
 	public void uploadNotification() {
 
 		// notification.sendNotificationInvoiceUploaded();
-		System.out.println("Mail Sent");
+
 	}
 
 	public void maxinsurancePeriod() {
@@ -114,42 +114,36 @@ public class MaxMinSingleBean extends TravelSingleBean {
 	public void unknownHotls() {
 
 		// notification.sendNotificationNotificationReservationUnknownHotel();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
 	public void maxVisaPeriod() {
 
 		// notification.sendNotificationMaxVisaPeriod();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
 	public void maxAirLineTicket() {
 
 		// notification.sendNotificationMaxAirLineTicket();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
 	public void minAirLineTicket() {
 
 		// notification.sendNotificationMinAirLineTicket();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
 	public void hotelRateAbovePreNegotiatedRates() {
 
 		// notification.sendNotificationHotelRateAbovePreNegotiatedRates();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
 	public void hotelRateBelowPreNegotiatedRates() {
 
 		// notification.sendNotificationHotelRateBelowPreNegotiatedRates();
-		System.out.println("PlZ Check Your Mail");
 
 	}
 
@@ -158,7 +152,6 @@ public class MaxMinSingleBean extends TravelSingleBean {
 
 		loggerService.logPortalInfo(" start load method of MaxMinSingleBean ");
 		maxMinValuesDTOs = maxMinService.getAllMaxMinValuess(getUserName());
-		System.out.println("maxMinValuesDTOs  ==  " + maxMinValuesDTOs.size());
 
 		try {
 
@@ -169,7 +162,7 @@ public class MaxMinSingleBean extends TravelSingleBean {
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+
 			loggerService.logPortalError("can't load  ", e);
 		}
 		loggerService.logPortalInfo(" end load method of MaxMinSingleBean ");

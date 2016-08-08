@@ -64,7 +64,7 @@ public class ProductSingleBean extends TravelSingleBean {
 			break;
 		}
 		serviceTypeDTOs = serviceService.getAllServices(getUserName());
-		System.out.println("serviceTypeDTOs======= " + serviceTypeDTOs.size());
+		
 		serviceConverter = new ServiceConverter(serviceTypeDTOs);
 
 	}

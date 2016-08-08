@@ -57,7 +57,7 @@ public class RoomTypeListBean  extends TravelListBean {
     	
 		try {
 			roomTypeDTOs = roomTypeService.getAllRoomTypes(getUserName());
-			System.out.println("roomTypeDTOs ======  " + roomTypeDTOs.size());
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace() ;

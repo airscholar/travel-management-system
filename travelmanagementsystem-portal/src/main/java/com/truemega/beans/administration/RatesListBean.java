@@ -56,7 +56,7 @@ public class RatesListBean extends TravelListBean {
 		// TODO Auto-generated method stub
 		try {
 			ratesDTOs = ratesService.getAllRatess(getUserName());
-			System.out.println("Ratess ======  " + ratesDTOs.size());
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -29,7 +29,9 @@ public class InvoiceTemplateDownloaderBean {
 	}
 
 	public StreamedContent getReportFile() {
-		String outputFilePath = ".\\TravelManagement\\InvoiceTemplate\\Travel_Template.xlsx";
+		String outputFilePath = "." + File.separator + "TravelManagement"
+				+ File.separator + "InvoiceTemplate" + File.separator
+				+ "Travel_Template.xlsx";
 
 		try {
 			File reportingFile = new File(outputFilePath);

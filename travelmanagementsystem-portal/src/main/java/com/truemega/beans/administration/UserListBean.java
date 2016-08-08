@@ -45,7 +45,7 @@ public class UserListBean extends TravelListBean {
 		loggerService.logPortalInfo(" start load method of UserListBean ");
 		try {
 			travelUserDTOs = tmsUserService.listAllEmployeeUsers(getUserName());
-			System.out.println("travelUserDTOs  = " + travelUserDTOs.size());
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			loggerService.logPortalError("can't load travelUserDTOs ", e);

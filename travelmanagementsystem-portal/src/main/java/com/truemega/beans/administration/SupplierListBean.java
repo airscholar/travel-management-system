@@ -57,7 +57,7 @@ public class SupplierListBean  extends TravelListBean {
 		// TODO Auto-generated method stub
 		try {
 			supplierDTOs = supplierService.getAllSuppliers(getUserName());
-			System.out.println("suppliers ======  " + supplierDTOs.size());
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace() ;

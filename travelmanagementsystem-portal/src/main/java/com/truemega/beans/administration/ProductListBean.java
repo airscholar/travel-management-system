@@ -60,12 +60,8 @@ public class ProductListBean extends TravelListBean {
 		// TODO Auto-generated method stub
 		try {
 			serviceTypeDTOs = serviceService.getAllServices(getUserName());
-			System.out.println("serviceTypeDTOs =====->"
-					+ serviceTypeDTOs.size());
 
 			productTypeDTOs = productService.getAllProduct(getUserName());
-			System.out.println("productTypeDTOs =====->"
-					+ productTypeDTOs.size());
 
 		} catch (Exception e) {
 			// TODO: handle exception

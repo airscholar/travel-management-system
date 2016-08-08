@@ -60,7 +60,7 @@ public class ProductSupplierListBean  extends TravelListBean{
     	
 		try {
 			supplierProductDTOs = productSupplierService.getAllSupplierProducts(getUserName());
-			System.out.println("supplierProductDTOs ======  " + supplierProductDTOs.size());
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace() ;

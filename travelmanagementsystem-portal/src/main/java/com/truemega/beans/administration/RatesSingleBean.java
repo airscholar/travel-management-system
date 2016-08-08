@@ -105,8 +105,7 @@ public class RatesSingleBean extends TravelSingleBean {
 					.getAllSupplierProductsByServiceId(serviceTypeDTO.getId());
 			supplierProductConverter = new SupplierProductConverter(
 					supplierProductDTOs);
-			System.out.println("supplierProductDTOs ==== "
-					+ supplierProductDTOs.size());
+			
 
 		} else {
 
@@ -136,17 +135,17 @@ public class RatesSingleBean extends TravelSingleBean {
 		}
 
 		serviceTypeDTOs = serviceService.getAllServices(getUserName());
-		System.out.println("serviceTypeDTOs======= " + serviceTypeDTOs.size());
+		
 		serviceConverter = new ServiceConverter(serviceTypeDTOs);
 		supplierProductConverter = new SupplierProductConverter(
 				supplierProductDTOs);
 
 		roomTypeDTOs = roomTypeService.getAllRoomTypeActive(getUserName());
-		System.out.println("roomTypeDTOs======= " + roomTypeDTOs.size());
+		
 		roomConverter = new RoomConverter(roomTypeDTOs);
 		airlineDTOs = airLineService.getAllAirlineActive(getUserName());
 		airLineConverter = new AirLineConverter(airlineDTOs);
-		System.out.println("airlineDTOs======= " + airlineDTOs.size());
+		
 
 	}
 
