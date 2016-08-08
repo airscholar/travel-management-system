@@ -122,7 +122,7 @@ public class InvoicesActionTakerBean extends TravelSingleBean {
 					"entity");
 			if (entity != null) {
 				invoiceFileId = entity.getEntityId();
-				System.out.println("invoiceFileId  = " + invoiceFileId);
+				
 				uploadedInvoiceFileDTO = uploadedInvoicesFileService
 						.findUploadedInvoiceFileById(invoiceFileId,
 								getUserName());

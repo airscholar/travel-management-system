@@ -144,7 +144,7 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 	@Override
 	public void load() {
 		// TODO Auto-generated method stub
-		System.out.println("looooooooooooooooooood");
+
 	}
 
 	@Override
@@ -273,12 +273,7 @@ public class InvoicesUploaderBean extends TravelSingleBean {
 
 	// --------
 	public void testStored() {
-		try {
-			invoicesUploaderService.testStored();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 
 	private String getYear(String dateStr) {
