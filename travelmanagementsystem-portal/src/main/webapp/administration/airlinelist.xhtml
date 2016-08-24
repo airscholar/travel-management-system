@@ -20,20 +20,20 @@
 			<div class="container-fluid left-border">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 page-header">
-						<h1> Air Lines Management  </h1>
+						<h1> Airlines Management  </h1>
 					</div>
 					<!-- Add User Button -->
 					<div class="col-md-3">
 						<h:form>
 							<h:commandButton class="btn btn-default btn-lg btn-block"
-								value=" Add An AirLine " action="#{controller.showPage}"
+								value=" Add An Airline " action="#{controller.showPage}"
 								style="max-width: 400px;">
 								<f:setPropertyActionListener target="#{controller.screenURL}"
 									value="administration/airlinesingle.xhtml" />
 								<f:setPropertyActionListener target="#{controller.screenMode}"
 									value="0" />
 								<f:setPropertyActionListener target="#{controller.screeName}"
-									value="Add An AirLine" />
+									value="Add An Airline" />
 							</h:commandButton>
 						</h:form>
 					</div>
@@ -46,13 +46,13 @@
 							tableStyleClass="table table-striped" id="userTable"
 							paginator="true" rowsPerPageTemplate="5,10,15"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-							<p:column headerText=" Air line Name ">
+							<p:column headerText=" Airline Name ">
 								<h:outputText value="#{airlinemodel.name}" />
 							</p:column>
 							
 						
 						
-							<p:column headerText=" Air Line  Status">
+							<p:column headerText=" Airline Status">
 								<center>
 									<h:form>
 										<p:selectBooleanCheckbox value="#{airlinemodel.status}">
@@ -74,7 +74,7 @@
 											<f:setPropertyActionListener
 												target="#{controller.screenMode}" value="1" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Update AirLine" />
+												value="Update Airline" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
 												value="#{airlinemodel.id}" />
 										</h:commandLink>
@@ -91,7 +91,7 @@
 											<f:setPropertyActionListener
 												target="#{controller.screenMode}" value="2" />
 											<f:setPropertyActionListener target="#{controller.screeName}"
-												value="Add an Air Line" />
+												value="Add an Airline" />
 											<f:setPropertyActionListener target="#{controller.entityId}"
 												value="#{airlinemodel.id}" />
 										</h:commandLink>

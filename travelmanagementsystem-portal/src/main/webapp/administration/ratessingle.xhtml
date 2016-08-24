@@ -174,7 +174,7 @@
 							<h:panelGroup id="AirLinnePanel">
 								<c:if test="#{ratessingle.serviceTypeDTO.name == 'Air'}">
 									<div class="form-group">
-										<h:outputLabel value="Air Line"
+										<h:outputLabel value="Airline"
 											styleClass="control-label col-xs-3" />
 										<div class="col-xs-3">
 											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
@@ -209,7 +209,7 @@
 										<div class="col-xs-3">
 											<h:selectOneMenu value="#{ratessingle.ratesDTO.airlineId}"
 												class="form-control" id="Geographical" required="true"
-												requiredMessage="AirLine required"
+												requiredMessage="Airline required"
 												disabled="#{ratessingle.screenMode == 'VIEW'}"
 												converter="#{ratessingle.airLineConverter}">
 												<f:selectItem itemLabel="None" itemValue="#{null}" />
