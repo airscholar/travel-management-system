@@ -81,9 +81,10 @@
 									<div class="col-xs-4">
 										<h:selectOneMenu
 											value="#{ratesComparisonReport.serviceTypeDTO}"
-											class="form-control"
+											class="form-control" id="servicename" required="true"
+											requiredMessage="Service is required"
 											converter="#{ratesComparisonReport.serviceConverter}">
-											<f:selectItem itemLabel="All" itemValue="#{null}" />
+											<f:selectItem itemLabel="None" itemValue="#{null}" />
 											<f:selectItems
 												value="#{ratesComparisonReport.serviceTypeDTOs}"
 												var="servicemodel" itemLabel="#{servicemodel.name}"
@@ -111,9 +112,9 @@
 												<h:selectOneMenu
 													value="#{ratesComparisonReport.ratesDTO.supplierProductId}"
 													class="form-control" id="productName" required="true"
-													requiredMessage="product supplier required"
+													requiredMessage="product supplier is required"
 													converter="#{ratesComparisonReport.supplierProductConverter}">
-													<f:selectItem itemLabel="All" itemValue="#{null}" />
+													<f:selectItem itemLabel="None" itemValue="#{null}" />
 													<f:selectItems
 														value="#{ratesComparisonReport.supplierProductDTOs}"
 														var="productmodel"
