@@ -58,35 +58,35 @@ public class RejectedInvoiceReport extends TravelReportBean {
 			dynamicReport.setReportTitle("Rejected Invoices Report");
 			dynamicReport.setReportQuery(queury);
 
-			dynamicReport.columnsNames.add(" Modification Date");
-			dynamicReport.columnsNames.add(" Name ");
-			dynamicReport.columnsNames.add("System user ");
+			dynamicReport.columnsNames.add("Modification Date");
+			dynamicReport.columnsNames.add("Name");
+			
 			dynamicReport.columnsNames.add("Invoices Month");
-			dynamicReport.columnsNames.add("Templet Table");
-			dynamicReport.columnsNames.add("Action Tacken Date ");
+			
+			dynamicReport.columnsNames.add("Action Taken Date");
 			dynamicReport.columnsNames.add("Action Taker");
-			dynamicReport.columnsNames.add("Rejection Reason ");
-			dynamicReport.columnsNames.add("Approved  ");
+			dynamicReport.columnsNames.add("Rejection Reason");
+			
 
 			dynamicReport.fieldsNames.add("MODIFICATION_DATE");
 			dynamicReport.fieldsNames.add("NAME");
-			dynamicReport.fieldsNames.add("SYSTEM_USER");
+			
 			dynamicReport.fieldsNames.add("INVOICES_MONTH");
-			dynamicReport.fieldsNames.add("TEMPLATE_TABLE");
+			
 			dynamicReport.fieldsNames.add("ACTION_TAKEN_DATE");
 			dynamicReport.fieldsNames.add("ACTION_TAKER");
 			dynamicReport.fieldsNames.add("REJECTION_REASON");
-			dynamicReport.fieldsNames.add("APPROVED");
+			
 
 			dynamicReport.dataTypes.add(DataType.DATE.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
+			
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
-			dynamicReport.dataTypes.add(DataType.STRING.toString());
-			dynamicReport.dataTypes.add(DataType.INT.toString());
+			
 			dynamicReport.dataTypes.add(DataType.DATE.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
 			dynamicReport.dataTypes.add(DataType.STRING.toString());
-			dynamicReport.dataTypes.add(DataType.INT.toString());
+			
 
 			String reportPath = dynamicReport.exportDynamicReportToExcel();
 			getDownloadableReportFile(reportPath);
