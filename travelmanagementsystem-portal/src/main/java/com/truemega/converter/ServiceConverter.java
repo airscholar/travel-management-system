@@ -26,7 +26,7 @@ public class ServiceConverter  implements Converter{
 		// TODO Auto-generated method stub
 		loggerService.logPortalInfo(" start getAsObject method of ServiceConverter ");
 		if (value != null && value.trim().length() > 0
-				&& (!value.equals("None")&& value.trim().length() > 0)) {
+				&& (!value.equals("None")&& !value.equals("All")&&  value.trim().length() > 0)) {
 			try {
 				ServiceTypeDTO selectedService = new ServiceTypeDTO();
 				selectedService.setId(new Integer(value));

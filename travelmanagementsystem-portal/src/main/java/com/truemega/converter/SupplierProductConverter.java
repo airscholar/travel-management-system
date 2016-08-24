@@ -28,7 +28,7 @@ public class SupplierProductConverter implements Converter {
 		// TODO Auto-generated method stub
 		loggerService.logPortalInfo(" start getAsObject method of SupplierProductConverter ");
 		if (value != null && value.trim().length() > 0
-				&& (!value.equals("None")&& value.trim().length() > 0)) {
+				&& (!value.equals("None")&&!value.equals("All")&& value.trim().length() > 0)) {
 			try {
 				SupplierProductDTO selectedSupplierProduct = new SupplierProductDTO();
 				selectedSupplierProduct.setId(new Integer(value));
