@@ -403,14 +403,7 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 				+ "   ELSE 1 \n"
 				+ " END) ROOM_TYPE_VALID_N1, \n"
 
-				+ " (CASE WHEN  ( \n"
-				+ " LOWER(SERVICE_TYPE) like 'hotel' \n"
-				+ " AND \n"
-				+ " (LOWER(SERVICE_TYPE),LOWER(SERVICE_DESC),LOWER(SUPPLIER_NAME),LOWER(ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
-				+ " ) \n"
-				+ " OR \n"
+				+ " (CASE WHEN   \n"
 				+ " ( \n"
 				+ " LOWER(SERVICE_TYPE) like 'air' \n"
 				+ " AND \n"
@@ -487,14 +480,6 @@ public class InvoicesUploaderServiceImpl implements InvoicesUploaderService {
 
 				+ " OR \n"
 				+ " ( \n"
-				+ "  ( \n"
-				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'hotel' \n"
-				+ "      AND \n"
-				+ "      (LOWER(INVOICES_TEMP.SERVICE_TYPE),LOWER(INVOICES_TEMP.SERVICE_DESC),LOWER(INVOICES_TEMP.SUPPLIER_NAME),LOWER(INVOICES_TEMP.ROOM_TYPE)) not in (SELECT lower(st.NAME),lower(pt.NAME),lower(s.NAME),lower(rt.NAME) FROM SERVICE_TYPE st INNER JOIN PRODUCT_TYPE pt ON st.ID = pt.SERVICE_ID AND LOWER(st.NAME) LIKE 'hotel' INNER JOIN SUPPLIER_PRODUCT sp ON pt.ID = sp.PRODUCT_ID INNER JOIN RATES r ON sp.ID   = r.SUPPLIER_PRODUCT_ID AND r.YEAR = "
-				+ year
-				+ " INNER JOIN ROOM_TYPE rt ON rt.ID = r.ROOM_TYPE_ID INNER JOIN SUPPLIER s ON s.ID = sp.SUPPLIER_ID ) \n"
-				+ "  ) \n"
-				+ "  OR \n"
 				+ "  ( \n"
 				+ "      LOWER(INVOICES_TEMP.SERVICE_TYPE) like 'air' \n"
 				+ "      AND \n"
